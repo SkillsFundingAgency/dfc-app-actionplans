@@ -1,0 +1,160 @@
+{
+	"info": {
+		"_postman_id": "a2d6a13f-14ff-4ad3-bc27-9c79dc45c395",
+		"name": "ActionPlansRegisterComposite",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "App",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{     \n\t\"Path\": \"actionplans\",\n    \"TopNavigationText\": \"Action Plans\",\n    \"TopNavigationOrder\": 400,\n    \"Layout\": \"FullWidth\",\n    \"IsOnline\": true,\n    \"OfflineHtml\": \"<H2>Action Plans Service Unavailable</H2>\"\n}"
+				},
+				"url": {
+					"raw": "{{PathRootUrl}}paths",
+					"host": [
+						"{{PathRootUrl}}paths"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "App get",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{PathRootUrl}}paths/actionplans",
+					"host": [
+						"{{PathRootUrl}}paths"
+					],
+					"path": [
+						"actionplans"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RegionBody",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{     \n\t\"Path\": \"actionplans\",\n\t\"PageRegion\": \"Body\",\n    \"RegionEndpoint\": \"https://localhost:44392/body/{0}\",\n    \"HealthCheckRequired\": true,\n    \"OfflineHtml\": \"<H3>Service Unavailable</H3>\",\n    \"IsHealthy\": true,\n    \"IsOnline\": true\n}"
+				},
+				"url": {
+					"raw": "{{RegionRootUrl}}paths/actionplans/regions",
+					"host": [
+						"{{RegionRootUrl}}paths"
+					],
+					"path": [
+						"actionplans",
+						"regions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RegionHead",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{     \n\t\"Path\": \"actionplans\",\n\t\"PageRegion\": \"Head\",\n    \"RegionEndpoint\": \"https://localhost:44355/head/{0}\",\n    \"HealthCheckRequired\": true,\n    \"OfflineHtml\": \"<H3>Service Unavailable</H3>\",\n    \"IsHealthy\": true,\n    \"IsOnline\": true\n}"
+				},
+				"url": {
+					"raw": "{{RegionRootUrl}}paths/actionplans/regions",
+					"host": [
+						"{{RegionRootUrl}}paths"
+					],
+					"path": [
+						"actionplans",
+						"regions"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "e2edf17f-a948-476b-80b1-12cbb808c6a0",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "d5297a14-8e42-47bb-86c3-f0e9d7dbde96",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "b1454cf4-0b0c-4134-80d8-08ebb1f62fae",
+			"key": "PathRootUrl",
+			"value": "http://localhost:7071/api/",
+			"type": "string"
+		},
+		{
+			"id": "27ca9e5c-bfac-47b5-9ebb-11ffd0a69cef",
+			"key": "RegionRootUrl",
+			"value": "http://localhost:7072/api/",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}

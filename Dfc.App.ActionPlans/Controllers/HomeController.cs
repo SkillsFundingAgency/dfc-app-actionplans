@@ -10,5 +10,22 @@ namespace Dfc.App.ActionPlans.Controllers
             var vm = new HomePageVm();
             return View(vm);
         }
+
+        [HttpGet]
+        [Route("/head/")]
+        public IActionResult Head()
+        {
+            var vm = new HomePageVm();
+            return View(vm);
+        }
+
+        [HttpGet]
+        [Route("/body/")]
+        public IActionResult Body()
+        {
+            var vm = new HomePageVm();
+            return View(vm);
+        }
+
     }
 }
