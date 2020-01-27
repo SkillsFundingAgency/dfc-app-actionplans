@@ -1,9 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <ProjectGuid>{57AECDC7-1C49-45CA-87A4-3478C7A1320D}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 </Project>
