@@ -1,19 +1,14 @@
-﻿using System;
-using System.Text;
-using System.Threading.Tasks;
-using DFC.App.ActionPlans.Services.DSS.Interfaces;
+﻿using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Models;
 using DFC.App.ActionPlans.Services.DSS.Services;
 using DFC.Personalisation.Common.Helpers;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
 using DFC.Personalisation.Common.Services;
 using Microsoft.Extensions.Logging;
 
