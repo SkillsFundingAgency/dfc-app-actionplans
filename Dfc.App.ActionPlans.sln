@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dfc.App.ActionPlans", "Dfc.App.ActionPlans\Dfc.App.ActionPlans.csproj", "{57AECDC7-1C49-45CA-87A4-3478C7A1320D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.ActionPlans", "DFC.App.ActionPlans\DFC.App.ActionPlans.csproj", "{57AECDC7-1C49-45CA-87A4-3478C7A1320D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dfc.App.ActionPlans.UnitTests", "Dfc.App.ActionPlans.UnitTests\Dfc.App.ActionPlans.UnitTests.csproj", "{4F355A7C-583D-4B0A-8FC4-4E4443E9CA00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.ActionPlans.UnitTests", "DFC.App.ActionPlans.UnitTests\DFC.App.ActionPlans.UnitTests.csproj", "{4F355A7C-583D-4B0A-8FC4-4E4443E9CA00}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dfc.App.ActionPlans.IntegrationTests", "Dfc.App.ActionPlans.IntegrationTests\Dfc.App.ActionPlans.IntegrationTests.csproj", "{EDC11B09-3C48-42D2-9C69-E01629757B20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.ActionPlans.IntegrationTests", "DFC.App.ActionPlans.IntegrationTests\DFC.App.ActionPlans.IntegrationTests.csproj", "{EDC11B09-3C48-42D2-9C69-E01629757B20}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.ActionPlans.Services.DSS", "DFC.App.ActionPlans.Services.DSS\DFC.App.ActionPlans.Services.DSS.csproj", "{AA70EF89-8668-462D-B948-C7C1DCBB8DD0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +57,18 @@ Global
 		{EDC11B09-3C48-42D2-9C69-E01629757B20}.Release|x64.Build.0 = Release|Any CPU
 		{EDC11B09-3C48-42D2-9C69-E01629757B20}.Release|x86.ActiveCfg = Release|Any CPU
 		{EDC11B09-3C48-42D2-9C69-E01629757B20}.Release|x86.Build.0 = Release|Any CPU
+		{AA70EF89-8668-462D-B948-C7C1DCBB8DD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA70EF89-8668-462D-B948-C7C1DCBB8DD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA70EF89-8668-462D-B948-C7C1DCBB8DD0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{AA70EF89-8668-462D-B948-C7C1DCBB8DD0}.Debug|x64.Build.0 = Debug|Any CPU
+		{AA70EF89-8668-462D-B948-C7C1DCBB8DD0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AA70EF89-8668-462D-B948-C7C1DCBB8DD0}.Debug|x86.Build.0 = Debug|Any CPU
+		{AA70EF89-8668-462D-B948-C7C1DCBB8DD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA70EF89-8668-462D-B948-C7C1DCBB8DD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA70EF89-8668-462D-B948-C7C1DCBB8DD0}.Release|x64.ActiveCfg = Release|Any CPU
+		{AA70EF89-8668-462D-B948-C7C1DCBB8DD0}.Release|x64.Build.0 = Release|Any CPU
+		{AA70EF89-8668-462D-B948-C7C1DCBB8DD0}.Release|x86.ActiveCfg = Release|Any CPU
+		{AA70EF89-8668-462D-B948-C7C1DCBB8DD0}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
