@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.ActionPlans", "DFC.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.ActionPlans.UnitTests", "DFC.App.ActionPlans.UnitTests\DFC.App.ActionPlans.UnitTests.csproj", "{4F355A7C-583D-4B0A-8FC4-4E4443E9CA00}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.ActionPlans.IntegrationTests", "DFC.App.ActionPlans.IntegrationTests\DFC.App.ActionPlans.IntegrationTests.csproj", "{EDC11B09-3C48-42D2-9C69-E01629757B20}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.ActionPlans.Services.DSS", "DFC.App.ActionPlans.Services.DSS\DFC.App.ActionPlans.Services.DSS.csproj", "{AA70EF89-8668-462D-B948-C7C1DCBB8DD0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.Personalisation.Common", "..\dfc-personalisation-common-pkg-netcore\DFC.Personalisation.Common\DFC.Personalisation.Common.csproj", "{3B72388D-B782-4E58-952A-02BBEA1CE76E}"
@@ -47,18 +45,6 @@ Global
 		{4F355A7C-583D-4B0A-8FC4-4E4443E9CA00}.Release|x64.Build.0 = Release|Any CPU
 		{4F355A7C-583D-4B0A-8FC4-4E4443E9CA00}.Release|x86.ActiveCfg = Release|Any CPU
 		{4F355A7C-583D-4B0A-8FC4-4E4443E9CA00}.Release|x86.Build.0 = Release|Any CPU
-		{EDC11B09-3C48-42D2-9C69-E01629757B20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EDC11B09-3C48-42D2-9C69-E01629757B20}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EDC11B09-3C48-42D2-9C69-E01629757B20}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{EDC11B09-3C48-42D2-9C69-E01629757B20}.Debug|x64.Build.0 = Debug|Any CPU
-		{EDC11B09-3C48-42D2-9C69-E01629757B20}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{EDC11B09-3C48-42D2-9C69-E01629757B20}.Debug|x86.Build.0 = Debug|Any CPU
-		{EDC11B09-3C48-42D2-9C69-E01629757B20}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EDC11B09-3C48-42D2-9C69-E01629757B20}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EDC11B09-3C48-42D2-9C69-E01629757B20}.Release|x64.ActiveCfg = Release|Any CPU
-		{EDC11B09-3C48-42D2-9C69-E01629757B20}.Release|x64.Build.0 = Release|Any CPU
-		{EDC11B09-3C48-42D2-9C69-E01629757B20}.Release|x86.ActiveCfg = Release|Any CPU
-		{EDC11B09-3C48-42D2-9C69-E01629757B20}.Release|x86.Build.0 = Release|Any CPU
 		{AA70EF89-8668-462D-B948-C7C1DCBB8DD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AA70EF89-8668-462D-B948-C7C1DCBB8DD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA70EF89-8668-462D-B948-C7C1DCBB8DD0}.Debug|x64.ActiveCfg = Debug|Any CPU
