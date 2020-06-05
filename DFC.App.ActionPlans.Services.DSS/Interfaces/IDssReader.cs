@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using DFC.App.ActionPlans.Services.DSS.Models;
 
-namespace DFC.App.Account.Services.DSS.Interfaces
+namespace DFC.App.ActionPlans.Services.DSS.Interfaces
 {
     public interface IDssReader
     {
