@@ -32,10 +32,20 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             _logger = new Logger<HomeController>(new LoggerFactory());
             _compositeSettings = Options.Create(new CompositeSettings());
             _logger = Substitute.For<ILogger<HomeController>>();
+            _dssReader = Substitute.For<IDssReader>();
             _authSettings = Options.Create(new AuthSettings
             {
                 RegisterUrl = "reg", SignInUrl = "signin", SignOutUrl = "signout"
             });
+            var customer = new Customer()
+            {
+                CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c"),
+                FamilyName = "familyName",
+                GivenName = "givenName"
+            };
+            _dssReader.GetCustomerDetails(Arg.Any<String>()).ReturnsForAnyArgs(customer);
+
+
             controller = new HomeController(_logger, _compositeSettings,_authSettings, _dssReader);
             controller.ControllerContext.HttpContext = new DefaultHttpContext();
         }
@@ -81,12 +91,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         [Test]
         public async Task WhenBodyTopCalled_ReturnHtmlWithUserName()
         {
-            var customer = new Customer()
-            {
-                CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c"),
-                FamilyName = "familyName",
-                GivenName = "givenName"
-            };
+          
         
             controller.ControllerContext = new ControllerContext
             {
