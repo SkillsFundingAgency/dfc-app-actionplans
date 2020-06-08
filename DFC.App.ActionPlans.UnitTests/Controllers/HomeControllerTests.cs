@@ -131,7 +131,6 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             result.ViewName.Should().BeNull();
         }
 
-
        
     }
 }

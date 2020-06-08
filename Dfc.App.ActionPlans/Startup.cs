@@ -1,4 +1,5 @@
-﻿using DFC.App.ActionPlans.Services.DSS.Interfaces;
+﻿using System.Diagnostics.CodeAnalysis;
+using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Models;
 using DFC.App.ActionPlans.Services.DSS.Services;
@@ -15,6 +16,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Dfc.App.ActionPlans
 {
+    [ExcludeFromCodeCoverage]
     public class Startup
     {
         public Startup(IConfiguration configuration)
