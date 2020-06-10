@@ -5,6 +5,24 @@
         "Environment": {
             "value": "__ReleaseEnvironmentName__"
         },
+        "apimDSSProxyAddress": {
+            "value": "__apimDSSProxyAddress__"
+        },
+        "cdnUrl": {
+            "value": "__cdnUrl__"
+        },
+        "apimDSSApiKey": {
+            "value": "__apimDSSApiKey__"
+        },
+        "AuthSettingsIssuer": {
+            "value": "__AuthSettingsIssuer__"
+        },
+        "AuthSettingsClientSecret": {
+            "value": "__AuthSettingsClientSecret__"
+        },       
+        "AuthSettingsClientId": {
+            "value": "__AuthSettingsClientId__"
+        },
         "SharedAppServicePlanName": {
             "value": "__SharedAppServicePlanName__"
         },

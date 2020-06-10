@@ -5,6 +5,24 @@
         "environment": {
             "type": "string"
         },
+        "apimDSSProxyAddress": {
+            "type": "string"
+        },
+        "apimDSSApiKey": {
+            "type": "securestring"
+        },
+        "cdnUrl": {
+            "type": "string"
+        },
+        "AuthSettingsIssuer": {
+            "type": "string"
+        },
+        "AuthSettingsClientSecret": {
+            "type": "string"
+        },       
+        "AuthSettingsClientId": {
+            "type": "string"
+        },
         "sharedResourceGroup": {
             "type": "string",
             "defaultValue": ""
@@ -71,6 +89,58 @@
                             {
                                 "name": "MSDEPLOY_RENAME_LOCKED_FILES",
                                 "value": "1"
+                            },
+                            {
+                                "name": "Logging__ApplicationInsights__LogLevel__Default",
+                                "value": "Warning"
+                            },
+                            {
+                                "name": "DssSettings__CustomerApiUrl",
+                                "value": "[concat(parameters('apimDSSProxyAddress'), '/customers/api/Customers/')]"
+                            },
+                            {
+                                "name": "DssSettings__CustomerApiVersion",
+                                "value": "v2"
+                            },
+                            {
+                                "name": "DssSettings__ApiKey",
+                                "value": "[parameters('apimDSSApiKey')]"
+                            },
+                            {
+                                "name": "DssSettings__AccountsTouchpointId",
+                                "value": "0000000997"
+                            },
+                            {
+                                "name": "CompositeSettings__Path",
+                                "value": "/your-account"
+                            },
+                            {
+                                "name": "CompositeSettings__CDN",
+                                "value": "[parameters('cdnUrl')]"
+                            },
+                            {
+                                "name": "AuthSettings__Issuer",
+                                "value": "[parameters('AuthSettingsIssuer')]"
+                            },
+                            {
+                                "name": "AuthSettings__ClientSecret",
+                                "value": "[parameters('AuthSettingsClientSecret')]"
+                            },
+                            {
+                                "name": "AuthSettings__ClientId",
+                                "value": "[parameters('AuthSettingsClientId')]"
+                            },
+                            {
+                                "name": "AuthSettings__SignInUrl",
+                                "value": "[concat(parameters('AuthSettingsIssuer'), '/auth/SignIn')]"
+                            },
+                            {
+                                "name": "AuthSettings__SignOutUrl",
+                                "value": "[concat(parameters('AuthSettingsIssuer'), '/auth/signOut')]"
+                            },
+                            {
+                                "name": "AuthSettings__RegisterUrl",
+                                "value": "[concat(parameters('AuthSettingsIssuer'), '/auth/register')]"
                             },
                             {
                                 "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
