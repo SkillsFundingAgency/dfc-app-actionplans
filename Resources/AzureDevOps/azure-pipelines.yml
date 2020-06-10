@@ -30,12 +30,13 @@ stages:
         parameters:
           ArmTemplateRoot: '${{ variables.ArmTemplateRoot }}'
           SolutionBaseName: '${{ variables.SolutionBaseName }}'
-  
+#Build and test application
   - job: BuildDotNetCore
     displayName: Build-DotNetCore
 
 
-      steps:
+    steps:
+    #  Build DFC.App.Account
       - template: AzureDevOpsTemplates\Build\StepTemplates\dfc-dotnetcore-build-sonar.yml@dfc-devops
         parameters:
           SolutionBaseName: $(SolutionBaseName)
