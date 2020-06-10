@@ -2,8 +2,11 @@
     "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "Environment": {
-            "value": "__ReleaseEnvironmentName__"
+        "environment": {
+            "value": "__ReleaseEnvironmentName__",
+            "metadata": {
+                "comment": "Bug in tokenisation task prevents referencing Release.EnvironmentName directly.  https://github.com/TotalALM/VSTS-Tasks/issues/29"
+            }
         },
         "apimDSSProxyAddress": {
             "value": "__apimDSSProxyAddress__"
@@ -19,7 +22,7 @@
         },
         "AuthSettingsClientSecret": {
             "value": "__AuthSettingsClientSecret__"
-        },       
+        },
         "AuthSettingsClientId": {
             "value": "__AuthSettingsClientId__"
         },
