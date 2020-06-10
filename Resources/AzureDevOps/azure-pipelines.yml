@@ -1,6 +1,6 @@
 variables:
     ArmTemplateRoot: '$(Build.SourcesDirectory)\Resources\ArmTemplates'
-    SolutionBaseName: 'Dfc.App.ActionPlans'
+    SolutionBaseName: 'DFC.App.ActionPlans'
     BuildPlatform: 'any cpu'
     BuildConfiguration: 'release'
 
@@ -29,6 +29,7 @@ stages:
       - template: AzureDevOpsTemplates\Build\StepTemplates\dfc-arm-build.yml@dfc-devops
         parameters:
           ArmTemplateRoot: '${{ variables.ArmTemplateRoot }}'
+          SolutionBaseName: '${{ variables.SolutionBaseName }}'
 
       - template: AzureDevOpsTemplates\Build\StepTemplates\dfc-dotnetcore-build-sonar.yml@dfc-devops
         parameters:
