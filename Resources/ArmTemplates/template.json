@@ -19,7 +19,7 @@
         },
         "AuthSettingsClientSecret": {
             "type": "string"
-        },       
+        },
         "AuthSettingsClientId": {
             "type": "string"
         },
@@ -155,5 +155,6 @@
             ]
         }
     ],
-        "outputs": {}
+    "outputs": {
     }
+}

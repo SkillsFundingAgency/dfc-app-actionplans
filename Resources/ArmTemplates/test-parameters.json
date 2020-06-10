@@ -19,7 +19,7 @@
         },
         "AuthSettingsClientSecret": {
             "value": "ThisIsAClientSecret"
-        },       
+        },
         "AuthSettingsClientId": {
             "value": "AuthSettingsClientId"
         },
