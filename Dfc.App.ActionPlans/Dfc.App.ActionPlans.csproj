@@ -11,6 +11,7 @@
   <ItemGroup>
     <PackageReference Include="CorrelationId" Version="3.0.0" />
     <PackageReference Include="DFC.Logger.AppInsights" Version="1.0.8" />
+    <PackageReference Include="DFC.Personalisation.Common" Version="0.1.26" />
     <PackageReference Include="DFC.Personalisation.CommonUI" Version="0.2.30" />
     <PackageReference Include="Dfc.ProviderPortal.Packages" Version="0.1.1" />
     <PackageReference Include="Microsoft.ApplicationInsights" Version="2.14.0" />
@@ -41,7 +42,6 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.6.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\dfc-personalisation-common-pkg-netcore\DFC.Personalisation.Common\DFC.Personalisation.Common.csproj" />
     <ProjectReference Include="..\DFC.App.ActionPlans.Services.DSS\DFC.App.ActionPlans.Services.DSS.csproj" />
   </ItemGroup>
 </Project>
