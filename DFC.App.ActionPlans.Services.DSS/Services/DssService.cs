@@ -24,7 +24,7 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             Throw.IfNullOrWhiteSpace(settings.Value.CustomerApiVersion, nameof(settings.Value.CustomerApiVersion));
             Throw.IfNullOrWhiteSpace(settings.Value.ApiKey, nameof(settings.Value.ApiKey));
             Throw.IfNullOrWhiteSpace(settings.Value.TouchpointId, nameof(settings.Value.TouchpointId));
-            
+
             _restClient = new RestClient();
             _dssSettings = settings;
             _logger = logger;
