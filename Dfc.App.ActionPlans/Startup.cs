@@ -7,6 +7,7 @@ using DFC.App.ActionPlans.Services.DSS.Services;
 using DFC.Personalisation.Common.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,11 +30,17 @@ namespace Dfc.App.ActionPlans
         
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
             services.AddApplicationInsightsTelemetry();
-
             services.AddControllersWithViews();
+            services.AddHttpContextAccessor();
+
             services.AddScoped<IDssReader, DssService>();
-            
             services.Configure<DssSettings>(Configuration.GetSection(nameof(DssSettings)));
             services.Configure<CompositeSettings>(Configuration.GetSection(nameof(CompositeSettings)));
 
@@ -87,11 +94,13 @@ namespace Dfc.App.ActionPlans
                     };
                 });
           */
-            services.AddSession();
+   
             services.AddMvc().AddMvcOptions(options =>
             {
                 options.Conventions.Add(new RouteTokenTransformerConvention(
                     new HyphenControllerTransformer()));
+                options.RespectBrowserAcceptHeader = true;
+                options.ReturnHttpNotAcceptable = true;
             }).AddViewOptions(options =>
                 options.HtmlHelperOptions.ClientValidationEnabled = false);
         }
@@ -106,7 +115,6 @@ namespace Dfc.App.ActionPlans
 
             var appPath = Configuration.GetSection("CompositeSettings:Path").Value;
             app.UseStaticFiles();
-            app.UseSession();  
             app.UseHttpsRedirection();
 
             app.UseExceptionHandler(errorApp =>

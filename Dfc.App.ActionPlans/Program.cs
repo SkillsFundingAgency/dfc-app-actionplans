@@ -1,6 +1,8 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using DFC.App.ActionPlans.Extensions;
 
 namespace Dfc.App.ActionPlans
 {
@@ -9,7 +11,11 @@ namespace Dfc.App.ActionPlans
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            Activity.DefaultIdFormat = ActivityIdFormat.W3C;
+            CreateWebHostBuilder(args)
+                .Build()
+                .AddNcsTelemetryInitializer()
+                .Run();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
