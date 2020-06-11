@@ -5,6 +5,24 @@
         "Environment": {
             "value": "FOO"
         },
+        "apimDSSProxyAddress": {
+            "value": "https://foo.api.nationalcareersservice.org.uk"
+        },
+        "cdnUrl": {
+            "value": "https://foo.api.nationalcareersservice.org.uk"
+        },
+        "apimDSSApiKey": {
+            "value": "not-a-real-key"
+        },
+        "AuthSettingsIssuer": {
+            "value": "IAmAnIssuer"
+        },
+        "AuthSettingsClientSecret": {
+            "value": "ThisIsAClientSecret"
+        },
+        "AuthSettingsClientId": {
+            "value": "AuthSettingsClientId"
+        },
         "SharedAppServicePlanName": {
             "value": "dfc-dev-pers-shared-asp"
         },
