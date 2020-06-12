@@ -38,6 +38,8 @@ namespace DFC.App.Account.Services.DSS.UnitTest
                 SessionApiVersion = "V3",
                 GoalApiUrl = "https://this.is.anApi.org.uk",
                 GoalApiVersion = "V2",
+                ActionsApiUrl= "https://this.is.anApi.org.uk",
+                ActionsApiVersion= "v3",
                 TouchpointId = "9000000001"
             });
             _dssService = new DssService(_restClient, _dssSettings, _logger);
@@ -77,22 +79,48 @@ namespace DFC.App.Account.Services.DSS.UnitTest
             [SetUp]
             public void Init()
             {
-                base.Setup(DssHelpers.SuccessfulDSSGoalDetails());
+                base.Setup(DssHelpers.SuccessfulDSSGoalsList());
             }
             [Test]
-            public async Task When_GetSessionData_ReturnSession()
+            public async Task When_GetGoalsData_ReturnGoalsList()
             {
                 var result = await _dssService.GetGoals("customer", "interactionid","actionplanid");
                 result.Count.Should().Be(4);
             }
 
             [Test]
-            public async Task When_GetSessionWithNoContent_Return_EmptyList()
+            public async Task When_GetGoalsDataWithNoContent_Return_EmptyList()
             {
                 var restClient = Substitute.For<IRestClient>();
                 restClient.LastResponse = new RestClient.APIResponse(new HttpResponseMessage(HttpStatusCode.NoContent));
                 _dssService = new DssService(restClient, _dssSettings, _logger);
                 var result = await _dssService.GetGoals("customer", "interactionid","actionplanid");
+                result.Count.Should().Be(0);
+                
+            }
+        }
+
+        public class GetActionsTests : DSSTests
+        {
+            [SetUp]
+            public void Init()
+            {
+                base.Setup(DssHelpers.SuccessfulDSSActionsList());
+            }
+            [Test]
+            public async Task When_GetActionsData_ReturnGetActionsList()
+            {
+                var result = await _dssService.GetActions("customer", "interactionid","actionplanid");
+                result.Count.Should().Be(3);
+            }
+
+            [Test]
+            public async Task When_GetActionsWithNoContent_Return_EmptyList()
+            {
+                var restClient = Substitute.For<IRestClient>();
+                restClient.LastResponse = new RestClient.APIResponse(new HttpResponseMessage(HttpStatusCode.NoContent));
+                _dssService = new DssService(restClient, _dssSettings, _logger);
+                var result = await _dssService.GetActions("customer", "interactionid","actionplanid");
                 result.Count.Should().Be(0);
                 
             }

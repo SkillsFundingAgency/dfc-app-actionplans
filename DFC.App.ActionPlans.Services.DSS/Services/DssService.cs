@@ -115,19 +115,25 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
         }
 
 
-        public async Task<Customer> GetActions(string customerId, string interactionId)
+        public async Task<IList<Models.Action>> GetActions(string customerId, string interactionId, string actionPlanId)
         {
             var request = CreateRequestMessage();
-
             try
             {
-                request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
-                return await _restClient.GetAsync<Customer>($"{_dssSettings.Value.CustomerApiUrl}{customerId}",
+                request.Headers.Add("version", _dssSettings.Value.ActionsApiVersion);
+                var result = await _restClient.GetAsync<IList<Models.Action>>(
+                    _dssSettings.Value.ActionsApiUrl
+                        .Replace("{customerId}", customerId)
+                        .Replace("{interactionId}", interactionId)
+                        .Replace("{actionPlanId}", actionPlanId),
                     request);
+                return _restClient.LastResponse.StatusCode == HttpStatusCode.NoContent
+                    ? new List<Models.Action>()
+                    : result;
             }
             catch (Exception e)
             {
-                throw new DssException($"Failure Customer Details, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
+                throw new DssException($"Failure Get Actions, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
             }
             
         }
@@ -138,7 +144,11 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             try
             {
                 request.Headers.Add("version", _dssSettings.Value.GoalApiVersion);
-                var result =  await _restClient.GetAsync<IList<Goal>>($"{_dssSettings.Value.GoalApiUrl}{customerId}",
+                var result = await _restClient.GetAsync<IList<Goal>>(
+                    _dssSettings.Value.ActionsApiUrl
+                        .Replace("{customerId}", customerId)
+                        .Replace("{interactionId}", interactionId)
+                        .Replace("{actionPlanId}", actionPlanId),
                     request);
                 return _restClient.LastResponse.StatusCode == HttpStatusCode.NoContent
                     ? new List<Goal>()
