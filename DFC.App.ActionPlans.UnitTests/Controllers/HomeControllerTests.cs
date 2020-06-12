@@ -139,20 +139,6 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             result.ViewName.Should().BeNull();
         }
 
-       [Test]
-       public void WhenNoClaimExistsForUSer_ThrowException()
-       {
-           _dssReader.GetCustomerDetails(Arg.Any<string>()).ReturnsForAnyArgs();
-
-           var service = new AuthService(_dssService,_httpContextAccessor);
-
-           var result = await service.GetCustomer(new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-           {
-               new Claim("CustomerId", "test")
-           })));
-
-           result.FamilyName.Should().Be("Test");
-       }
     }
 }
 
