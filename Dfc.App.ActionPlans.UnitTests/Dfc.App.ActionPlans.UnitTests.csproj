@@ -30,7 +30,4 @@
   <ItemGroup>
     <ProjectReference Include="..\DFC.App.ActionPlans\DFC.App.ActionPlans.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
 </Project>

@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace DFC.App.ActionPlans.UnitTests
 {
-    class Models
+    class ModelTests
     {
         class CompositeSettingsModelTests
         {
@@ -40,6 +40,25 @@ namespace DFC.App.ActionPlans.UnitTests
                     SubcontractorId = "sId"
                 };
                 
+            }
+        }
+
+        class AuthSettingsModelTests
+        {
+            [Test]
+            public void AuthSettingsModel()
+            {
+                var authSettings = new AuthSettings()
+                {
+                    ClientId = "id",
+                    ClientSecret = "secret",
+                    Issuer = "isuser",
+                    RegisterUrl = "url",
+                    ResetPasswordUrl = "url",
+                    SignInUrl = "url",
+                    SignOutUrl = "url"
+                };
+
             }
         }
     }

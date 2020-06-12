@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DFC.App.ActionPlans.Initializers
 {
-    
+        [ExcludeFromCodeCoverage]
         public class NCSTelemetryInitializer : ITelemetryInitializer
         {
             private readonly ILogger<NCSTelemetryInitializer> _logger;

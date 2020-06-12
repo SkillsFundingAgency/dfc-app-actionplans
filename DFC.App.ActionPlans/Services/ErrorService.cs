@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Diagnostics;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DFC.App.ActionPlans.Services
 {
+    [ExcludeFromCodeCoverage]
     public class ErrorService
     {
         public static async Task LogException(HttpContext context, ILogger logger)
