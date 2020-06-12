@@ -2,10 +2,12 @@
 
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Services.DSS.Models;
 using DFC.Personalisation.Common.Net.RestClient;
@@ -49,8 +51,6 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
         public async Task<Customer> GetCustomerDetails(string customerId)
         {
             var request = CreateRequestMessage();
-            request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
-
             try
             {
                 request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
@@ -118,7 +118,6 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
         public async Task<Customer> GetActions(string customerId, string interactionId)
         {
             var request = CreateRequestMessage();
-            request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
 
             try
             {
@@ -133,20 +132,21 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             
         }
 
-        public async Task<Customer> GetGoals(string customerId, string interactionId)
+        public async Task<IList<Goal>> GetGoals(string customerId, string interactionId, string actionPlanId)
         {
             var request = CreateRequestMessage();
-            request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
-
             try
             {
-                request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
-                return await _restClient.GetAsync<Customer>($"{_dssSettings.Value.CustomerApiUrl}{customerId}",
+                request.Headers.Add("version", _dssSettings.Value.GoalApiVersion);
+                var result =  await _restClient.GetAsync<IList<Goal>>($"{_dssSettings.Value.GoalApiUrl}{customerId}",
                     request);
+                return _restClient.LastResponse.StatusCode == HttpStatusCode.NoContent
+                    ? new List<Goal>()
+                    : result;
             }
             catch (Exception e)
             {
-                throw new DssException($"Failure Customer Details, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
+                throw new DssException($"Failure Get Goals, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
             }
             
         }

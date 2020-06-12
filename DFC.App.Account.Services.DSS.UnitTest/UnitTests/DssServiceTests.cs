@@ -15,19 +15,19 @@ using FluentAssertions;
 
 namespace DFC.App.Account.Services.DSS.UnitTest
 {
-    public class DssServiceTests
+    public abstract class DSSTests
     {
-       public class GetSessionTests
-    {
-        private IDssReader _dssService;
-        private RestClient _restClient;
-        private ILogger<DssService> _logger;
-        private IOptions<DssSettings> _dssSettings;
-        [SetUp]
-        public void Setup()
+        protected IDssReader _dssService;
+        protected RestClient _restClient;
+        protected ILogger<DssService> _logger;
+        protected IOptions<DssSettings> _dssSettings;
+
+        
+        public void Setup(string dssSuccess)
         {
-            _logger = Substitute.For <ILogger<DssService>>();
-            var mockHandler = DssHelpers.GetMockMessageHandler(DssHelpers.SuccessfulDSSSessionDetails(), statusToReturn: HttpStatusCode.Created);
+            _logger = Substitute.For<ILogger<DssService>>();
+            var mockHandler = DssHelpers.GetMockMessageHandler(dssSuccess,
+                statusToReturn: HttpStatusCode.Created);
             _restClient = new RestClient(mockHandler.Object);
             _dssSettings = Options.Create(new DssSettings()
             {
@@ -36,30 +36,66 @@ namespace DFC.App.Account.Services.DSS.UnitTest
                 CustomerApiVersion = "V3",
                 CustomerApiUrl = "https://this.is.anApi.org.uk",
                 SessionApiVersion = "V3",
+                GoalApiUrl = "https://this.is.anApi.org.uk",
+                GoalApiVersion = "V2",
                 TouchpointId = "9000000001"
             });
             _dssService = new DssService(_restClient, _dssSettings, _logger);
         }
-
-       
-        [Test]
-        public async Task When_GetSessionData_ReturnSession()
-        {
-            var result = await _dssService.GetSessions("customer","interaction");
-            result.Should().NotBeNull();
-        }
-
-        [Test]
-        public async Task When_GetSessionWithNoContent_Return_Exception()
-        {
-            var restClient = Substitute.For<IRestClient>();
-            restClient.LastResponse = new RestClient.APIResponse(new HttpResponseMessage(HttpStatusCode.NoContent));
-            _dssService = new DssService(restClient, _dssSettings, _logger);
-            _dssService.Invoking(sut => sut.GetSessions("993cfb94-12b7-41c4-b32d-7be9331174f1","saddasdsadsa"))
-                .Should().Throw<DssException>();
-        }
-       
     }
 
+    public class DssServiceTests
+    {
+        
+        public class GetSessionTests : DSSTests
+        {
+            [SetUp]
+            public void Init()
+            {
+                base.Setup(DssHelpers.SuccessfulDSSSessionDetails());
+            }
+            [Test]
+            public async Task When_GetSessionData_ReturnSession()
+            {
+                var result = await _dssService.GetSessions("customer", "interaction");
+                result.Should().NotBeNull();
+            }
+
+            [Test]
+            public async Task When_GetSessionWithNoContent_Return_Exception()
+            {
+                var restClient = Substitute.For<IRestClient>();
+                restClient.LastResponse = new RestClient.APIResponse(new HttpResponseMessage(HttpStatusCode.NoContent));
+                _dssService = new DssService(restClient, _dssSettings, _logger);
+                _dssService.Invoking(sut => sut.GetSessions("993cfb94-12b7-41c4-b32d-7be9331174f1", "saddasdsadsa"))
+                    .Should().Throw<DssException>();
+            }
+        }
+
+        public class GetGoalsTests : DSSTests
+        {
+            [SetUp]
+            public void Init()
+            {
+                base.Setup(DssHelpers.SuccessfulDSSGoalDetails());
+            }
+            [Test]
+            public async Task When_GetSessionData_ReturnSession()
+            {
+                var result = await _dssService.GetGoals("customer", "interactionid","actionplanid");
+                result.Count.Should().Be(4);
+            }
+
+            [Test]
+            public async Task When_GetSessionWithNoContent_Return_EmptyList()
+            {
+                var restClient = Substitute.For<IRestClient>();
+                restClient.LastResponse = new RestClient.APIResponse(new HttpResponseMessage(HttpStatusCode.NoContent));
+                _dssService = new DssService(restClient, _dssSettings, _logger);
+                var result = await _dssService.GetGoals("customer", "interactionid","actionplanid");
+                result.Count.Should().Be(0);
+                
+            }
+        }
     }
 }

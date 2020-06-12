@@ -14,6 +14,9 @@
         public string InteractionsApiUrl { get; set; }
         public string InteractionsApiVersion { get; set; }
 
+        public string GoalApiUrl { get; set; }
+        public string GoalApiVersion { get; set; }
+
         public string TouchpointId { get; set; }
         public string ApiKey { get; set; }
     }
