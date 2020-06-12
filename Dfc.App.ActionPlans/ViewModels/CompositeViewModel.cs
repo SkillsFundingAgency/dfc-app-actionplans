@@ -1,5 +1,4 @@
 ﻿using DFC.App.ActionPlans.Models;
-using DFC.Personalisation.Common.Extensions;
 using Dfc.ProviderPortal.Packages;
 
 namespace DFC.App.ActionPlans.ViewModels
