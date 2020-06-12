@@ -15,16 +15,19 @@
     
     <PackageReference Include="FluentAssertions" Version="5.10.3" />
     
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.TagHelpers" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
-  
+    
     <!--
 	<PackageReference Include="DFC.Logger.AppInsights" Version="1.0.8" />
-    <PackageReference Include="Dfc.ProviderPortal.Packages" Version="0.1.1" />
+  
+  <PackageReference Include="Dfc.ProviderPortal.Packages" Version="0.1.1" />
 	<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.5" />
 	  <PackageReference Include="Microsoft.AspNetCore.Routing" Version="2.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
+	
+	<PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.TagHelpers" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
+  
 	-->
     <!--
     <PackageReference Include="Microsoft.ApplicationInsights" Version="2.14.0" />
