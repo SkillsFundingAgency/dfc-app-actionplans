@@ -2,8 +2,11 @@
 
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Services.DSS.Models;
 using DFC.Personalisation.Common.Net.RestClient;
@@ -62,7 +65,92 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             
         }
 
+        public async Task<IList<Session>> GetSessions(string customerId, string interactionId)
+        {
+            var request = CreateRequestMessage();
+            
+            try
+            {
+                request.Headers.Add("version", _dssSettings.Value.SessionApiVersion);
+                var result = await _restClient.GetAsync<IList<Session>>(
+                    _dssSettings.Value.SessionApiUrl
+                        .Replace("{customerId}", customerId)
+                        .Replace("{interactionId}", interactionId),
+                    request);
+                
+                if (_restClient.LastResponse.StatusCode==HttpStatusCode.NoContent)
+                    throw new DssException("No sessions found");
+                
+                return result;
+            }   
+            catch  (Exception e)
+            {
+                throw new DssException($"Failure GetSessions, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
+            }
+            
+        }
 
+        public async Task<Interaction> InteractionDetails(string customerId, string interactionId)
+        {
+            var request = CreateRequestMessage();
+            
+            try
+            {
+                request.Headers.Add("version", _dssSettings.Value.InteractionsApiVersion);
+                var result = await _restClient.GetAsync<Interaction>(
+                    _dssSettings.Value.InteractionsApiUrl
+                        .Replace("{customerId}", customerId)
+                        .Replace("{interactionId}", interactionId),
+                    request);
+                
+                if (_restClient.LastResponse.StatusCode==HttpStatusCode.NoContent)
+                    throw new DssException("No sessions found");
+                
+                return result;
+            }   
+            catch  (Exception e)
+            {
+                throw new DssException($"Failure InteractionDetails, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
+            }
+            
+        }
+
+
+        public async Task<Customer> GetActions(string customerId, string interactionId)
+        {
+            var request = CreateRequestMessage();
+            request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
+
+            try
+            {
+                request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
+                return await _restClient.GetAsync<Customer>($"{_dssSettings.Value.CustomerApiUrl}{customerId}",
+                    request);
+            }
+            catch (Exception e)
+            {
+                throw new DssException($"Failure Customer Details, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
+            }
+            
+        }
+
+        public async Task<Customer> GetGoals(string customerId, string interactionId)
+        {
+            var request = CreateRequestMessage();
+            request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
+
+            try
+            {
+                request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
+                return await _restClient.GetAsync<Customer>($"{_dssSettings.Value.CustomerApiUrl}{customerId}",
+                    request);
+            }
+            catch (Exception e)
+            {
+                throw new DssException($"Failure Customer Details, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
+            }
+            
+        }
 
         private HttpRequestMessage CreateRequestMessage()
         {

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
@@ -20,36 +21,37 @@ namespace Dfc.App.ActionPlans.Controllers
 
         #region Default Routes
         // The home page uses MVC default routes, so we need non "/[controller]" attribute routed versions of the endpoints just for here
-        [Route("/head/{controller}/{id?}")]
-        [Route("/head/{id?}")]
+        [Route("/head/{controller}/{id}/{intid}")]
+        [Route("/head/{id}/{intid}")]
         public override IActionResult Head()
         {
             return base.Head();
         }
-        [Route("/bodytop/{controller}/{id?}")]
-        [Route("/bodytop/{id?}")]
+        [Route("/bodytop/{controller}/{id}/{intid}")]
+        [Route("/bodytop/{id}/{intid}")]
         public override async Task<IActionResult> BodyTop()
         {
             return await base.BodyTop();
         }
-        [Route("/breadcrumb/{controller}/{id?}")]
-        [Route("/breadcrumb/{id?}")]
+        [Route("/breadcrumb/{controller}/{id}/{intid}")]
+        [Route("/breadcrumb/{id}/{intid}")]
         public override IActionResult Breadcrumb()
         {
             return base.Breadcrumb();
         }
       //  [Authorize]
-        [Route("/body/{controller}/{id?}")]
-        [Route("/body/{id?}")]
+        [Route("/body/{controller}/{actionPlanId}/{interactionId}")]
+        [Route("/body/{id}/{intid}")]
 
-        public override async Task<IActionResult> Body()
+        public async Task<IActionResult> Body(Guid actionPlanId, Guid interactionId)
         {
+
+
             return await base.Body();
         }
-        [Route("/bodyfooter/{controller}/{id?}")]
-        [Route("/bodyfooter/{id?}")]
 
-
+        [Route("/bodyfooter/{controller}/{id}/{intid}")]
+        [Route("/bodyfooter/{id}/{intid}")]
         public override IActionResult BodyFooter()
         {
             return base.BodyFooter();
