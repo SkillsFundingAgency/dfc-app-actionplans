@@ -64,14 +64,14 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             
         }
 
-        public async Task<IList<Session>> GetSessions(string customerId, string interactionId)
+        public async Task<List<Session>> GetSessions(string customerId, string interactionId)
         {
             var request = CreateRequestMessage();
             
             try
             {
                 request.Headers.Add("version", _dssSettings.Value.SessionApiVersion);
-                var result = await _restClient.GetAsync<IList<Session>>(
+                var result = await _restClient.GetAsync<List<Session>>(
                     _dssSettings.Value.SessionApiUrl
                         .Replace("{customerId}", customerId)
                         .Replace("{interactionId}", interactionId),
@@ -113,13 +113,13 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             
         }
 
-        public async Task<IList<Models.Action>> GetActions(string customerId, string interactionId, string actionPlanId)
+        public async Task<List<Models.Action>> GetActions(string customerId, string interactionId, string actionPlanId)
         {
             var request = CreateRequestMessage();
             try
             {
                 request.Headers.Add("version", _dssSettings.Value.ActionsApiVersion);
-                var result = await _restClient.GetAsync<IList<Models.Action>>(
+                var result = await _restClient.GetAsync<List<Models.Action>>(
                     _dssSettings.Value.ActionsApiUrl
                         .Replace("{customerId}", customerId)
                         .Replace("{interactionId}", interactionId)
@@ -136,13 +136,13 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             
         }
 
-        public async Task<IList<Goal>> GetGoals(string customerId, string interactionId, string actionPlanId)
+        public async Task<List<Goal>> GetGoals(string customerId, string interactionId, string actionPlanId)
         {
             var request = CreateRequestMessage();
             try
             {
                 request.Headers.Add("version", _dssSettings.Value.GoalApiVersion);
-                var result = await _restClient.GetAsync<IList<Goal>>(
+                var result = await _restClient.GetAsync<List<Goal>>(
                     _dssSettings.Value.ActionsApiUrl
                         .Replace("{customerId}", customerId)
                         .Replace("{interactionId}", interactionId)

@@ -36,7 +36,7 @@
 
                 <section class="govuk-!-margin-top-6">
                     <govukHeadingH2 text="Your goals"></govukHeadingH2>
-                    
+
                     <p>Reaching your goals can help you to make progress in your career. Your goals might help you to develop your skills, take a training course or find work.</p>
                     <table class="govuk-table">
                         <caption class="govuk-table__caption govuk-visually-hidden">List of goals</caption>
@@ -55,7 +55,7 @@
                             {
                                 <tr class="govuk-table__row">
                                     <td class="govuk-table__cell">@goal.GoalType.GetDisplayName()</td>
-                                    <td class="govuk-table__cell">@goal.DateGoalShouldBeCompletedBy.ToString("dd MMMM yyyy HH:mm")</td >
+                                    <td class="govuk-table__cell">@goal.DateGoalShouldBeCompletedBy.ToString("dd MMMM yyyy")</td >
                                     <td class="govuk-table__cell">@goal.GoalStatus.ToString()</td>
                                     <td class="govuk-table__cell">
                                         <govukLink id="@Model.GetElementId("govUkLink", $"action-plan-{goal.GoalId}")" link-href="@Model.CompositeSettings.Path/goaldetails/@goal.GoalId" LinkText="View"></govukLink>
@@ -87,7 +87,7 @@
                                     <td class="govuk-table__cell">
                                         @action.ActionType.GetDisplayName()
                                     </td>
-                                    <td class="govuk-table__cell">@action.DateActionAimsToBeCompletedBy.ToString("dd MMMM yyyy HH:mm")</td>
+                                    <td class="govuk-table__cell">@action.DateActionAimsToBeCompletedBy.ToString("dd MMMM yyyy")</td>
                                     <td class="govuk-table__cell">@action.ActionStatus.GetDisplayName()</td>
                                     <td class="govuk-table__cell">
                                         <govukLink id="@Model.GetElementId("govUkLink", $"action-plan-{action.ActionId}")" link-href="@Model.CompositeSettings.Path/actiondetails/@action.ActionId" LinkText="View"></govukLink>
@@ -99,6 +99,30 @@
                     </table>
 
                 </section>
+            </div>
+            <div class="action-plan-secondary-content govuk-grid-column-one-third  ">
+                <aside class="app-sidebar govuk-!-margin-top-6" role="complementary">
+                    <section>
+                        <h2 class="govuk-heading-m">
+                            Your careers adviser
+                        </h2>
+                        <p>
+                            <span><strong>Name:</strong> Becky Smith</span><br>
+                            <span>
+                                <strong>Email:</strong><a href=""> becky@service.org</a>
+                            </span><br>
+                            <span><strong>Telephone:</strong> 000 000 00000</span>
+                        </p>
+                        <p>
+                            Becky will respond to you within 3 working days
+                        </p>
+                    </section>
+                </aside>
+                <aside class="app-sidebar" role="complementary">
+                    <h2 class="govuk-heading-m">Urgent or general enquiries</h2>
+                    <p class="font-small" style="margin-bottom: 0px;"><span class="bold-small">Call </span>0800 100 900 or <a style="white-space: nowrap;" href="https://nationalcareers.service.gov.uk/webchat/chat/" rel="external" target="'_blank'">use webchat</a></p>
+                    <p class=" font-xsmall">8am to 10pm, 7 days a week</p>
+                </aside>
             </div>
         </div>
     </div>

@@ -1,4 +1,5 @@
 ﻿using DFC.App.ActionPlans.Models;
+using DFC.Personalisation.Common.Extensions;
 using Dfc.ProviderPortal.Packages;
 
 namespace DFC.App.ActionPlans.ViewModels
@@ -63,7 +64,14 @@ namespace DFC.App.ActionPlans.ViewModels
             PageTitle = string.IsNullOrWhiteSpace(pageHeading) ? $"{AppTitle} | {NCSBranding}" : $"{pageHeading} | {AppTitle} | {NCSBranding}";
         }
 
-      
+        public string GetElementId(string elementName, string instanceName)
+        {
+            Throw.IfNullOrWhiteSpace(elementName, nameof(elementName));
+            Throw.IfNullOrWhiteSpace(instanceName, nameof(instanceName));
+            elementName = elementName.FirstCharToUpper().Trim();
+            instanceName = instanceName.FirstCharToUpper().Trim();
+            return $"{Id}{elementName}{instanceName}";
+        }
     }
 }
 

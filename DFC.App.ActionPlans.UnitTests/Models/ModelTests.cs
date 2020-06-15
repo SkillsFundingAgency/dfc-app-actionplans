@@ -1,5 +1,6 @@
 ﻿using System;
 using DFC.App.ActionPlans.Models;
+using DFC.App.ActionPlans.Services.DSS.Enums;
 using NUnit.Framework;
 
 namespace DFC.App.ActionPlans.UnitTests
@@ -30,9 +31,9 @@ namespace DFC.App.ActionPlans.UnitTests
                     DateGoalCaptured = DateTime.Now,
                     DateGoalShouldBeCompletedBy = DateTime.Now,
                     GoalId = "gId",
-                    GoalStatus = 1,
+                    GoalStatus = GoalStatus.Achieved,
                     GoalSummary = "summary",
-                    GoalType=1,
+                    GoalType=GoalType.Learning,
                     LastModifiedBy = "me",
                     LastModifiedDate = DateTime.Now,
                     SubcontractorId = "sId"
