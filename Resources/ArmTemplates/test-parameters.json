@@ -5,6 +5,12 @@
         "Environment": {
             "value": "FOO"
         },
+        "appSharedResourceGroup": {
+            "value": "dfc-dev-app-sharedresources-rg"
+        },
+        "appSharedStorageAccountName": {
+            "value": "dfcdevappsharedstr"
+        },
         "apimDSSProxyAddress": {
             "value": "https://foo.api.nationalcareersservice.org.uk"
         },

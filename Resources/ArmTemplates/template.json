@@ -5,6 +5,12 @@
         "environment": {
             "type": "string"
         },
+        "appSharedResourceGroup": {
+            "type": "string"
+        },
+        "appSharedStorageAccountName": {
+            "type": "string"
+        },
         "apimDSSProxyAddress": {
             "type": "string"
         },
@@ -89,6 +95,10 @@
                             {
                                 "name": "MSDEPLOY_RENAME_LOCKED_FILES",
                                 "value": "1"
+                            },
+                            {
+                                "name": "AzureWebJobsStorage",
+                                "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('appSharedStorageAccountName'),';AccountKey=',listKeys(resourceId(parameters('appSharedResourceGroup'), 'Microsoft.Storage/storageAccounts', parameters('appSharedStorageAccountName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value, ';EndpointSuffix=core.windows.net')]"
                             },
                             {
                                 "name": "Logging__ApplicationInsights__LogLevel__Default",

@@ -8,6 +8,12 @@
                 "comment": "Bug in tokenisation task prevents referencing Release.EnvironmentName directly.  https://github.com/TotalALM/VSTS-Tasks/issues/29"
             }
         },
+        "appSharedResourceGroup": {
+            "value": "__appSharedResourceGroup__"
+        },
+        "appSharedStorageAccountName": {
+            "value": "__appSharedStorageAccountName__"
+        },
         "apimDSSProxyAddress": {
             "value": "__apimDSSProxyAddress__"
         },
