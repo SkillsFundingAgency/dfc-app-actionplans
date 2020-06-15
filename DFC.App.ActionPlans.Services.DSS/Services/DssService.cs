@@ -89,13 +89,12 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             
         }
 
-        public async Task<Interaction> InteractionDetails(string customerId, string interactionId)
+        public async Task<Interaction> GetInteractionDetails(string customerId, string interactionId)
         {
             var request = CreateRequestMessage();
             
             try
             {
-                request.Headers.Add("version", _dssSettings.Value.InteractionsApiVersion);
                 var result = await _restClient.GetAsync<Interaction>(
                     _dssSettings.Value.InteractionsApiUrl
                         .Replace("{customerId}", customerId)
@@ -103,7 +102,7 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
                     request);
                 
                 if (_restClient.LastResponse.StatusCode==HttpStatusCode.NoContent)
-                    throw new DssException("No sessions found");
+                    throw new DssException("No Interaction found");
                 
                 return result;
             }   
@@ -113,7 +112,6 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             }
             
         }
-
 
         public async Task<IList<Models.Action>> GetActions(string customerId, string interactionId, string actionPlanId)
         {
@@ -157,6 +155,27 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             catch (Exception e)
             {
                 throw new DssException($"Failure Get Goals, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
+            }
+            
+        }
+
+        public async Task<Adviser> GetAdviserDetails(string adviserId)
+        {
+            var request = CreateRequestMessage();
+            try
+            {
+                request.Headers.Add("version", _dssSettings.Value.AdviserDetailsApiVersion);
+                var result = await _restClient.GetAsync<Adviser>(
+                    _dssSettings.Value.AdviserDetailsApiUrl
+                        .Replace("{adviserDetailId}", adviserId), request);
+                if (_restClient.LastResponse.StatusCode==HttpStatusCode.NoContent)
+                    throw new DssException("No Adviser found");
+                
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new DssException($"Failure Get Adviser Details, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
             }
             
         }

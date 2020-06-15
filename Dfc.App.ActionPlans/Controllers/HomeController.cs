@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
@@ -12,11 +13,23 @@ namespace Dfc.App.ActionPlans.Controllers
 {
     public class HomeController : CompositeSessionController<HomeCompositeViewModel>
     {
+        private readonly IDssReader _dssReader;
         
         public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings,  IOptions<AuthSettings> authSettings, IDssReader dssReader)
             :base(compositeSettings, dssReader)
         {
-            
+            _dssReader = dssReader;
+        }
+        //  [Authorize]
+        [Route("/body/{controller}/{actionPlanId}/{interactionId}")]
+        [Route("/body/{actionPlanId}/{interactionId}")]
+
+        public async Task<IActionResult> Body(Guid actionPlanId, Guid interactionId)
+        {
+            var customer = await GetCustomerDetails();
+            ViewModel.goals = await _dssReader.GetGoals(customer.CustomerId.ToString(), interactionId.ToString(), actionPlanId.ToString());
+            ViewModel.actions = await _dssReader.GetActions(customer.CustomerId.ToString(), interactionId.ToString(), actionPlanId.ToString());
+            return await base.Body();
         }
 
         #region Default Routes
@@ -39,16 +52,7 @@ namespace Dfc.App.ActionPlans.Controllers
         {
             return base.Breadcrumb();
         }
-      //  [Authorize]
-        [Route("/body/{controller}/{actionPlanId}/{interactionId}")]
-        [Route("/body/{id}/{intid}")]
-
-        public async Task<IActionResult> Body(Guid actionPlanId, Guid interactionId)
-        {
-
-
-            return await base.Body();
-        }
+      
 
         [Route("/bodyfooter/{controller}/{id}/{intid}")]
         [Route("/bodyfooter/{id}/{intid}")]

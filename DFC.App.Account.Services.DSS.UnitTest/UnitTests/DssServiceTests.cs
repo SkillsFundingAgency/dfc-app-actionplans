@@ -40,6 +40,9 @@ namespace DFC.App.Account.Services.DSS.UnitTest
                 GoalApiVersion = "V2",
                 ActionsApiUrl= "https://this.is.anApi.org.uk",
                 ActionsApiVersion= "v3",
+                InteractionsApiUrl = "https://this.is.anApi.org.uk",
+                AdviserDetailsApiVersion = "v2",
+                AdviserDetailsApiUrl = "https://this.is.anApi.org.uk",
                 TouchpointId = "9000000001"
             });
             _dssService = new DssService(_restClient, _dssSettings, _logger);
@@ -123,6 +126,58 @@ namespace DFC.App.Account.Services.DSS.UnitTest
                 var result = await _dssService.GetActions("customer", "interactionid","actionplanid");
                 result.Count.Should().Be(0);
                 
+            }
+        }
+
+        public class GetInteractionsTests : DSSTests
+        {
+            [SetUp]
+            public void Init()
+            {
+                base.Setup(DssHelpers.SuccessfulDSSInteractionDetails());
+            }
+            [Test]
+            public async Task When_GetGetInteractionDetails_ReturnInterationDetails()
+            {
+                var result = await _dssService.GetInteractionDetails("customer", "interactionid");
+                result.Should().NotBe(null);
+            }
+            [Test]
+            public async Task When_GetInteractionDetailsWithNoContent_Return_EmptyList()
+            {
+                var restClient = Substitute.For<IRestClient>();
+                restClient.LastResponse = new RestClient.APIResponse(new HttpResponseMessage(HttpStatusCode.NoContent));
+                _dssService = new DssService(restClient, _dssSettings, _logger);
+
+                _dssService.Invoking(sut => sut.GetInteractionDetails("993cfb94-12b7-41c4-b32d-7be9331174f1", "saddasdsadsa"))
+                    .Should().Throw<DssException>();
+
+            }
+        }
+
+        public class GetAdviserDetails: DSSTests
+        {
+            [SetUp]
+            public void Init()
+            {
+                base.Setup(DssHelpers.SuccessfulDSSAdviserDetails());
+            }
+            [Test]
+            public async Task When_GetAdviserDetailsDetails_ReturnAdviserDetails()
+            {
+                var result = await _dssService.GetAdviserDetails("adverid");
+                result.Should().NotBe(null);
+            }
+            [Test]
+            public async Task When_AdviserDetailsWithNoContent_Throw_Exception()
+            {
+                var restClient = Substitute.For<IRestClient>();
+                restClient.LastResponse = new RestClient.APIResponse(new HttpResponseMessage(HttpStatusCode.NoContent));
+                _dssService = new DssService(restClient, _dssSettings, _logger);
+
+                _dssService.Invoking(sut => sut.GetAdviserDetails("993cfb94-12b7-41c4-b32d-7be9331174f1"))
+                    .Should().Throw<DssException>();
+
             }
         }
     }

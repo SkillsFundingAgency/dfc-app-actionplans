@@ -1,4 +1,5 @@
 ﻿using System;
+using DFC.App.ActionPlans.Services.DSS.Enums;
 
 namespace DFC.App.ActionPlans.Models
 {
@@ -12,8 +13,8 @@ namespace DFC.App.ActionPlans.Models
         public DateTime DateGoalShouldBeCompletedBy { get; set; }
         public DateTime DateGoalAchieved { get; set; }
         public string GoalSummary { get; set; }
-        public int GoalType { get; set; }
-        public int GoalStatus { get; set; }
+        public GoalType GoalType { get; set; }
+        public GoalStatus GoalStatus { get; set; }
         public DateTime LastModifiedDate { get; set; }
         public string LastModifiedBy { get; set; }
     }

@@ -11,5 +11,8 @@ namespace DFC.App.ActionPlans.Services.DSS.Interfaces
         Task<IList<Session>> GetSessions(string customerId, string interactionId);
         Task<IList<Goal>> GetGoals(string customerId, string interactionId, string actionPlanId);
         Task<IList<Action>> GetActions(string customerId, string interactionId, string actionPlanId);
+        Task<Interaction> GetInteractionDetails(string customerId, string interactionId);
+        Task<Adviser> GetAdviserDetails(string adviserId);
+
     }
 }

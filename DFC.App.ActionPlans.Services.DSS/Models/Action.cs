@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using DFC.App.ActionPlans.Services.DSS.Enums;
 
 namespace DFC.App.ActionPlans.Services.DSS.Models
 {
@@ -15,8 +16,8 @@ namespace DFC.App.ActionPlans.Services.DSS.Models
         public string ActionSummary { get; set; }
         public string SignpostedTo { get; set; }
         public object SignpostedToCategory { get; set; }
-        public int ActionType { get; set; }
-        public int ActionStatus { get; set; }
+        public ActionType ActionType { get; set; }
+        public ActionStatus ActionStatus { get; set; }
         public int PersonResponsible { get; set; }
         public DateTime LastModifiedDate { get; set; }
         public string LastModifiedTouchpointId { get; set; }
