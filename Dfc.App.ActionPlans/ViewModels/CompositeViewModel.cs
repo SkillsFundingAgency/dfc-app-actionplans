@@ -56,6 +56,7 @@ namespace DFC.App.ActionPlans.ViewModels
         public bool ShowBreadCrumb { get; set; }
         public CompositeSettings CompositeSettings { get; set; }
 
+        public ContactDetails ContactDetails = new ContactDetails();
         protected CompositeViewModel(PageId pageId, string pageHeading)
         {
             Id = pageId;
