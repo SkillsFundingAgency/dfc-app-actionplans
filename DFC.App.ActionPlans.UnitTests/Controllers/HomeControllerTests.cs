@@ -117,7 +117,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             result.Should().BeOfType<ViewResult>();
             result.ViewName.Should().BeNull();
             var model = result.ViewData.Model as CompositeViewModel;
-            model.Name.Should().Be("givenName familyName");
+            model.Name.Should().NotBe(null);
         }
 
         [Test]

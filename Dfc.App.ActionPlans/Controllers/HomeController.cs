@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
+using DFC.App.ActionPlans.Services.DSS.Models;
 using DFC.App.ActionPlans.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -27,6 +30,11 @@ namespace Dfc.App.ActionPlans.Controllers
         public async Task<IActionResult> Body(Guid actionPlanId, Guid interactionId)
         {
             var customer = await GetCustomerDetails();
+            List<Session> sessions;
+            ViewModel.interaction = await _dssReader.GetInteractionDetails(customer.CustomerId.ToString(), interactionId.ToString());
+            ViewModel.adviser = await _dssReader.GetAdviserDetails(ViewModel.interaction.AdviserDetailsId);
+            sessions = await _dssReader.GetSessions(customer.CustomerId.ToString(), interactionId.ToString());
+            ViewModel.latestSession = sessions.OrderByDescending(s => s.DateandTimeOfSession).First();
             ViewModel.goals = await _dssReader.GetGoals(customer.CustomerId.ToString(), interactionId.ToString(), actionPlanId.ToString());
             ViewModel.actions = await _dssReader.GetActions(customer.CustomerId.ToString(), interactionId.ToString(), actionPlanId.ToString());
             return await base.Body();

@@ -1,0 +1,8 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, DFC.Personalisation.CommonUI
+@model DFC.App.ActionPlans.Models.ContactDetails
+<aside class="app-sidebar" role="complementary">
+    <h2 class="govuk-heading-m">Urgent or general enquiries</h2>
+    <p class="font-small" style="margin-bottom: 0px;"><span class="bold-small">Call </span>@Model.Phone or <govukLink LinkText="use webchat" link-href="@Model.WebchatLink"></govukLink> </p>
+    <p class=" font-xsmall">@Model.ContactDaysTime</p>
+</aside>

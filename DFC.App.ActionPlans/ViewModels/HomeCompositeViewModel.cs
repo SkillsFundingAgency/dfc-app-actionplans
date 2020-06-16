@@ -12,11 +12,11 @@ namespace DFC.App.ActionPlans.ViewModels
         {
             
         }
-
-        public IList<Goal> goals { get; set; }
-        public IList<Action> actions { get; set;}
-
-        
+        public List<Goal> goals { get; set; }
+        public List<Action> actions { get; set;}
+        public Session latestSession { get; set;}
+        public Interaction interaction { get; set;}
+        public Adviser adviser { get; set;}
 
     }
 }

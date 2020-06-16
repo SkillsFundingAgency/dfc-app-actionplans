@@ -94,7 +94,7 @@ namespace Dfc.App.ActionPlans.Controllers
 
             return await _dssReader.GetCustomerDetails(userId);
             */
-            return new Customer(){CustomerId = new Guid("53f904b3-77c8-4c94-9a15-c259b518336c")};
+            return new Customer(){CustomerId = new Guid("53f904b3-77c8-4c94-9a15-c259b518336c"),FamilyName = "Family",GivenName = "Given"};
         }
     }
 
