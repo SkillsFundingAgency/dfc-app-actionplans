@@ -117,7 +117,7 @@
                                 "value": "[parameters('apimDSSApiKey')]"
                             },
                             {
-                                "name": "DssSettings__AccountsTouchpointId",
+                                "name": "DssSettings__TouchpointId",
                                 "value": "0000000997"
                             },
                             {
