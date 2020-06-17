@@ -6,16 +6,20 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Net.Mime;
+using System.Text;
 using System.Threading.Tasks;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Services.DSS.Models;
 using DFC.Personalisation.Common.Net.RestClient;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Action = DFC.App.ActionPlans.Services.DSS.Models.Action;
 
 namespace DFC.App.ActionPlans.Services.DSS.Services
 {
-    public class DssService : IDssReader
+    public class DssService : IDssReader, IDssWriter
     {
         private readonly IRestClient _restClient;
         private readonly IOptions<DssSettings> _dssSettings;
@@ -189,7 +193,45 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             return request;
         }
 
-       
+        public async Task<ActionPlan> UpdateActionPlan(UpdateActionPlan updateActionPlan)
+        {
+            
+            if (updateActionPlan == null)
+                throw new DssException($"Failure Update Action Plan, No data provided");
+
+            try
+            {
+
+                ActionPlan result;
+                using (var request = CreateRequestMessage())
+                {
+                    request.Content = new StringContent(
+                        JsonConvert.SerializeObject(updateActionPlan),
+                        Encoding.UTF8,
+                        MediaTypeNames.Application.Json);
+                    request.Headers.Add("version", _dssSettings.Value.ActionPlansApiVersion);
+
+                    result = await _restClient.PatchAsync<ActionPlan>(_dssSettings.Value.ActionPlansApiUrl
+                        .Replace("{customerId}",updateActionPlan.CustomerId.ToString())
+                            .Replace("{interactionId}",updateActionPlan.InteractionId.ToString())
+                                .Replace("{actionPlanId}",updateActionPlan.ActionPlanId.ToString())
+                         , requestMessage: request);
+                }
+
+                if (!_restClient.LastResponse.IsSuccess)
+                {
+                    throw new DssException($"Failure Update Action Plan, No data provided -Response {_restClient.LastResponse.Content} ");
+                }
+
+                
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new DssException($"Failure Update Action Plan, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
+            }
+            
+        }
 
     }
 }

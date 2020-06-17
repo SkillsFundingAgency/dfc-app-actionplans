@@ -11,7 +11,7 @@ namespace DFC.App.ActionPlans.Services.DSS.Enums
             [Display(Name = "Skills Health Check")]
             SkillsHealthCheck = 1,
             [Display(Name = "Create or update CV")]
-            CreateOrUpdateCV = 2,
+            CreateOrUpdateCv = 2,
             [Display(Name = "Interview Skills Workshop")]
             InterviewSkillsWorkshop = 3,
             [Display(Name = "Search For Vacancy")]

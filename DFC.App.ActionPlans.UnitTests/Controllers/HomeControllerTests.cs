@@ -23,7 +23,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         private ILogger<HomeController> _logger;
         private IOptions<AuthSettings> _authSettings;
         private IDssReader _dssReader;
-        private HomeController controller;
+        private HomeController _controller;
 
         [SetUp]
         public void Init()
@@ -45,14 +45,14 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             _dssReader.GetCustomerDetails(Arg.Any<String>()).ReturnsForAnyArgs(customer);
 
 
-            controller = new HomeController(_logger, _compositeSettings,_authSettings, _dssReader);
-            controller.ControllerContext.HttpContext = new DefaultHttpContext();
+            _controller = new HomeController(_logger, _compositeSettings,_authSettings, _dssReader);
+            _controller.ControllerContext.HttpContext = new DefaultHttpContext();
         }
 
         [Test]
         public void WhenHeadCalled_ReturnHtml()
         {
-            var result = controller.Head() as ViewResult;
+            var result = _controller.Head() as ViewResult;
             var vm = new HeadViewModel {PageTitle = "Page Title",};
             var pageTitle = vm.PageTitle;
             result.Should().NotBeNull();
@@ -63,7 +63,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         [Test]
         public async Task WhenBodyCalled_ReturnHtml()
         {
-            var result = await controller.Body() as ViewResult;
+            var result = await _controller.Body() as ViewResult;
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
             result.ViewName.Should().BeNull();
@@ -71,7 +71,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         [Test]
         public async Task WhenBodyCalledWithParameters_ReturnHtml()
         {
-            var result = await controller.Body(new Guid(), new Guid()) as ViewResult;
+            var result = await _controller.Body(new Guid(), new Guid()) as ViewResult;
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
             result.ViewName.Should().BeNull();
@@ -80,7 +80,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         [Test]
         public void WhenBreadCrumbCalled_ReturnHtml()
         {
-            var result = controller.Breadcrumb() as ViewResult;
+            var result = _controller.Breadcrumb() as ViewResult;
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
             result.ViewName.Should().BeNull();
@@ -89,7 +89,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         [Test]
         public async Task WhenBodyTopCalled_ReturnHtml()
         {
-            var result = await controller.BodyTop() as ViewResult;
+            var result = await _controller.BodyTop() as ViewResult;
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
             result.ViewName.Should().BeNull();
@@ -100,7 +100,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         {
           
         
-            controller.ControllerContext = new ControllerContext
+            _controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext
                 {
@@ -112,7 +112,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
                     }
                 }
             };
-            var result = await controller.BodyTop() as ViewResult;
+            var result = await _controller.BodyTop() as ViewResult;
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
             result.ViewName.Should().BeNull();
@@ -123,7 +123,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         [Test]
         public void WhenBodyFooterCalled_ReturnHtml()
         {
-            var result = controller.BodyFooter() as ViewResult;
+            var result = _controller.BodyFooter() as ViewResult;
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
             result.ViewName.Should().BeNull();
@@ -132,7 +132,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         [Test]
         public void WhenErrorCalled_ReturnHtml()
         {
-            var result = controller.Error() as ViewResult;
+            var result = _controller.Error() as ViewResult;
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
             result.ViewName.Should().BeNull();

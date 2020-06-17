@@ -8,6 +8,7 @@ using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Services.DSS.Models;
 using DFC.App.ActionPlans.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -17,26 +18,42 @@ namespace Dfc.App.ActionPlans.Controllers
     public class HomeController : CompositeSessionController<HomeCompositeViewModel>
     {
         private readonly IDssReader _dssReader;
-        
-        public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings,  IOptions<AuthSettings> authSettings, IDssReader dssReader)
+        private readonly IDssWriter _dssWriter;
+        public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings,  IOptions<AuthSettings> authSettings, IDssReader dssReader, IDssWriter dssWriter)
             :base(compositeSettings, dssReader)
         {
             _dssReader = dssReader;
+            _dssWriter = dssWriter;
         }
+
+        [Route("body/accept/")]
+        [HttpPost]
+        public async Task<IActionResult> Accept(HomeCompositeViewModel viewModel, IFormCollection formCollection)
+        {
+            if (formCollection.FirstOrDefault(x =>
+                string.Compare(x.Key, "homeGovukCheckBoxAcceptplan", StringComparison.CurrentCultureIgnoreCase) ==
+                0).Value == "on")
+            {
+                await _dssWriter.UpdateActionPlan(new UpdateActionPlan()
+                {
+                  CustomerId  = viewModel.CustomerId,
+                  InteractionId = viewModel.InteractionId,
+                  ActionPlanId = viewModel.ActionPlanId,
+                  DateActionPlanAcknowledged = DateTime.UtcNow
+                });
+            }
+
+            return RedirectToAction("Body",new {ViewModel.ActionPlanId,ViewModel.InteractionId});
+        }
+
         //  [Authorize]
         [Route("/body/{controller}/{actionPlanId}/{interactionId}")]
         [Route("/body/{actionPlanId}/{interactionId}")]
-
+        [HttpGet]
         public async Task<IActionResult> Body(Guid actionPlanId, Guid interactionId)
         {
             var customer = await GetCustomerDetails();
-            List<Session> sessions;
-            ViewModel.interaction = await _dssReader.GetInteractionDetails(customer.CustomerId.ToString(), interactionId.ToString());
-            ViewModel.adviser = await _dssReader.GetAdviserDetails(ViewModel.interaction.AdviserDetailsId);
-            sessions = await _dssReader.GetSessions(customer.CustomerId.ToString(), interactionId.ToString());
-            ViewModel.latestSession = sessions.OrderByDescending(s => s.DateandTimeOfSession).First();
-            ViewModel.goals = await _dssReader.GetGoals(customer.CustomerId.ToString(), interactionId.ToString(), actionPlanId.ToString());
-            ViewModel.actions = await _dssReader.GetActions(customer.CustomerId.ToString(), interactionId.ToString(), actionPlanId.ToString());
+            await  LoadData(customer.CustomerId,actionPlanId,interactionId);
             return await base.Body();
         }
 
@@ -75,5 +92,20 @@ namespace Dfc.App.ActionPlans.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        private async Task LoadData(Guid customerId, Guid actionPlanId, Guid interactionId)
+        {
+            List<Session> sessions;
+            ViewModel.CustomerId = customerId;
+            ViewModel.InteractionId = interactionId;
+            ViewModel.ActionPlanId = actionPlanId;
+            ViewModel.Interaction = await _dssReader.GetInteractionDetails(ViewModel.CustomerId.ToString(), ViewModel.InteractionId.ToString());
+            ViewModel.Adviser = await _dssReader.GetAdviserDetails(ViewModel.Interaction.AdviserDetailsId);
+            sessions = await _dssReader.GetSessions(ViewModel.CustomerId.ToString(), ViewModel.InteractionId.ToString());
+            ViewModel.LatestSession = sessions.OrderByDescending(s => s.DateandTimeOfSession).First();
+            ViewModel.Goals = await _dssReader.GetGoals(ViewModel.CustomerId.ToString(), ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString());
+            ViewModel.Actions = await _dssReader.GetActions(ViewModel.CustomerId.ToString(), ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString());
+        }
+
     }
 }

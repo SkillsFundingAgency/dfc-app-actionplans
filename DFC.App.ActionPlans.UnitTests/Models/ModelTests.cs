@@ -14,7 +14,7 @@ namespace DFC.App.ActionPlans.UnitTests
             {
                 var compositeSettings = new CompositeSettings();
                 compositeSettings.Path = "SomePath";
-                compositeSettings.CDN = "SomeCDN";
+                compositeSettings.Cdn = "SomeCDN";
             }
         }
 

@@ -19,6 +19,9 @@
         public string ActionsApiUrl { get; set; }
         public string ActionsApiVersion { get; set; }
         
+        public string ActionPlansApiUrl { get; set; }
+        public string ActionPlansApiVersion { get; set; }
+
         public string TouchpointId { get; set; }
         public string ApiKey { get; set; }
     }
