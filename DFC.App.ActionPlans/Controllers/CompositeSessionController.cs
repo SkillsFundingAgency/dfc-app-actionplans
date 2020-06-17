@@ -80,7 +80,12 @@ namespace Dfc.App.ActionPlans.Controllers
             return View(ViewModel);
         }
        
-
+        protected IActionResult RedirectTo(string relativeAddress)
+        {
+            relativeAddress = $"~{ViewModel.CompositeSettings.Path}/" + relativeAddress;
+            
+            return Redirect(relativeAddress);
+        }
         protected async Task<Customer> GetCustomerDetails()
         {
             /*

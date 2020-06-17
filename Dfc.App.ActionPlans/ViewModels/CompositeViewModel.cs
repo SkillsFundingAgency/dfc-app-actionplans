@@ -7,7 +7,7 @@ namespace DFC.App.ActionPlans.ViewModels
     public abstract class CompositeViewModel
     {
         public static string AppTitle => "Action plan";
-        public static string NCSBranding => "National Careers Service";
+        public static string NcsBranding => "National Careers Service";
 
         public class PageId
         {
@@ -62,7 +62,7 @@ namespace DFC.App.ActionPlans.ViewModels
             Id = pageId;
             PageHeading = pageHeading;
             
-            PageTitle = string.IsNullOrWhiteSpace(pageHeading) ? $"{AppTitle} | {NCSBranding}" : $"{pageHeading} | {AppTitle} | {NCSBranding}";
+            PageTitle = string.IsNullOrWhiteSpace(pageHeading) ? $"{AppTitle} | {NcsBranding}" : $"{pageHeading} | {AppTitle} | {NcsBranding}";
         }
 
         public string GetElementId(string elementName, string instanceName)

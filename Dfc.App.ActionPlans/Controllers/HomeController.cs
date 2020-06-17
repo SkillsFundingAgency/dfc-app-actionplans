@@ -25,10 +25,9 @@ namespace Dfc.App.ActionPlans.Controllers
             _dssReader = dssReader;
             _dssWriter = dssWriter;
         }
-
-        [Route("body/accept/")]
+        [Route("/body/{controller}")]
         [HttpPost]
-        public async Task<IActionResult> Accept(HomeCompositeViewModel viewModel, IFormCollection formCollection)
+        public async Task<IActionResult> Body(HomeCompositeViewModel viewModel, IFormCollection formCollection)
         {
             if (formCollection.FirstOrDefault(x =>
                 string.Compare(x.Key, "homeGovukCheckBoxAcceptplan", StringComparison.CurrentCultureIgnoreCase) ==
@@ -42,8 +41,7 @@ namespace Dfc.App.ActionPlans.Controllers
                   DateActionPlanAcknowledged = DateTime.UtcNow
                 });
             }
-
-            return RedirectToAction("Body",new {ViewModel.ActionPlanId,ViewModel.InteractionId});
+            return RedirectTo($"{CompositeViewModel.PageId.Home.Value}/{viewModel.ActionPlanId}/{viewModel.InteractionId}");
         }
 
         //  [Authorize]

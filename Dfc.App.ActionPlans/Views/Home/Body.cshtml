@@ -7,7 +7,7 @@
             <div class="govuk-grid-column-two-thirds">
                 <div class="dfc-app-actionplans-notification-container govuk-!-margin-top-6">
                     <div class="govuk-form-group govuk-!-margin-bottom-0">
-                        <form id="@Model.GetElementId("form","home")" action="@Model.CompositeSettings.Path/accept" class="govuk-form-group mt" method="post">
+                        <form id="@Model.GetElementId("form","home")" action="@Model.CompositeSettings.Path/Home/" class="govuk-form-group mt" method="post">
                             @Html.HiddenFor(model => model.CustomerId)
                             @Html.HiddenFor(model => model.ActionPlanId)
                             @Html.HiddenFor(model => model.InteractionId)
