@@ -193,7 +193,7 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             return request;
         }
 
-        public async Task<ActionPlan> UpdateActionPlan(UpdateActionPlan updateActionPlan)
+        public async Task UpdateActionPlan(UpdateActionPlan updateActionPlan)
         {
             
             if (updateActionPlan == null)
@@ -211,11 +211,11 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
                         MediaTypeNames.Application.Json);
                     request.Headers.Add("version", _dssSettings.Value.ActionPlansApiVersion);
 
-                    result = await _restClient.PatchAsync<ActionPlan>(_dssSettings.Value.ActionPlansApiUrl
+                    await _restClient.PatchAsync<ActionPlan>(_dssSettings.Value.ActionPlansApiUrl
                         .Replace("{customerId}",updateActionPlan.CustomerId.ToString())
                             .Replace("{interactionId}",updateActionPlan.InteractionId.ToString())
                                 .Replace("{actionPlanId}",updateActionPlan.ActionPlanId.ToString())
-                         , requestMessage: request);
+                         , request);
                 }
 
                 if (!_restClient.LastResponse.IsSuccess)
@@ -224,7 +224,6 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
                 }
 
                 
-                return result;
             }
             catch (Exception e)
             {
@@ -233,5 +232,29 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             
         }
 
+        public async Task<ActionPlan> GetActionPlan(string customerId, string interactionId, string actionPlanId)
+        {
+            
+            var request = CreateRequestMessage();
+            try
+            {
+                request.Headers.Add("version", _dssSettings.Value.ActionPlansApiVersion);
+                var result = await _restClient.GetAsync<ActionPlan>(_dssSettings.Value.ActionPlansApiUrl
+                        .Replace("{customerId}",customerId)
+                        .Replace("{interactionId}",interactionId)
+                        .Replace("{actionPlanId}",actionPlanId)
+                    , request);
+                
+                return _restClient.LastResponse.StatusCode == HttpStatusCode.NoContent
+                    ? new ActionPlan()
+                    : result;
+            }
+            catch (Exception e)
+            {
+                throw new DssException($"Failure Get Action Plan, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
+            }
+                
+            
+        }
     }
 }

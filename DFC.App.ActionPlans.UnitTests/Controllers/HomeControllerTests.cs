@@ -23,6 +23,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         private ILogger<HomeController> _logger;
         private IOptions<AuthSettings> _authSettings;
         private IDssReader _dssReader;
+        private IDssWriter _dssWriter;
         private HomeController _controller;
 
         [SetUp]
@@ -32,6 +33,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             _compositeSettings = Options.Create(new CompositeSettings());
             _logger = Substitute.For<ILogger<HomeController>>();
             _dssReader = Substitute.For<IDssReader>();
+            _dssWriter = Substitute.For<IDssWriter>();
             _authSettings = Options.Create(new AuthSettings
             {
                 RegisterUrl = "reg", SignInUrl = "signin", SignOutUrl = "signout"
@@ -45,7 +47,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             _dssReader.GetCustomerDetails(Arg.Any<String>()).ReturnsForAnyArgs(customer);
 
 
-            _controller = new HomeController(_logger, _compositeSettings,_authSettings, _dssReader);
+            _controller = new HomeController(_logger, _compositeSettings,_authSettings, _dssReader,_dssWriter);
             _controller.ControllerContext.HttpContext = new DefaultHttpContext();
         }
 

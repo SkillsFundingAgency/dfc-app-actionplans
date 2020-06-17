@@ -38,7 +38,7 @@ namespace Dfc.App.ActionPlans.Controllers
                   CustomerId  = viewModel.CustomerId,
                   InteractionId = viewModel.InteractionId,
                   ActionPlanId = viewModel.ActionPlanId,
-                  DateActionPlanAcknowledged = DateTime.UtcNow
+                  DateActionPlanAcknowledged = DateTime.UtcNow.AddMinutes(-1)
                 });
             }
             return RedirectTo($"{CompositeViewModel.PageId.Home.Value}/{viewModel.ActionPlanId}/{viewModel.InteractionId}");
@@ -103,6 +103,7 @@ namespace Dfc.App.ActionPlans.Controllers
             ViewModel.LatestSession = sessions.OrderByDescending(s => s.DateandTimeOfSession).First();
             ViewModel.Goals = await _dssReader.GetGoals(ViewModel.CustomerId.ToString(), ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString());
             ViewModel.Actions = await _dssReader.GetActions(ViewModel.CustomerId.ToString(), ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString());
+            ViewModel.ActionPlan = await _dssReader.GetActionPlan(ViewModel.CustomerId.ToString(), ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString());
         }
 
     }

@@ -227,8 +227,7 @@ namespace DFC.App.Account.Services.DSS.UnitTest
             [Test]
             public async Task When_UpdateActionPlan_ReturnActionPlan()
             {
-                var result = await _dssWriter.UpdateActionPlan(updateActionPlan);
-                result.Should().NotBe(null);
+                await _dssWriter.UpdateActionPlan(updateActionPlan);
             }
 
             [Test]

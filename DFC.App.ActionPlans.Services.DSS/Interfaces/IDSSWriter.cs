@@ -8,6 +8,6 @@ namespace DFC.App.ActionPlans.Services.DSS.Interfaces
 {
     public interface IDssWriter
     {
-        Task<ActionPlan> UpdateActionPlan(UpdateActionPlan updateActionPlan);
+        Task UpdateActionPlan(UpdateActionPlan updateActionPlan);
     }
 }
