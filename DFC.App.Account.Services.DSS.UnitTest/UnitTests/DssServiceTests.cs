@@ -231,10 +231,13 @@ namespace DFC.App.Account.Services.DSS.UnitTest
             }
 
             [Test]
-            public async Task When_AdviserDetailsWithNoContent_Throw_Exception()
+            public async Task When_UpdateActionPlanNoSuccess_Throw_Exception()
             {
                 var restClient = Substitute.For<IRestClient>();
-                restClient.LastResponse = new RestClient.APIResponse(new HttpResponseMessage(HttpStatusCode.NoContent));
+                restClient.LastResponse = new RestClient.APIResponse(new HttpResponseMessage(HttpStatusCode.NoContent))
+                {
+                    IsSuccess = false
+                };
                 _dssWriter = new DssService(restClient, DssSettings, Logger);
 
                 _dssWriter.Invoking(sut => sut.UpdateActionPlan(updateActionPlan))

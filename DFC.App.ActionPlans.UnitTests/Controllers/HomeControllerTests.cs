@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Dfc.App.ActionPlans.Controllers;
 using DFC.App.ActionPlans.Models;
+using DFC.App.ActionPlans.Services.DSS.Enums;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Services.DSS.Models;
 using DFC.App.ActionPlans.ViewModels;
@@ -14,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 using NUnit.Framework;
+using Action = DFC.App.ActionPlans.Services.DSS.Models.Action;
 
 namespace DFC.App.ActionPlans.UnitTests.Controllers
 {
@@ -38,15 +40,104 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             {
                 RegisterUrl = "reg", SignInUrl = "signin", SignOutUrl = "signout"
             });
-            var customer = new Customer()
+            var customer = new Customer
             {
                 CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c"),
                 FamilyName = "familyName",
                 GivenName = "givenName"
             };
+            var adviser = new Adviser
+            {
+                AdviserDetailId = null,
+                AdviserName = null,
+                AdviserEmailAddress = null,
+                AdviserContactNumber = null,
+                LastModifiedDate = default,
+                LastModifiedTouchpointId = null,
+                SubcontractorId = null
+            };
+            var actionPlan = new ActionPlan
+            {
+                ActionPlanId = null,
+                CustomerId = null,
+                InteractionId = null,
+                SessionId = null,
+                SubcontractorId = null,
+                DateActionPlanCreated = default,
+                CustomerCharterShownToCustomer = null,
+                DateAndTimeCharterShown = default,
+                DateActionPlanSentToCustomer = default,
+                ActionPlanDeliveryMethod = null,
+                DateActionPlanAcknowledged = default,
+                CurrentSituation = null,
+                LastModifiedDate = default,
+                LastModifiedTouchpointId = null
+            };
+            var interaction = new Interaction
+            {
+                InteractionId = new Guid().ToString(),
+                CustomerId = null,
+                TouchpointId = null,
+                AdviserDetailsId =  new Guid().ToString(),
+                DateandTimeOfInteraction = default,
+                Channel = null,
+                InteractionType = null,
+                LastModifiedDate = default,
+                LastModifiedTouchpointId = null
+            };
+            var session = new Session
+            {
+                SessionId = new Guid().ToString(),
+                CustomerId = null,
+                InteractionId = null,
+                DateandTimeOfSession = default,
+                VenuePostCode = null,
+                SessionAttended = null,
+                ReasonForNonAttendance = null,
+                LastModifiedDate = default,
+                LastModifiedTouchpointId = null,
+                SubcontractorId = null
+            };
+            var goal = new Goal
+            {
+                GoalId = null,
+                CustomerId = null,
+                ActionPlanId = null,
+                SubcontractorId = null,
+                DateGoalCaptured = default,
+                DateGoalShouldBeCompletedBy = default,
+                DateGoalAchieved = default,
+                GoalSummary = null,
+                GoalType = GoalType.Skills,
+                GoalStatus = 0,
+                LastModifiedDate = default,
+                LastModifiedBy = null
+            };
+            var action = new Action
+            {
+                ActionId = null,
+                CustomerId = null,
+                ActionPlanId = null,
+                DateActionAgreed = default,
+                DateActionAimsToBeCompletedBy = default,
+                DateActionActuallyCompleted = default,
+                ActionSummary = null,
+                SignpostedTo = null,
+                SignpostedToCategory = null,
+                ActionType = (ActionType) 0,
+                ActionStatus = (ActionStatus) 0,
+                PersonResponsible = 0,
+                LastModifiedDate = default,
+                LastModifiedTouchpointId = null
+            };
             _dssReader.GetCustomerDetails(Arg.Any<String>()).ReturnsForAnyArgs(customer);
-
-
+            _dssReader.GetAdviserDetails(Arg.Any<String>()).ReturnsForAnyArgs(adviser);
+            _dssReader.GetInteractionDetails(Arg.Any<String>(),Arg.Any<String>()).ReturnsForAnyArgs(interaction);
+            _dssReader.GetActionPlan(Arg.Any<String>(),Arg.Any<String>(),Arg.Any<String>()).ReturnsForAnyArgs(actionPlan);
+            _dssReader.GetSessions(Arg.Any<String>(),Arg.Any<String>()).ReturnsForAnyArgs(new List<Session> {session});
+            _dssReader.GetGoals(Arg.Any<String>(),Arg.Any<String>(),Arg.Any<String>()).ReturnsForAnyArgs(new List<Goal> {goal});
+            _dssReader.GetActions(Arg.Any<String>(),Arg.Any<String>(),Arg.Any<String>()).ReturnsForAnyArgs(new List<Action> {action});
+            _dssReader.GetActionPlan(Arg.Any<String>(),Arg.Any<String>(),Arg.Any<String>()).ReturnsForAnyArgs(actionPlan);
             _controller = new HomeController(_logger, _compositeSettings,_authSettings, _dssReader,_dssWriter);
             _controller.ControllerContext.HttpContext = new DefaultHttpContext();
         }
