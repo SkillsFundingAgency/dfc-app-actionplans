@@ -1,6 +1,7 @@
 ﻿using System;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Enums;
+using DFC.App.ActionPlans.ViewModels;
 using NUnit.Framework;
 
 namespace DFC.App.ActionPlans.UnitTests
@@ -58,6 +59,32 @@ namespace DFC.App.ActionPlans.UnitTests
                     SignOutUrl = "url"
                 };
 
+            }
+        }
+
+        class ContactDetailsModelTests
+        {
+            [Test]
+            public void ContactDetailsModel()
+            {
+                var goal = new ContactDetails
+                {
+                    Phone = null,
+                    WebchatLink = null,
+                    ContactDaysTime = null
+                };
+                
+            }
+        }
+
+        class CompositeViewModelTests
+        {
+            [Test]
+            public void CompositeViewModelModel()
+            {
+                var homeCompositeModel = new HomeCompositeViewModel();
+                homeCompositeModel.ToString();
+                homeCompositeModel.GetElementId("someElement", "home");
             }
         }
     }

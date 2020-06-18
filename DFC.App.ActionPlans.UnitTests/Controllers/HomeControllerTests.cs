@@ -40,6 +40,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             {
                 RegisterUrl = "reg", SignInUrl = "signin", SignOutUrl = "signout"
             });
+            
             var customer = new Customer
             {
                 CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c"),
@@ -130,14 +131,15 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
                 LastModifiedDate = default,
                 LastModifiedTouchpointId = null
             };
-            _dssReader.GetCustomerDetails(Arg.Any<String>()).ReturnsForAnyArgs(customer);
-            _dssReader.GetAdviserDetails(Arg.Any<String>()).ReturnsForAnyArgs(adviser);
-            _dssReader.GetInteractionDetails(Arg.Any<String>(),Arg.Any<String>()).ReturnsForAnyArgs(interaction);
-            _dssReader.GetActionPlan(Arg.Any<String>(),Arg.Any<String>(),Arg.Any<String>()).ReturnsForAnyArgs(actionPlan);
-            _dssReader.GetSessions(Arg.Any<String>(),Arg.Any<String>()).ReturnsForAnyArgs(new List<Session> {session});
-            _dssReader.GetGoals(Arg.Any<String>(),Arg.Any<String>(),Arg.Any<String>()).ReturnsForAnyArgs(new List<Goal> {goal});
-            _dssReader.GetActions(Arg.Any<String>(),Arg.Any<String>(),Arg.Any<String>()).ReturnsForAnyArgs(new List<Action> {action});
-            _dssReader.GetActionPlan(Arg.Any<String>(),Arg.Any<String>(),Arg.Any<String>()).ReturnsForAnyArgs(actionPlan);
+            
+            _dssReader.GetCustomerDetails(Arg.Any<string>()).ReturnsForAnyArgs(customer);
+            _dssReader.GetAdviserDetails(Arg.Any<string>()).ReturnsForAnyArgs(adviser);
+            _dssReader.GetInteractionDetails(Arg.Any<string>(),Arg.Any<string>()).ReturnsForAnyArgs(interaction);
+            _dssReader.GetActionPlan(Arg.Any<string>(),Arg.Any<string>(),Arg.Any<string>()).ReturnsForAnyArgs(actionPlan);
+            _dssReader.GetSessions(Arg.Any<string>(),Arg.Any<string>()).ReturnsForAnyArgs(new List<Session> {session});
+            _dssReader.GetGoals(Arg.Any<string>(),Arg.Any<string>(),Arg.Any<string>()).ReturnsForAnyArgs(new List<Goal> {goal});
+            _dssReader.GetActions(Arg.Any<string>(),Arg.Any<string>(),Arg.Any<string>()).ReturnsForAnyArgs(new List<Action> {action});
+            _dssReader.GetActionPlan(Arg.Any<string>(),Arg.Any<string>(),Arg.Any<string>()).ReturnsForAnyArgs(actionPlan);
             _controller = new HomeController(_logger, _compositeSettings,_authSettings, _dssReader,_dssWriter);
             _controller.ControllerContext.HttpContext = new DefaultHttpContext();
         }
