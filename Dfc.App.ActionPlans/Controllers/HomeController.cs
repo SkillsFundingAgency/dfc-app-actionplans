@@ -18,7 +18,7 @@ namespace Dfc.App.ActionPlans.Controllers
     {
         private readonly IDssReader _dssReader;
         private readonly IDssWriter _dssWriter;
-        public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings,  IOptions<AuthSettings> authSettings, IDssReader dssReader, IDssWriter dssWriter)
+        public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter)
             :base(compositeSettings, dssReader)
         {
             _dssReader = dssReader;

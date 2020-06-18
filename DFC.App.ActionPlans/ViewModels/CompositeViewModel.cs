@@ -26,7 +26,7 @@ namespace DFC.App.ActionPlans.ViewModels
 
             public static PageId Home { get; } = new PageId("home");
             public static PageId Error { get; } = new PageId("error");
-            public static PageId ChangePassword { get; } = new PageId("change-password");
+            public static PageId ViewGoal { get; } = new PageId("view-goal");
 
 
         }

@@ -142,7 +142,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             _dssReader.GetActions(Arg.Any<string>(),Arg.Any<string>(),Arg.Any<string>()).ReturnsForAnyArgs(new List<Action> {action});
             _dssReader.GetActionPlan(Arg.Any<string>(),Arg.Any<string>(),Arg.Any<string>()).ReturnsForAnyArgs(actionPlan);
             _dssWriter.UpdateActionPlan(Arg.Any<UpdateActionPlan>());
-            _controller = new HomeController(_logger, _compositeSettings,_authSettings, _dssReader,_dssWriter);
+            _controller = new HomeController(_logger, _compositeSettings, _dssReader,_dssWriter);
             _controller.ControllerContext.HttpContext = new DefaultHttpContext();
            
         }
