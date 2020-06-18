@@ -109,8 +109,44 @@
                                 "value": "[concat(parameters('apimDSSProxyAddress'), '/customers/api/Customers/')]"
                             },
                             {
+                                "name": "DssSettings__SessionApiUrl",
+                                "value": "[concat(parameters('apimDSSProxyAddress'), '/sessions/api/Customers/{customerId}/Interactions/{interactionId}/sessions/')]"
+                            },
+                            {
+                                "name": "DssSettings__AdviserDetailsApiUrl",
+                                "value": "[concat(parameters('apimDSSProxyAddress'), '/adviserdetails/api/AdviserDetails/{adviserDetailId}/')]"
+                            },
+                            {
+                                "name": "DssSettings__GoalsApiUrl",
+                                "value": "[concat(parameters('apimDSSProxyAddress'), '/goals/api/Customers/{customerId}/Interactions/{interactionId}/ActionPlans/{actionPlanId}/Goals/')]"
+                            },
+                            {
+                                "name": "DssSettings__ActionsApiUrl",
+                                "value": "[concat(parameters('apimDSSProxyAddress'), '/actions/api/Customers/{customerId}/Interactions/{interactionId}/ActionPlans/{actionPlanId}/Actions/')]"
+                            },
+                            {
+                                "name": "DssSettings__InteractionsApiUrl",
+                                "value": "[concat(parameters('apimDSSProxyAddress'), '/interactions/api/Customers/{customerId}/Interactions/{interactionId}/')]"
+                            },
+                            {
                                 "name": "DssSettings__CustomerApiVersion",
                                 "value": "v2"
+                            },
+                            {
+                                "name": "DssSettings__SessionApiVersion",
+                                "value": "v3"
+                            },
+                            {
+                                "name": "DssSettings__AdviserDetailsApiVersion",
+                                "value": "v2"
+                            },
+                            {
+                                "name": "DssSettings__GoalsApiVersion",
+                                "value": "v2"
+                            },
+                            {
+                                "name": "DssSettings__ActionsApiVersion",
+                                "value": "v3"
                             },
                             {
                                 "name": "DssSettings__ApiKey",
