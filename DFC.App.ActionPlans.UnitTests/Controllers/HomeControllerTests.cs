@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
 using NSubstitute;
 using NUnit.Framework;
 using Action = DFC.App.ActionPlans.Services.DSS.Models.Action;
@@ -140,8 +141,10 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             _dssReader.GetGoals(Arg.Any<string>(),Arg.Any<string>(),Arg.Any<string>()).ReturnsForAnyArgs(new List<Goal> {goal});
             _dssReader.GetActions(Arg.Any<string>(),Arg.Any<string>(),Arg.Any<string>()).ReturnsForAnyArgs(new List<Action> {action});
             _dssReader.GetActionPlan(Arg.Any<string>(),Arg.Any<string>(),Arg.Any<string>()).ReturnsForAnyArgs(actionPlan);
+            _dssWriter.UpdateActionPlan(Arg.Any<UpdateActionPlan>());
             _controller = new HomeController(_logger, _compositeSettings,_authSettings, _dssReader,_dssWriter);
             _controller.ControllerContext.HttpContext = new DefaultHttpContext();
+           
         }
 
         [Test]
@@ -233,6 +236,23 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             result.ViewName.Should().BeNull();
         }
 
+        [Test]
+        public async Task WhenBodyCalledWithFormDataAndActionPlanUpdated_ThenRedirectToBody()
+        {
+            var result = await _controller.Body(GetViewModel(), new FormCollection(new Dictionary<string, StringValues>
+            {
+                {"homeGovukCheckBoxAcceptplan", "On"}
+            })) as RedirectResult;
+
+            result.Url.Should().Contain("~/home");
+        }
+        
+
+        private HomeCompositeViewModel GetViewModel()
+        {
+            var homeCompositeViewModel = new HomeCompositeViewModel();
+            return homeCompositeViewModel;
+        }
     }
 }
 

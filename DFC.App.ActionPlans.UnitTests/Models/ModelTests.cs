@@ -67,13 +67,15 @@ namespace DFC.App.ActionPlans.UnitTests
             [Test]
             public void ContactDetailsModel()
             {
-                var goal = new ContactDetails
+                var contactDetails = new ContactDetails
                 {
                     Phone = null,
                     WebchatLink = null,
                     ContactDaysTime = null
                 };
-                
+                var phone = contactDetails.Phone;
+                var webchatLink = contactDetails.WebchatLink;
+                var contactDaysTime = contactDetails.ContactDaysTime;
             }
         }
 
