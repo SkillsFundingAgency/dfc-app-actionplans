@@ -241,7 +241,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         {
             var result = await _controller.Body(GetViewModel(), new FormCollection(new Dictionary<string, StringValues>
             {
-                {"homeGovukCheckBoxAcceptplan", "On"}
+                {"homeGovukCheckBoxAcceptplan", "on"}
             })) as RedirectResult;
 
             result.Url.Should().Contain("~/home");
