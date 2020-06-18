@@ -1,43 +1,54 @@
-﻿<div class="govuk-main-wrapper">
+﻿@using DFC.App.ActionPlans.Models
+@using DFC.Personalisation.Common.Extensions
+@model HomeCompositeViewModel
+<div class="govuk-main-wrapper">
     <div class="govuk-width-container">
         <div class="govuk-grid-row ">
             <div class="govuk-grid-column-two-thirds">
-                <div class="notification-container govuk-!-margin-top-6">
-                    <div class="govuk-form-group govuk-!-margin-bottom-0">
-                        <fieldset class="govuk-fieldset govuk-!-margin-bottom-4">
-                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                                Accept your action plan
-                            </legend>
-                            <p>Accept this action plan to complete or update your actions.</p>
-                            <div class="govuk-checkboxes govuk-checkboxes--small">
-                                <div class="govuk-checkboxes__item">
-                                    <input class="govuk-checkboxes__input" id="organisation" name="organisation" type="checkbox" value="hmrc">
-                                    <label class="govuk-label govuk-checkboxes__label" for="organisation">
-                                        I accept this action plan
-                                    </label>
-                                </div>
-                            </div>
-                            <br>
+                <div class="dfc-app-actionplans-notification-container govuk-!-margin-top-6 @(Model.ActionPlan.DateActionPlanAcknowledged.ToString() !="" ? " govuk-visually-hidden"  : "")">
+                    <div class="govuk-form-group govuk-!-margin-bottom-0" >
+                        <form id="@Model.GetElementId("form", "home")" action="@Model.CompositeSettings.Path/Home/" class="govuk-form-group mt" method="post">
+                            @Html.HiddenFor(model => model.CustomerId)
+                            @Html.HiddenFor(model => model.ActionPlanId)
+                            @Html.HiddenFor(model => model.InteractionId)
 
-                        </fieldset>
-                        <button class="govuk-button">Continue</button>
+                            <fieldset class="govuk-fieldset govuk-!-margin-bottom-4">
+                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                    Accept your action plan
+                                </legend>
+                                <p>Accept this action plan to complete or update your actions.</p>
+                                <div class="govuk-checkboxes govuk-checkboxes--small">
+                                    <div class="govuk-checkboxes__item">
+                                        <govukCheckbox id="@Model.GetElementId("govukCheckBox", "acceptplan")"
+                                                       label="I accept this action plan"
+                                                       AdditionalClass="checkbox-container-item govuk-checkboxes govuk-!-width-full">
+                                        </govukCheckbox>
+                                    </div>
+                                </div>
+                                <br>
+                            </fieldset>
+                            <govukButton id="@Model.GetElementId("govukButton", "Continue")" text="Continue"/>
+                        </form>
                     </div>
                 </div>
-                <h1 class="govuk-heading-xl govuk-!-margin-top-4">Your action plan</h1>
+                <br/>
+                <govukHeadingH1 text="Your action plan"></govukHeadingH1>
                 <p>
-                    During your careers advice appointment on 24 April 2020, you and Becky spoke about your current situation and goals.
+                    During your careers advice appointment on @Model.LatestSession.DateandTimeOfSession.ToString("dd MMMM yyyy") , you and @Model.Adviser.AdviserName spoke about your current situation and goals.
                 </p>
-                <p>At the end of your appointment, you agreed your next steps and made an action plan with goals and actions for you to complete. You can contact Becky if you want to add new goals or actions.</p>
+                <p>At the end of your appointment, you agreed your next steps and made an action plan with goals and actions for you to complete. You can contact @Model.Adviser.AdviserName if you want to add new goals or actions.</p>
                 <hr class="govuk-section-break--visible govuk-section-break govuk-section-break--xl">
 
 
                 <section class="govuk-!-margin-top-6">
-                    <h2 class="govuk-heading-l">Your goals</h2>
+                    <govukHeadingH2 text="Your goals"></govukHeadingH2>
+
                     <p>Reaching your goals can help you to make progress in your career. Your goals might help you to develop your skills, take a training course or find work.</p>
                     <table class="govuk-table">
                         <caption class="govuk-table__caption govuk-visually-hidden">List of goals</caption>
                         <thead class="govuk-table__head">
                         <tr class="govuk-table__row">
+
                             <th scope="col" class="govuk-table__header govuk-!-width-one-half">Goal type</th>
                             <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Due on</th>
                             <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Status</th>
@@ -45,39 +56,24 @@
                         </tr>
                         </thead>
                         <tbody class="govuk-table__body">
-                        <tr class="govuk-table__row">
-                            <td class="govuk-table__cell">
-                                Skill
-                            </td>
-                            <td class="govuk-table__cell">20 June 2020</td>
-                            <td class="govuk-table__cell">In progress</td>
-                            <td class="govuk-table__cell">
-                                <a href="goal.html">View</a>
-                            </td>
-                        </tr>
-                        <tr class="govuk-table__row">
-                            <td scope="row" class="govuk-table__cell">
-                                Work
-                            </td>
-                            <td class="govuk-table__cell">21 July 2020</td>
-                            <td class="govuk-table__cell">Not started</td>
-                            <td class="govuk-table__cell">
-                                <a href="">View</a>
-                            </td>
-                        </tr>
-                        <tr class="govuk-table__row">
-                            <td scope="row" class="govuk-table__cell">Learning</td>
-                            <td class="govuk-table__cell">9 September 2020</td>
-                            <td class="govuk-table__cell">Not started</td>
-                            <td class="govuk-table__cell">
-                                <a href="">View</a>
-                            </td>
-                        </tr>
+                        @{
+                            foreach (var goal in Model.Goals)
+                            {
+                                <tr class="govuk-table__row">
+                                    <td class="govuk-table__cell">@goal.GoalType.GetDisplayName()</td>
+                                    <td class="govuk-table__cell">@goal.DateGoalShouldBeCompletedBy.ToString("dd MMMM yyyy")</td >
+                                    <td class="govuk-table__cell">@goal.GoalStatus.ToString()</td>
+                                    <td class="govuk-table__cell">
+                                        <govukLink id="@Model.GetElementId("govUkLink", $"action-plan-{goal.GoalId}")" link-href="@Model.CompositeSettings.Path/goaldetails/@goal.GoalId" LinkText="View"></govukLink>
+                                    </td>
+                                </tr>
+                            }
+                        }
                         </tbody>
                     </table>
                 </section>
                 <section class="ncs-actionplan ">
-                    <h2 class="govuk-heading-l">Your actions</h2>
+                    <govukHeadingH2 text="Your actions"></govukHeadingH2>
                     <p>Actions are specific tasks or activities for you to do. Completing your actions will help you to reach your goals.</p>
                     <table class="govuk-table">
                         <caption class="govuk-table__caption govuk-visually-hidden">List of actions</caption>
@@ -90,38 +86,29 @@
                         </tr>
                         </thead>
                         <tbody class="govuk-table__body">
-                        <tr class="govuk-table__row">
-                            <td class="govuk-table__cell">
-                                Use National Careers Service website
-                            </td>
-                            <td class="govuk-table__cell">20 June 2020</td>
-                            <td class="govuk-table__cell">In progress</td>
-                            <td class="govuk-table__cell">
-                                <a href="action.html">View</a>
-                            </td>
-                        </tr>
-                        <tr class="govuk-table__row">
-                            <td scope="row" class="govuk-table__cell">
-                                Search for vacancy
-                            </td>
-                            <td class="govuk-table__cell">21 July 2020</td>
-                            <td class="govuk-table__cell">Not started</td>
-                            <td class="govuk-table__cell">
-                                <a href="">View</a>
-                            </td>
-                        </tr>
-                        <tr class="govuk-table__row">
-                            <td scope="row" class="govuk-table__cell">Update your CV</td>
-                            <td class="govuk-table__cell">9 September 2020</td>
-                            <td class="govuk-table__cell">Not started</td>
-                            <td class="govuk-table__cell">
-                                <a href="">View</a>
-                            </td>
-                        </tr>
+                        @{
+                            foreach (var action in Model.Actions)
+                            {
+                                <tr class="govuk-table__row">
+                                    <td class="govuk-table__cell">
+                                        @action.ActionType.GetDisplayName()
+                                    </td>
+                                    <td class="govuk-table__cell">@action.DateActionAimsToBeCompletedBy.ToString("dd MMMM yyyy")</td>
+                                    <td class="govuk-table__cell">@action.ActionStatus.GetDisplayName()</td>
+                                    <td class="govuk-table__cell">
+                                        <govukLink id="@Model.GetElementId("govUkLink", $"action-plan-{action.ActionId}")" link-href="@Model.CompositeSettings.Path/actiondetails/@action.ActionId" LinkText="View"></govukLink>
+                                    </td>
+                                </tr>
+                            }
+                        }
                         </tbody>
                     </table>
 
                 </section>
+            </div>
+            <div class="action-plan-secondary-content govuk-grid-column-one-third  ">
+                <partial name="~/ViewComponents/YourAdviser/youradvisor.cshtml" model="@Model.Adviser"/>
+                <partial name="~/ViewComponents/contact/contact.cshtml" model="@Model.ContactDetails"/>
             </div>
         </div>
     </div>

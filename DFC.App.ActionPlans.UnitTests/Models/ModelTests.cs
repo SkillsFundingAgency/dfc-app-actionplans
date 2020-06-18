@@ -1,5 +1,7 @@
 ﻿using System;
 using DFC.App.ActionPlans.Models;
+using DFC.App.ActionPlans.Services.DSS.Enums;
+using DFC.App.ActionPlans.ViewModels;
 using NUnit.Framework;
 
 namespace DFC.App.ActionPlans.UnitTests
@@ -13,7 +15,7 @@ namespace DFC.App.ActionPlans.UnitTests
             {
                 var compositeSettings = new CompositeSettings();
                 compositeSettings.Path = "SomePath";
-                compositeSettings.CDN = "SomeCDN";
+                compositeSettings.Cdn = "SomeCDN";
             }
         }
 
@@ -30,9 +32,9 @@ namespace DFC.App.ActionPlans.UnitTests
                     DateGoalCaptured = DateTime.Now,
                     DateGoalShouldBeCompletedBy = DateTime.Now,
                     GoalId = "gId",
-                    GoalStatus = 1,
+                    GoalStatus = GoalStatus.Achieved,
                     GoalSummary = "summary",
-                    GoalType=1,
+                    GoalType=GoalType.Learning,
                     LastModifiedBy = "me",
                     LastModifiedDate = DateTime.Now,
                     SubcontractorId = "sId"
@@ -57,6 +59,34 @@ namespace DFC.App.ActionPlans.UnitTests
                     SignOutUrl = "url"
                 };
 
+            }
+        }
+
+        class ContactDetailsModelTests
+        {
+            [Test]
+            public void ContactDetailsModel()
+            {
+                var contactDetails = new ContactDetails
+                {
+                    Phone = null,
+                    WebchatLink = null,
+                    ContactDaysTime = null
+                };
+                var phone = contactDetails.Phone;
+                var webchatLink = contactDetails.WebchatLink;
+                var contactDaysTime = contactDetails.ContactDaysTime;
+            }
+        }
+
+        class CompositeViewModelTests
+        {
+            [Test]
+            public void CompositeViewModelModel()
+            {
+                var homeCompositeModel = new HomeCompositeViewModel();
+                homeCompositeModel.ToString();
+                homeCompositeModel.GetElementId("someElement", "home");
             }
         }
     }

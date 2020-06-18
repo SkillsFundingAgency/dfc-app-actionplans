@@ -2,7 +2,7 @@
     {
         "Path": "action-plans",      
         "Layout": "FullWidth",
-        "OfflineHtml": "<H2>Accounts Service Unavailable</H2>",
+        "OfflineHtml": "<H2>Action Plans Service Unavailable</H2>",
         "IsOnline": true,
         "Regions": [
             {

@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
-using DFC.App.ActionPlans.Exceptions;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Services.DSS.Models;
 
@@ -79,9 +78,16 @@ namespace Dfc.App.ActionPlans.Controllers
             return View(ViewModel);
         }
        
-
+        protected IActionResult RedirectTo(string relativeAddress)
+        {
+            relativeAddress = $"~{ViewModel.CompositeSettings.Path}/" + relativeAddress;
+            
+            return Redirect(relativeAddress);
+        }
         protected async Task<Customer> GetCustomerDetails()
         {
+            /*
+             TODO: Enable Autorization
             var userId = User.Claims.FirstOrDefault(x => x.Type == "CustomerId")?.Value;
 
             if (userId == null)
@@ -90,7 +96,8 @@ namespace Dfc.App.ActionPlans.Controllers
             }
 
             return await _dssReader.GetCustomerDetails(userId);
-            
+            */
+            return new Customer(){CustomerId = new Guid("53f904b3-77c8-4c94-9a15-c259b518336c"),FamilyName = "Family",GivenName = "Given"};
         }
     }
 

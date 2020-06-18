@@ -8,13 +8,13 @@ using Microsoft.Extensions.Logging;
 namespace DFC.App.ActionPlans.Initializers
 {
         [ExcludeFromCodeCoverage]
-        public class NCSTelemetryInitializer : ITelemetryInitializer
+        public class NcsTelemetryInitializer : ITelemetryInitializer
         {
-            private readonly ILogger<NCSTelemetryInitializer> _logger;
-            private string applicationName;
-            private string applicationInstanceId;
+            private readonly ILogger<NcsTelemetryInitializer> _logger;
+            private string _applicationName;
+            private string _applicationInstanceId;
 
-            public NCSTelemetryInitializer(ILogger<NCSTelemetryInitializer> logger)
+            public NcsTelemetryInitializer(ILogger<NcsTelemetryInitializer> logger)
             {
                 this._logger = logger;
                 Setup();
@@ -22,15 +22,15 @@ namespace DFC.App.ActionPlans.Initializers
 
             public void Setup()
             {
-                applicationInstanceId = Guid.NewGuid().ToString();
-                applicationName = Assembly.GetExecutingAssembly().GetName().Name;
+                _applicationInstanceId = Guid.NewGuid().ToString();
+                _applicationName = Assembly.GetExecutingAssembly().GetName().Name;
 
                 //Log to Console for App Service / K8S Tracing
-                Console.WriteLine($"Application Name: {applicationName}");
-                Console.WriteLine($"Application Instance Id: {applicationInstanceId}");
+                Console.WriteLine($"Application Name: {_applicationName}");
+                Console.WriteLine($"Application Instance Id: {_applicationInstanceId}");
 
-                _logger.LogInformation($"Application Name: {applicationName}");
-                _logger.LogInformation($"Application Instance Id: {applicationInstanceId}");
+                _logger.LogInformation($"Application Name: {_applicationName}");
+                _logger.LogInformation($"Application Instance Id: {_applicationInstanceId}");
             }
 
             public void Initialize(ITelemetry telemetry)
@@ -39,17 +39,17 @@ namespace DFC.App.ActionPlans.Initializers
                 //Pods in K8S will have a null value, so set to the instance ID 
                 if (string.IsNullOrWhiteSpace(telemetry.Context.Cloud.RoleName))
                 {
-                    telemetry.Context.Cloud.RoleName = $"{applicationName}_{applicationInstanceId}";
+                    telemetry.Context.Cloud.RoleName = $"{_applicationName}_{_applicationInstanceId}";
                 }
 
                 //Add to Custom Properties in AI to allow correlation
                 if (!telemetry.Context.GlobalProperties.ContainsKey("ApplicationName"))
                 {
-                    telemetry.Context.GlobalProperties.Add("ApplicationName", applicationName);
+                    telemetry.Context.GlobalProperties.Add("ApplicationName", _applicationName);
                 }
                 if (!telemetry.Context.GlobalProperties.ContainsKey("ApplicationInstanceId"))
                 {
-                    telemetry.Context.GlobalProperties.Add("ApplicationInstanceId", applicationInstanceId.ToString());
+                    telemetry.Context.GlobalProperties.Add("ApplicationInstanceId", _applicationInstanceId.ToString());
                 }
             }
         }

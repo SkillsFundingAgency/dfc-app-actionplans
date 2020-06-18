@@ -1,4 +1,5 @@
 ﻿using DFC.App.ActionPlans.Models;
+using DFC.Personalisation.Common.Extensions;
 using Dfc.ProviderPortal.Packages;
 
 namespace DFC.App.ActionPlans.ViewModels
@@ -6,7 +7,7 @@ namespace DFC.App.ActionPlans.ViewModels
     public abstract class CompositeViewModel
     {
         public static string AppTitle => "Action plan";
-        public static string NCSBranding => "National Careers Service";
+        public static string NcsBranding => "National Careers Service";
 
         public class PageId
         {
@@ -55,15 +56,23 @@ namespace DFC.App.ActionPlans.ViewModels
         public bool ShowBreadCrumb { get; set; }
         public CompositeSettings CompositeSettings { get; set; }
 
+        public ContactDetails ContactDetails = new ContactDetails();
         protected CompositeViewModel(PageId pageId, string pageHeading)
         {
             Id = pageId;
             PageHeading = pageHeading;
             
-            PageTitle = string.IsNullOrWhiteSpace(pageHeading) ? $"{AppTitle} | {NCSBranding}" : $"{pageHeading} | {AppTitle} | {NCSBranding}";
+            PageTitle = string.IsNullOrWhiteSpace(pageHeading) ? $"{AppTitle} | {NcsBranding}" : $"{pageHeading} | {AppTitle} | {NcsBranding}";
         }
 
-      
+        public string GetElementId(string elementName, string instanceName)
+        {
+            Throw.IfNullOrWhiteSpace(elementName, nameof(elementName));
+            Throw.IfNullOrWhiteSpace(instanceName, nameof(instanceName));
+            elementName = elementName.FirstCharToUpper().Trim();
+            instanceName = instanceName.FirstCharToUpper().Trim();
+            return $"{Id}{elementName}{instanceName}";
+        }
     }
 }
 

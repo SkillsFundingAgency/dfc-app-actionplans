@@ -20,7 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution Items", "_Solutio
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{98583330-785B-4AD7-883F-D50E687AFFF5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFC.App.Account.Services.DSS.UnitTest", "DFC.App.Account.Services.DSS.UnitTest\DFC.App.Account.Services.DSS.UnitTest.csproj", "{4DE95DA9-1AC9-4F28-B59B-311F0566E462}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.Account.Services.DSS.UnitTest", "DFC.App.Account.Services.DSS.UnitTest\DFC.App.Account.Services.DSS.UnitTest.csproj", "{4DE95DA9-1AC9-4F28-B59B-311F0566E462}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

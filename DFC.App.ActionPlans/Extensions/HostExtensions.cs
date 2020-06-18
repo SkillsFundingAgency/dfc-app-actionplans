@@ -13,8 +13,8 @@ namespace DFC.App.ActionPlans.Extensions
         {
             var telemetryConfig = (TelemetryConfiguration) host.Services.GetService(typeof(TelemetryConfiguration));
             var logger =
-                (ILogger<NCSTelemetryInitializer>) host.Services.GetService(typeof(ILogger<NCSTelemetryInitializer>));
-            telemetryConfig.TelemetryInitializers.Add(new NCSTelemetryInitializer(logger));
+                (ILogger<NcsTelemetryInitializer>) host.Services.GetService(typeof(ILogger<NcsTelemetryInitializer>));
+            telemetryConfig.TelemetryInitializers.Add(new NcsTelemetryInitializer(logger));
 
             return host;
         }

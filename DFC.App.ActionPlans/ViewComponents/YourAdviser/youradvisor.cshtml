@@ -1,0 +1,21 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, DFC.Personalisation.CommonUI
+@model DFC.App.ActionPlans.Services.DSS.Models.Adviser
+
+<aside class="app-sidebar govuk-!-margin-top-6" role="complementary">
+    <section>
+        <h2 class="govuk-heading-m">
+            Your careers adviser
+        </h2>
+        <p>
+            <span><strong>Name:</strong> @Model.AdviserName</span><br>
+            <span>
+                <strong>Email:</strong><a href=""> @Model.AdviserEmailAddress</a>
+            </span><br>
+            <span><strong>Telephone:</strong> @Model.AdviserContactNumber</span>
+        </p>
+        <p>
+            @Model.AdviserName will respond to you within 3 working days
+        </p>
+    </section>
+</aside>

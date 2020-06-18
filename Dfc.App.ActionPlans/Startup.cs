@@ -41,6 +41,7 @@ namespace Dfc.App.ActionPlans
             services.AddHttpContextAccessor();
 
             services.AddScoped<IDssReader, DssService>();
+            services.AddScoped<IDssWriter, DssService>();
             services.Configure<DssSettings>(Configuration.GetSection(nameof(DssSettings)));
             services.Configure<CompositeSettings>(Configuration.GetSection(nameof(CompositeSettings)));
 
@@ -131,6 +132,8 @@ namespace Dfc.App.ActionPlans
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute("action-plans", appPath + "/action-plans", new {controller = "home", action = "body"});
+
                 endpoints.MapControllerRoute("yourDetails", appPath + "/your-details", new {controller = "yourDetails", action = "body"});
                 
                 endpoints.MapControllerRoute("closeAccount", appPath + "/close-your-account", new {controller = "closeYourAccount", action = "body"});
