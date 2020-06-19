@@ -1,22 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 using Dfc.App.ActionPlans.Controllers;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Enums;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Services.DSS.Models;
-using DFC.App.ActionPlans.ViewModels;
-using FluentAssertions;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 using NUnit.Framework;
-using Action = System.Action;
 
 namespace DFC.App.ActionPlans.UnitTests.Controllers
 {
@@ -30,7 +22,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
 
 
         [SetUp]
-        public void Init()
+        public void SetupBase()
         {
             _logger = new Logger<HomeController>(new LoggerFactory());
             _compositeSettings = Options.Create(new CompositeSettings());

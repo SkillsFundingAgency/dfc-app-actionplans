@@ -9,14 +9,11 @@ namespace DFC.App.ActionPlans.Controllers
 {
     public class ErrorController : CompositeSessionController<ErrorCompositeViewModel>
     {
-        private readonly IDssReader _dssReader;
-        private readonly ILogger<ErrorController> _logger;
-
         public ErrorController(ILogger<ErrorController> logger, IOptions<CompositeSettings> compositeSettings,
             IDssReader _dssReader)
             : base(compositeSettings, _dssReader)
         {
-            _logger = logger;
+            
         }
     }
 }
