@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -31,14 +32,14 @@ namespace Dfc.App.ActionPlans.Controllers
         }
 
         [HttpGet]
-        [Route("/head/[controller]/{id?}")]
+        [Route("/head/[controller]/{actionPlanId?}/{interactionId?}/{docId?}")]
         public virtual IActionResult Head()
         {
             return View(ViewModel);
         }
 
         [HttpGet]
-        [Route("/bodytop/[controller]/{id?}")]
+        [Route("/bodytop/[controller]/{actionPlanId?}/{interactionId?}/{docId?}")]
         public virtual async Task<IActionResult> BodyTop()
         {
             if (User.Identity.IsAuthenticated)
@@ -51,17 +52,15 @@ namespace Dfc.App.ActionPlans.Controllers
         }
 
         [HttpGet]
-        [Route("/breadcrumb/[controller]/{id?}")]
+        [Route("/breadcrumb/[controller]/{actionPlanId?}/{interactionId?}/{docId?}")]
         public virtual IActionResult Breadcrumb()
         {
-            var pagesThatDontNeedBreadCrumbs = new List<CompositeViewModel.PageId>
-            {
-                CompositeViewModel.PageId.Home
-            };
+           var viewModel = new BreadCrumbViewModel()
+           {
+               HomeUrl = $"#"
+           };
 
-            ViewModel.ShowBreadCrumb = !pagesThatDontNeedBreadCrumbs.Contains(ViewModel.Id);
-            
-            return View(ViewModel);
+            return View(viewModel);
         }
 
         [HttpGet]
@@ -72,7 +71,7 @@ namespace Dfc.App.ActionPlans.Controllers
         }
 
         [HttpGet]
-        [Route("/bodyfooter/[controller]/{id?}")]
+        [Route("/bodyfooter/[controller]/{actionPlanId?}/{interactionId?}/{docId?}")]
         public virtual IActionResult BodyFooter()
         {
             return View(ViewModel);
@@ -98,6 +97,19 @@ namespace Dfc.App.ActionPlans.Controllers
             return await _dssReader.GetCustomerDetails(userId);
             */
             return new Customer(){CustomerId = new Guid("53f904b3-77c8-4c94-9a15-c259b518336c"),FamilyName = "Family",GivenName = "Given"};
+        }
+
+
+        protected async Task LoadData(Guid customerId, Guid actionPlanId, Guid interactionId)
+        {
+            List<Session> sessions;
+            ViewModel.CustomerId = customerId;
+            ViewModel.InteractionId = interactionId;
+            ViewModel.ActionPlanId = actionPlanId;
+            ViewModel.Interaction = await _dssReader.GetInteractionDetails(ViewModel.CustomerId.ToString(), ViewModel.InteractionId.ToString());
+            ViewModel.Adviser = await _dssReader.GetAdviserDetails(ViewModel.Interaction.AdviserDetailsId);
+            sessions = await _dssReader.GetSessions(ViewModel.CustomerId.ToString(), ViewModel.InteractionId.ToString());
+            ViewModel.LatestSession = sessions.OrderByDescending(s => s.DateandTimeOfSession).First();
         }
     }
 

@@ -11,7 +11,7 @@ namespace DFC.App.ActionPlans.Models
         public string SubcontractorId { get; set; }
         public DateTime DateGoalCaptured { get; set; }
         public DateTime DateGoalShouldBeCompletedBy { get; set; }
-        public DateTime DateGoalAchieved { get; set; }
+        public DateTime? DateGoalAchieved { get; set; }
         public string GoalSummary { get; set; }
         public GoalType GoalType { get; set; }
         public GoalStatus GoalStatus { get; set; }

@@ -1,4 +1,6 @@
-﻿using DFC.App.ActionPlans.Models;
+﻿using System;
+using DFC.App.ActionPlans.Models;
+using DFC.App.ActionPlans.Services.DSS.Models;
 using DFC.Personalisation.Common.Extensions;
 using Dfc.ProviderPortal.Packages;
 
@@ -6,7 +8,7 @@ namespace DFC.App.ActionPlans.ViewModels
 {
     public abstract class CompositeViewModel
     {
-        public static string AppTitle => "Action plan";
+        public static string AppTitle => "Action plans";
         public static string NcsBranding => "National Careers Service";
 
         public class PageId
@@ -26,7 +28,7 @@ namespace DFC.App.ActionPlans.ViewModels
 
             public static PageId Home { get; } = new PageId("home");
             public static PageId Error { get; } = new PageId("error");
-            public static PageId ChangePassword { get; } = new PageId("change-password");
+            public static PageId ViewGoal { get; } = new PageId("view-goal");
 
 
         }
@@ -65,6 +67,12 @@ namespace DFC.App.ActionPlans.ViewModels
             PageTitle = string.IsNullOrWhiteSpace(pageHeading) ? $"{AppTitle} | {NcsBranding}" : $"{pageHeading} | {AppTitle} | {NcsBranding}";
         }
 
+        public Guid CustomerId { get; set;}
+        public Guid ActionPlanId { get; set;}
+        public Guid InteractionId { get; set;}
+        public Session LatestSession { get; set;}
+        public Interaction Interaction { get; set;}
+        public Adviser Adviser { get; set;}
         public string GetElementId(string elementName, string instanceName)
         {
             Throw.IfNullOrWhiteSpace(elementName, nameof(elementName));

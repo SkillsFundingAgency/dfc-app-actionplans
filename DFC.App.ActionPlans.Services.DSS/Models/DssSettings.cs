@@ -13,8 +13,8 @@
 
         public string InteractionsApiUrl { get; set; }
         
-        public string GoalApiUrl { get; set; }
-        public string GoalApiVersion { get; set; }
+        public string GoalsApiUrl { get; set; }
+        public string GoalsApiVersion { get; set; }
 
         public string ActionsApiUrl { get; set; }
         public string ActionsApiVersion { get; set; }

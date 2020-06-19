@@ -36,6 +36,11 @@ namespace DFC.App.Account.Services.DSS.UnitTest.Helpers
             return "{\r\n  \"AdviserDetailId\": \"bb940afb-1423-4999-a234-5a64a5c00831\",\r\n  \"AdviserName\": \"this is some text\",\r\n  \"AdviserEmailAddress\": \"adviser2@test.com\",\r\n  \"AdviserContactNumber\": \"012345 678901\",\r\n  \"LastModifiedDate\": \"2019-02-22T16:02:47.8843571Z\",\r\n  \"LastModifiedTouchpointId\": \"0000000104\",\r\n  \"SubcontractorId\": \"21323234\"\r\n}";
         }
 
+        public static string SuccessfulDssGoalDetails()
+        {
+            return "{\r\n  \"GoalId\": \"db02934b-9858-418d-a064-e0449ee095f6\",\r\n  \"CustomerId\": \"53f904b3-77c8-4c94-9a15-c259b518336c\",\r\n  \"ActionPlanId\": \"a6676a45-7cd8-4257-96cb-bc9388f9c149\",\r\n  \"DateGoalCaptured\": \"2018-06-21T11:31:00Z\",\r\n  \"DateGoalShouldBeCompletedBy\": \"2018-06-23T12:01:00Z\",\r\n  \"DateGoalAchieved\": \"2018-06-22T19:53:00Z\",\r\n  \"GoalSummary\": \"this is some text\",\r\n  \"GoalType\": 1,\r\n  \"GoalStatus\": 2,\r\n  \"LastModifiedDate\": \"2020-06-05T08:38:11.2933672Z\",\r\n  \"LastModifiedBy\": \"9000000000\"\r\n}";
+        }
+
         public static string SuccessfulUpdateActionPlan()
         {
             return

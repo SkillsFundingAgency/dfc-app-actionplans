@@ -136,11 +136,10 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             _dssReader.GetCustomerDetails(Arg.Any<string>()).ReturnsForAnyArgs(customer);
             _dssReader.GetAdviserDetails(Arg.Any<string>()).ReturnsForAnyArgs(adviser);
             _dssReader.GetInteractionDetails(Arg.Any<string>(),Arg.Any<string>()).ReturnsForAnyArgs(interaction);
-            _dssReader.GetActionPlan(Arg.Any<string>(),Arg.Any<string>(),Arg.Any<string>()).ReturnsForAnyArgs(actionPlan);
+            _dssReader.GetActionPlanDetails(Arg.Any<string>(),Arg.Any<string>(),Arg.Any<string>()).ReturnsForAnyArgs(actionPlan);
             _dssReader.GetSessions(Arg.Any<string>(),Arg.Any<string>()).ReturnsForAnyArgs(new List<Session> {session});
             _dssReader.GetGoals(Arg.Any<string>(),Arg.Any<string>(),Arg.Any<string>()).ReturnsForAnyArgs(new List<Goal> {goal});
             _dssReader.GetActions(Arg.Any<string>(),Arg.Any<string>(),Arg.Any<string>()).ReturnsForAnyArgs(new List<Action> {action});
-            _dssReader.GetActionPlan(Arg.Any<string>(),Arg.Any<string>(),Arg.Any<string>()).ReturnsForAnyArgs(actionPlan);
             _dssWriter.UpdateActionPlan(Arg.Any<UpdateActionPlan>());
             _controller = new HomeController(_logger, _compositeSettings, _dssReader,_dssWriter);
             _controller.ControllerContext.HttpContext = new DefaultHttpContext();

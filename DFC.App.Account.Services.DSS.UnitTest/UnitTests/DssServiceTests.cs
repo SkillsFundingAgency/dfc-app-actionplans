@@ -37,8 +37,8 @@ namespace DFC.App.Account.Services.DSS.UnitTest
                 CustomerApiVersion = "V3",
                 CustomerApiUrl = "https://this.is.anApi.org.uk",
                 SessionApiVersion = "V3",
-                GoalApiUrl = "https://this.is.anApi.org.uk",
-                GoalApiVersion = "V2",
+                GoalsApiUrl = "https://this.is.anApi.org.uk",
+                GoalsApiVersion = "V2",
                 ActionsApiUrl= "https://this.is.anApi.org.uk",
                 ActionsApiVersion= "v3",
                 InteractionsApiUrl = "https://this.is.anApi.org.uk",
@@ -52,7 +52,6 @@ namespace DFC.App.Account.Services.DSS.UnitTest
 
     public class DssServiceTests
     {
-        
         public class GetSessionTests : DssTests
         {
             [SetUp]
@@ -77,7 +76,6 @@ namespace DFC.App.Account.Services.DSS.UnitTest
                     .Should().Throw<DssException>();
             }
         }
-
         public class GetGoalsTests : DssTests
         {
             [SetUp]
@@ -103,7 +101,6 @@ namespace DFC.App.Account.Services.DSS.UnitTest
                 
             }
         }
-
         public class GetActionsTests : DssTests
         {
             [SetUp]
@@ -129,7 +126,6 @@ namespace DFC.App.Account.Services.DSS.UnitTest
                 
             }
         }
-
         public class GetInteractionsTests : DssTests
         {
             [SetUp]
@@ -155,7 +151,6 @@ namespace DFC.App.Account.Services.DSS.UnitTest
 
             }
         }
-
         public class GetAdviserDetails: DssTests
         {
             [SetUp]
@@ -164,7 +159,7 @@ namespace DFC.App.Account.Services.DSS.UnitTest
                 base.Setup(DssHelpers.SuccessfulDssAdviserDetails());
             }
             [Test]
-            public async Task When_GetAdviserDetailsDetails_ReturnAdviserDetails()
+            public async Task When_GetAdviserDetails_ReturnAdviserDetails()
             {
                 var result = await DssService.GetAdviserDetails("adverid");
                 result.Should().NotBe(null);
@@ -181,7 +176,29 @@ namespace DFC.App.Account.Services.DSS.UnitTest
 
             }
         }
-
+        public class GetGoalDetails: DssTests
+        {
+            [SetUp]
+            public void Init()
+            {
+                base.Setup(DssHelpers.SuccessfulDssGoalDetails());
+            }
+            [Test]
+            public async Task When_GetGoalDetails_ReturnGoalDetails()
+            {
+                var result = await DssService.GetGoalDetails("customerId", "interactionId2","actionPlanId","goalId");
+                result.Should().NotBe(null);
+            }
+            [Test]
+            public async Task When_AdviserDetailsWithNoContent_Throw_Exception()
+            {
+                var restClient = Substitute.For<IRestClient>();
+                restClient.LastResponse = new RestClient.APIResponse(new HttpResponseMessage(HttpStatusCode.NoContent));
+                DssService = new DssService(restClient, DssSettings, Logger);
+                DssService.Invoking(sut => sut.GetGoalDetails("customerId", "interactionId2","actionPlanId","goalId"))
+                    .Should().Throw<DssException>();
+            }
+        }
         public class UpdateActionPlan: DssTests
         {
             private IDssWriter _dssWriter;   
@@ -202,8 +219,8 @@ namespace DFC.App.Account.Services.DSS.UnitTest
                     CustomerApiVersion = "V3",
                     CustomerApiUrl = "https://this.is.anApi.org.uk",
                     SessionApiVersion = "V3",
-                    GoalApiUrl = "https://this.is.anApi.org.uk",
-                    GoalApiVersion = "V2",
+                    GoalsApiUrl = "https://this.is.anApi.org.uk",
+                    GoalsApiVersion = "V2",
                     ActionsApiUrl= "https://this.is.anApi.org.uk",
                     ActionsApiVersion= "v3",
                     InteractionsApiUrl = "https://this.is.anApi.org.uk",
