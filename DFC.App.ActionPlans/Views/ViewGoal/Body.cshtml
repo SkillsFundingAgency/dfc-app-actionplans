@@ -1,6 +1,4 @@
-﻿@using DFC.App.ActionPlans.Models
-@using DFC.Personalisation.Common.Extensions
-@model DFC.App.ActionPlans.Controllers.ViewGoalCompositeViewModel
+﻿@model DFC.App.ActionPlans.Controllers.ViewGoalCompositeViewModel
 <div class="govuk-main-wrapper">
     <div class="govuk-width-container">
         <div class="govuk-grid-row ">
@@ -9,14 +7,14 @@
                 <govukHeadingH1 text="View or update goal" additional-class="govuk-heading-xl"></govukHeadingH1>
                 <govukHeadingH2 text="Goal type" additional-class="govuk-heading-s"></govukHeadingH2>
                 <p>@Model.Goal.GoalType</p>
-                <govukHeadingH2 text="Description" additional-class="govuk-heading-s govuk-!-margin-top-3"></govukHeadingH2>
+                <govukHeadingH2  text="Description" additional-class="govuk-heading-s govuk-!-margin-top-3"></govukHeadingH2>
                 <p>
                     @Model.Goal.GoalSummary
                 </p>
 
                 <section>
-                    <govukHeadingH2 text="Update this goal" additional-class="govuk-heading-m govuk-!-margin-top-6"></govukHeadingH2>
-                    <table class="govuk-table">
+                    <govukHeadingH2 id="updateGoal" text="Update this goal" additional-class="govuk-heading-m govuk-!-margin-top-6"></govukHeadingH2>
+                    <table class="govuk-table" aria-describedby="updateGoal">
 
                         <thead class="govuk-table__head">
                         <tr class="govuk-table__row">
