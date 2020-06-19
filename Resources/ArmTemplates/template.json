@@ -129,6 +129,10 @@
                                 "value": "[concat(parameters('apimDSSProxyAddress'), '/interactions/api/Customers/{customerId}/Interactions/{interactionId}/')]"
                             },
                             {
+                                "name": "DssSettings__ActionPlansApiUrl",
+                                "value": "[concat(parameters('apimDSSProxyAddress'), '/actionplans/api/Customers/{customerId}/Interactions/{interactionId}/ActionPlans/{actionPlanId}/')]"
+                            },
+                            {
                                 "name": "DssSettings__CustomerApiVersion",
                                 "value": "v2"
                             },
@@ -146,6 +150,10 @@
                             },
                             {
                                 "name": "DssSettings__ActionsApiVersion",
+                                "value": "v3"
+                            },
+                            {
+                                "name": "DssSettings__ActionPlansApiVersion",
                                 "value": "v3"
                             },
                             {
