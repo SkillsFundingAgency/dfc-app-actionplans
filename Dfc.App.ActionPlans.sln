@@ -22,6 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{98583330
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.Account.Services.DSS.UnitTest", "DFC.App.Account.Services.DSS.UnitTest\DFC.App.Account.Services.DSS.UnitTest.csproj", "{4DE95DA9-1AC9-4F28-B59B-311F0566E462}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{6E6A4B3B-FCB4-4AD7-8DC9-F6457E3CE659}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,7 +87,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{57AECDC7-1C49-45CA-87A4-3478C7A1320D} = {6E6A4B3B-FCB4-4AD7-8DC9-F6457E3CE659}
 		{4F355A7C-583D-4B0A-8FC4-4E4443E9CA00} = {98583330-785B-4AD7-883F-D50E687AFFF5}
+		{AA70EF89-8668-462D-B948-C7C1DCBB8DD0} = {6E6A4B3B-FCB4-4AD7-8DC9-F6457E3CE659}
 		{4DE95DA9-1AC9-4F28-B59B-311F0566E462} = {98583330-785B-4AD7-883F-D50E687AFFF5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
