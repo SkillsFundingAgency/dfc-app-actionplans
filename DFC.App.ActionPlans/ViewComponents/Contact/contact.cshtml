@@ -2,7 +2,10 @@
 @addTagHelper *, DFC.Personalisation.CommonUI
 @model DFC.App.ActionPlans.Models.ContactDetails
 <aside class="app-sidebar" role="complementary">
-    <h2 class="govuk-heading-m">Urgent or general enquiries</h2>
-    <p class="font-small" style="margin-bottom: 0px;"><span class="bold-small">Call </span>@Model.Phone or <govukLink LinkText="use webchat" link-href="@Model.WebchatLink"></govukLink> </p>
+    <govukHeadingH2 text="Urgent or general enquiries" additional-class="govuk-heading-m"></govukHeadingH2>
+    <p class="font-small"><span class="bold-small">Call </span>
+        @Model.Phone or
+        <a href="@Model.WebchatLink" rel="noopener noreferrer" target="_blank">use webchat</a>
+        </p>
     <p class=" font-xsmall">@Model.ContactDaysTime</p>
 </aside>

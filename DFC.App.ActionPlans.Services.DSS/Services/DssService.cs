@@ -3,6 +3,7 @@
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections;
+
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -14,13 +15,16 @@ using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Services.DSS.Models;
 using DFC.Personalisation.Common.Net.RestClient;
 using Microsoft.Extensions.Logging;
+using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 using Action = DFC.App.ActionPlans.Services.DSS.Models.Action;
+using Interaction = DFC.App.ActionPlans.Services.DSS.Models.Interaction;
 
 namespace DFC.App.ActionPlans.Services.DSS.Services
 {
     public class DssService : IDssReader, IDssWriter
     {
+        const string VersionHeader = "version";
         private readonly IRestClient _restClient;
         private readonly IOptions<DssSettings> _dssSettings;
         private readonly ILogger<DssService> _logger;
@@ -57,13 +61,17 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             var request = CreateRequestMessage();
             try
             {
-                request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
-                return await _restClient.GetAsync<Customer>($"{_dssSettings.Value.CustomerApiUrl}{customerId}",
+                request.Headers.Add(VersionHeader, _dssSettings.Value.CustomerApiVersion);
+                var result =  await _restClient.GetAsync<Customer>($"{_dssSettings.Value.CustomerApiUrl}{customerId}",
                     request);
+                if (_restClient.LastResponse.StatusCode==HttpStatusCode.NoContent)
+                    throw new DssException("Customer not found");
+                
+                return result;
             }
             catch (Exception e)
             {
-                throw new DssException($"Failure Customer Details, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
+                throw new DssException($"Failure Get Customer Details, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
             }
             
         }
@@ -74,7 +82,7 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             
             try
             {
-                request.Headers.Add("version", _dssSettings.Value.SessionApiVersion);
+                request.Headers.Add(VersionHeader, _dssSettings.Value.SessionApiVersion);
                 var result = await _restClient.GetAsync<List<Session>>(
                     _dssSettings.Value.SessionApiUrl
                         .Replace("{customerId}", customerId)
@@ -106,7 +114,7 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
                     request);
                 
                 if (_restClient.LastResponse.StatusCode==HttpStatusCode.NoContent)
-                    throw new DssException("No Interaction found");
+                    throw new DssException("Interaction not found");
                 
                 return result;
             }   
@@ -122,7 +130,7 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             var request = CreateRequestMessage();
             try
             {
-                request.Headers.Add("version", _dssSettings.Value.ActionsApiVersion);
+                request.Headers.Add(VersionHeader, _dssSettings.Value.ActionsApiVersion);
                 var result = await _restClient.GetAsync<List<Models.Action>>(
                     _dssSettings.Value.ActionsApiUrl
                         .Replace("{customerId}", customerId)
@@ -145,9 +153,9 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             var request = CreateRequestMessage();
             try
             {
-                request.Headers.Add("version", _dssSettings.Value.GoalApiVersion);
+                request.Headers.Add(VersionHeader, _dssSettings.Value.GoalsApiVersion);
                 var result = await _restClient.GetAsync<List<Goal>>(
-                    _dssSettings.Value.ActionsApiUrl
+                    _dssSettings.Value.GoalsApiUrl
                         .Replace("{customerId}", customerId)
                         .Replace("{interactionId}", interactionId)
                         .Replace("{actionPlanId}", actionPlanId),
@@ -168,12 +176,12 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             var request = CreateRequestMessage();
             try
             {
-                request.Headers.Add("version", _dssSettings.Value.AdviserDetailsApiVersion);
+                request.Headers.Add(VersionHeader, _dssSettings.Value.AdviserDetailsApiVersion);
                 var result = await _restClient.GetAsync<Adviser>(
                     _dssSettings.Value.AdviserDetailsApiUrl
                         .Replace("{adviserDetailId}", adviserId), request);
                 if (_restClient.LastResponse.StatusCode==HttpStatusCode.NoContent)
-                    throw new DssException("No Adviser found");
+                    throw new DssException("Adviser Not found");
                 
                 return result;
             }
@@ -209,7 +217,7 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
                         JsonConvert.SerializeObject(updateActionPlan),
                         Encoding.UTF8,
                         MediaTypeNames.Application.Json);
-                    request.Headers.Add("version", _dssSettings.Value.ActionPlansApiVersion);
+                    request.Headers.Add(VersionHeader, _dssSettings.Value.ActionPlansApiVersion);
 
                     await _restClient.PatchAsync<ActionPlan>(_dssSettings.Value.ActionPlansApiUrl
                         .Replace("{customerId}",updateActionPlan.CustomerId.ToString())
@@ -232,26 +240,53 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             
         }
 
-        public async Task<ActionPlan> GetActionPlan(string customerId, string interactionId, string actionPlanId)
+        public async Task<ActionPlan> GetActionPlanDetails(string customerId, string interactionId, string actionPlanId)
         {
             
             var request = CreateRequestMessage();
             try
             {
-                request.Headers.Add("version", _dssSettings.Value.ActionPlansApiVersion);
+                request.Headers.Add(VersionHeader, _dssSettings.Value.ActionPlansApiVersion);
                 var result = await _restClient.GetAsync<ActionPlan>(_dssSettings.Value.ActionPlansApiUrl
                         .Replace("{customerId}",customerId)
                         .Replace("{interactionId}",interactionId)
                         .Replace("{actionPlanId}",actionPlanId)
                     , request);
                 
-                return _restClient.LastResponse.StatusCode == HttpStatusCode.NoContent
-                    ? new ActionPlan()
-                    : result;
+                if (_restClient.LastResponse.StatusCode==HttpStatusCode.NoContent)
+                    throw new DssException("Action Plan Not found");
+                
+                return result;
             }
             catch (Exception e)
             {
                 throw new DssException($"Failure Get Action Plan, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
+            }
+                
+            
+        }
+
+        public async Task<Goal> GetGoalDetails(string customerId, string interactionId, string actionPlanId, string goalId)
+        {
+            
+            var request = CreateRequestMessage();
+            try
+            {
+                request.Headers.Add(VersionHeader, _dssSettings.Value.GoalsApiVersion);
+                var result = await _restClient.GetAsync<Goal>(_dssSettings.Value.GoalsApiUrl
+                        .Replace("{customerId}",customerId)
+                        .Replace("{interactionId}",interactionId)
+                        .Replace("{actionPlanId}",actionPlanId) + "/" + goalId
+                    , request);
+                
+                if (_restClient.LastResponse.StatusCode==HttpStatusCode.NoContent)
+                    throw new DssException("Goal not found");
+                
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new DssException($"Failure Get Goal Details, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
             }
                 
             

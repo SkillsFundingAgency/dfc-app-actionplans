@@ -16,13 +16,9 @@ namespace DFC.App.ActionPlans.ViewModels
         }
         public List<Goal> Goals { get; set; }
         public List<Action> Actions { get; set;}
-        public Session LatestSession { get; set;}
-        public Interaction Interaction { get; set;}
-        public Adviser Adviser { get; set;}
+     
         public ActionPlan ActionPlan { get; set;}
-        public Guid CustomerId { get; set;}
-        public Guid ActionPlanId { get; set;}
-        public Guid InteractionId { get; set;}
+       
         
     }
 }
