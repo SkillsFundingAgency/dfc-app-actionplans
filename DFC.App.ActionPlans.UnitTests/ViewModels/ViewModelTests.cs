@@ -5,16 +5,20 @@ namespace DFC.App.ActionPlans.UnitTests.ViewModels
 {
     class ViewModelTests
     {
-        class ErrorViewModelTests
+        [Test]
+        public void ErrorViewModel()
         {
-            [Test]
-            public void ErrorViewModel()
-            {
-                var errorViewModel= new ErrorViewModel()
-                {
-                RequestId    = "id",
-                };
-            }
+            var errorViewModel = new ErrorViewModel() {RequestId = "id",};
         }
     }
+
+    class ErrorCompositeViewModelTests
+    {
+        [Test]
+        public void ErrorCompositeViewModelViewModel()
+        {
+            var errorViewModel = new ErrorCompositeViewModelTests();
+        }
+    }
+    
 }

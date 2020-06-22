@@ -11,7 +11,7 @@ namespace DFC.App.ActionPlans.Controllers
 {
     public class ViewGoalController : CompositeSessionController<ViewGoalCompositeViewModel>
     {
-        private IDssReader _dssReader;
+        private readonly IDssReader _dssReader;
         
         public ViewGoalController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader)
             :base(compositeSettings, dssReader)
