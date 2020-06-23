@@ -29,7 +29,7 @@ namespace DFC.App.ActionPlans.ViewModels
             public static PageId Home { get; } = new PageId("home");
             public static PageId Error { get; } = new PageId("error");
             public static PageId ViewGoal { get; } = new PageId("view-goal");
-
+            public static PageId ViewAction { get; } = new PageId("view-action");
 
         }
 

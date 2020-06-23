@@ -97,7 +97,7 @@
                                     <td class="govuk-table__cell">@action.DateActionAimsToBeCompletedBy.ToString("dd MMMM yyyy")</td>
                                     <td class="govuk-table__cell">@action.ActionStatus.GetDisplayName()</td>
                                     <td class="govuk-table__cell">
-                                        <govukLink id="@Model.GetElementId("govUkLink", $"action-plan-{action.ActionId}")" link-href="@Model.CompositeSettings.Path/actiondetails/@action.ActionId" LinkText="View"></govukLink>
+                                        <govukLink id="@Model.GetElementId("govUkLink", $"action-plan-{action.ActionId}")" link-href="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.ViewAction/@action.ActionPlanId/@Model.InteractionId/@action.ActionId" LinkText="View"></govukLink>
                                     </td>
                                 </tr>
                             }
