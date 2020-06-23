@@ -20,6 +20,24 @@
         "apimDSSApiKey": {
             "value": "not-a-real-key"
         },
+        "cosmosDBName": {
+            "value": "dfc-dev-app-sharedresources-cdb"
+        },
+        "cosmosDbKey": {
+            "value": "not-a-real-key"
+        },
+        "cosmosDbCollectionName": {
+            "value": "a-test-collection"
+        },
+        "CosmosDbResourceGroup": {
+            "value": "dfc-dev-app-sharedresources-rg"
+        },
+        "accountAppDatabaseNeedsCreation": {
+            "value": true
+        },
+        "accountAppDatabaseThroughput": {
+            "value": 2
+        },
         "AuthSettingsIssuer": {
             "value": "IAmAnIssuer"
         },
