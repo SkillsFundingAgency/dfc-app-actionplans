@@ -6,7 +6,7 @@ using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Models;
 using DFC.App.ActionPlans.ViewModels;
 
-namespace DFC.App.ActionPlans.Controllers
+namespace DFC.App.ActionPlans.ViewModels
 {
     public class ViewGoalCompositeViewModel:CompositeViewModel
     {

@@ -1,0 +1,63 @@
+﻿@using DFC.Personalisation.Common.Extensions
+@model DFC.App.ActionPlans.ViewModels.ViewActionCompositeViewModel
+<div class="govuk-main-wrapper">
+    <div class="govuk-width-container">
+        <div class="govuk-grid-row ">
+            <div class="govuk-grid-column-two-thirds">
+                <span class="govuk-caption-m">Action</span>
+                <govukHeadingH1 text="View or update action" additional-class="govuk-heading-xl"></govukHeadingH1>
+                <govukHeadingH2 text="Action type" additional-class="govuk-heading-s"></govukHeadingH2>
+                <p class="">@Model.Action.ActionType.GetDisplayName()</p>
+                <govukHeadingH2 text="Description" additional-class="govuk-heading-s govuk-!-margin-top-3"></govukHeadingH2>
+                <p>
+                    @Model.Action.ActionSummary
+                </p>
+                <govukHeadingH2 text="Links to help you with this action" additional-class="govuk-heading-s"></govukHeadingH2>
+                <p>@Model.Action.SignpostedToCategory -  @Model.Action.SignpostedTo</p>
+                <p class=" govuk-!-margin-top-6"><strong>Last updated: </strong>@Model.Action.LastModifiedDate.ToString("dd MMMM yyyy")</p>
+
+                <section>
+                    <h2 class="govuk-heading-m govuk-!-margin-top-6">Update this action</h2>
+                    <table class="govuk-table">
+
+                        <thead class="govuk-table__head">
+                            <tr class="govuk-table__row">
+                                <th scope="col" class="govuk-table__header"></th>
+                                <th scope="col" class="govuk-table__header"></th>
+                                <th scope="col" class="govuk-table__header"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="govuk-table__body">
+                            <tr class="govuk-table__row">
+                                <td class="govuk-table__cell">
+                                    <strong>Due on:</strong>
+                                </td>
+                                <td class="govuk-table__cell">
+                                    <span> @Model.Action.DateActionAimsToBeCompletedBy.ToString("dd MMMM yyyy")</span>
+                                </td>
+                                <td class="govuk-table__cell">
+                                    <a class="govuk-link" href="change-date.html">Change due date</a>
+                                </td>
+                            </tr>
+                            <tr class="govuk-table__row">
+                                <td class="govuk-table__cell">
+                                    <strong>Status:</strong>
+                                </td>
+                                <td class="govuk-table__cell">
+                                    <span class="">@Model.Action.ActionStatus.GetDisplayName()</span>
+                                </td>
+                                <td class="govuk-table__cell">
+                                    <a class="" href="change-status.html">Update status</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+            <div class="action-plan-secondary-content govuk-grid-column-one-third  ">
+                <partial name="~/ViewComponents/YourAdviser/youradvisor.cshtml" model="@Model.Adviser"/>
+                <partial name="~/ViewComponents/contact/contact.cshtml" model="@Model.ContactDetails"/>
+            </div>
+        </div>
+    </div>
+</div>

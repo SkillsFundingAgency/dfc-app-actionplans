@@ -25,6 +25,10 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
     public class DssService : IDssReader, IDssWriter
     {
         const string VersionHeader = "version";
+        const string CustomerIdTag = "{customerId}";
+        const string InteractionIdTag = "{interactionId}";
+        const string ActionPlanIdTag = "{actionPlanId}";
+            
         private readonly IRestClient _restClient;
         private readonly IOptions<DssSettings> _dssSettings;
         private readonly ILogger<DssService> _logger;
@@ -62,7 +66,7 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             try
             {
                 request.Headers.Add(VersionHeader, _dssSettings.Value.CustomerApiVersion);
-                var result =  await _restClient.GetAsync<Customer>($"{_dssSettings.Value.CustomerApiUrl}{customerId}",
+                var result =  await _restClient.GetAsync<Customer>($"{_dssSettings.Value.CustomerApiUrl}CustomerIdTag",
                     request);
                 if (_restClient.LastResponse.StatusCode==HttpStatusCode.NoContent)
                     throw new DssException("Customer not found");
@@ -85,8 +89,8 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
                 request.Headers.Add(VersionHeader, _dssSettings.Value.SessionApiVersion);
                 var result = await _restClient.GetAsync<List<Session>>(
                     _dssSettings.Value.SessionApiUrl
-                        .Replace("{customerId}", customerId)
-                        .Replace("{interactionId}", interactionId),
+                        .Replace(CustomerIdTag, customerId)
+                        .Replace(InteractionIdTag, interactionId),
                     request);
                 
                 if (_restClient.LastResponse.StatusCode==HttpStatusCode.NoContent)
@@ -109,8 +113,8 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             {
                 var result = await _restClient.GetAsync<Interaction>(
                     _dssSettings.Value.InteractionsApiUrl
-                        .Replace("{customerId}", customerId)
-                        .Replace("{interactionId}", interactionId),
+                        .Replace(CustomerIdTag, customerId)
+                        .Replace(InteractionIdTag, interactionId),
                     request);
                 
                 if (_restClient.LastResponse.StatusCode==HttpStatusCode.NoContent)
@@ -133,9 +137,9 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
                 request.Headers.Add(VersionHeader, _dssSettings.Value.ActionsApiVersion);
                 var result = await _restClient.GetAsync<List<Models.Action>>(
                     _dssSettings.Value.ActionsApiUrl
-                        .Replace("{customerId}", customerId)
-                        .Replace("{interactionId}", interactionId)
-                        .Replace("{actionPlanId}", actionPlanId),
+                        .Replace(CustomerIdTag, customerId)
+                        .Replace(InteractionIdTag, interactionId)
+                        .Replace(ActionPlanIdTag, actionPlanId),
                     request);
                 return _restClient.LastResponse.StatusCode == HttpStatusCode.NoContent
                     ? new List<Models.Action>()
@@ -156,9 +160,9 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
                 request.Headers.Add(VersionHeader, _dssSettings.Value.GoalsApiVersion);
                 var result = await _restClient.GetAsync<List<Goal>>(
                     _dssSettings.Value.GoalsApiUrl
-                        .Replace("{customerId}", customerId)
-                        .Replace("{interactionId}", interactionId)
-                        .Replace("{actionPlanId}", actionPlanId),
+                        .Replace(CustomerIdTag, customerId)
+                        .Replace(InteractionIdTag, interactionId)
+                        .Replace(ActionPlanIdTag, actionPlanId),
                     request);
                 return _restClient.LastResponse.StatusCode == HttpStatusCode.NoContent
                     ? new List<Goal>()
@@ -220,9 +224,9 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
                     request.Headers.Add(VersionHeader, _dssSettings.Value.ActionPlansApiVersion);
 
                     await _restClient.PatchAsync<ActionPlan>(_dssSettings.Value.ActionPlansApiUrl
-                        .Replace("{customerId}",updateActionPlan.CustomerId.ToString())
-                            .Replace("{interactionId}",updateActionPlan.InteractionId.ToString())
-                                .Replace("{actionPlanId}",updateActionPlan.ActionPlanId.ToString())
+                        .Replace(CustomerIdTag,updateActionPlan.CustomerId.ToString())
+                            .Replace(InteractionIdTag,updateActionPlan.InteractionId.ToString())
+                                .Replace(ActionPlanIdTag,updateActionPlan.ActionPlanId.ToString())
                          , request);
                 }
 
@@ -248,9 +252,9 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             {
                 request.Headers.Add(VersionHeader, _dssSettings.Value.ActionPlansApiVersion);
                 var result = await _restClient.GetAsync<ActionPlan>(_dssSettings.Value.ActionPlansApiUrl
-                        .Replace("{customerId}",customerId)
-                        .Replace("{interactionId}",interactionId)
-                        .Replace("{actionPlanId}",actionPlanId)
+                        .Replace(CustomerIdTag,customerId)
+                        .Replace(InteractionIdTag,interactionId)
+                        .Replace(ActionPlanIdTag,actionPlanId)
                     , request);
                 
                 if (_restClient.LastResponse.StatusCode==HttpStatusCode.NoContent)
@@ -274,9 +278,9 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             {
                 request.Headers.Add(VersionHeader, _dssSettings.Value.GoalsApiVersion);
                 var result = await _restClient.GetAsync<Goal>(_dssSettings.Value.GoalsApiUrl
-                        .Replace("{customerId}",customerId)
-                        .Replace("{interactionId}",interactionId)
-                        .Replace("{actionPlanId}",actionPlanId) + "/" + goalId
+                        .Replace(CustomerIdTag,customerId)
+                        .Replace(InteractionIdTag,interactionId)
+                        .Replace(ActionPlanIdTag,actionPlanId) + "/" + goalId
                     , request);
                 
                 if (_restClient.LastResponse.StatusCode==HttpStatusCode.NoContent)
@@ -287,6 +291,32 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             catch (Exception e)
             {
                 throw new DssException($"Failure Get Goal Details, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
+            }
+                
+            
+        }
+
+        public async Task<Action> GetActionDetails(string customerId, string interactionId, string actionPlanId, string goalId)
+        {
+            
+            var request = CreateRequestMessage();
+            try
+            {
+                request.Headers.Add(VersionHeader, _dssSettings.Value.ActionsApiVersion);
+                var result = await _restClient.GetAsync<Action>(_dssSettings.Value.ActionsApiUrl
+                        .Replace(CustomerIdTag,customerId)
+                        .Replace(InteractionIdTag,interactionId)
+                        .Replace(ActionPlanIdTag,actionPlanId) + "/" + goalId
+                    , request);
+                
+                if (_restClient.LastResponse.StatusCode==HttpStatusCode.NoContent)
+                    throw new DssException("Action not found");
+                
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new DssException($"Failure Get Action Details, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
             }
                 
             

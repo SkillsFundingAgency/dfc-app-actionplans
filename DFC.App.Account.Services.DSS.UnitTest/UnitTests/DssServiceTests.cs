@@ -165,7 +165,7 @@ namespace DFC.App.Account.Services.DSS.UnitTest
                 result.Should().NotBe(null);
             }
             [Test]
-            public async Task When_AdviserDetailsWithNoContent_Throw_Exception()
+            public async Task When_GoalDetailsWithNoContent_Throw_Exception()
             {
                 var restClient = Substitute.For<IRestClient>();
                 restClient.LastResponse = new RestClient.APIResponse(new HttpResponseMessage(HttpStatusCode.NoContent));
@@ -174,6 +174,30 @@ namespace DFC.App.Account.Services.DSS.UnitTest
                 DssService.Invoking(sut => sut.GetAdviserDetails("993cfb94-12b7-41c4-b32d-7be9331174f1"))
                     .Should().Throw<DssException>();
 
+            }
+        }
+    
+        public class GetActionDetails: DssTests
+        {
+            [SetUp]
+            public void Init()
+            {
+                base.Setup(DssHelpers.SuccessfulDssActionDetails());
+            }
+            [Test]
+            public async Task When_GetActionDetails_ReturnActionDetails()
+            {
+                var result = await DssService.GetActionDetails("customerId", "interactionId2","actionPlanId","goalId");
+                result.Should().NotBe(null);
+            }
+            [Test]
+            public async Task When_ActionDetailsWithNoContent_Throw_Exception()
+            {
+                var restClient = Substitute.For<IRestClient>();
+                restClient.LastResponse = new RestClient.APIResponse(new HttpResponseMessage(HttpStatusCode.NoContent));
+                DssService = new DssService(restClient, DssSettings, Logger);
+                DssService.Invoking(sut => sut.GetActionDetails("customerId", "interactionId2","actionPlanId","actionId"))
+                    .Should().Throw<DssException>();
             }
         }
         public class GetGoalDetails: DssTests

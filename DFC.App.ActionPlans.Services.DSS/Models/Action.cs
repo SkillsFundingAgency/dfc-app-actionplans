@@ -12,7 +12,7 @@ namespace DFC.App.ActionPlans.Services.DSS.Models
         public string ActionPlanId { get; set; }
         public DateTime DateActionAgreed { get; set; }
         public DateTime DateActionAimsToBeCompletedBy { get; set; }
-        public DateTime DateActionActuallyCompleted { get; set; }
+        public DateTime? DateActionActuallyCompleted { get; set; }
         public string ActionSummary { get; set; }
         public string SignpostedTo { get; set; }
         public object SignpostedToCategory { get; set; }
