@@ -2,7 +2,6 @@
 
 using Microsoft.Extensions.Options;
 using System;
-using System.Collections;
 
 using System.Collections.Generic;
 using System.Net;
@@ -15,7 +14,6 @@ using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Services.DSS.Models;
 using DFC.Personalisation.Common.Net.RestClient;
 using Microsoft.Extensions.Logging;
-using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 using Action = DFC.App.ActionPlans.Services.DSS.Models.Action;
 using Interaction = DFC.App.ActionPlans.Services.DSS.Models.Interaction;

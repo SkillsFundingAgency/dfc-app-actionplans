@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DFC.App.ActionPlans.Services.DSS.Enums
 {
 
-        public enum ActionType
+    public enum ActionType
         {
             [Display(Name = "Skills Health Check")]
             SkillsHealthCheck = 1,

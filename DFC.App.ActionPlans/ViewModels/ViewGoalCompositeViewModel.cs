@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DFC.App.ActionPlans.Models;
-using DFC.App.ActionPlans.Services.DSS.Models;
-using DFC.App.ActionPlans.ViewModels;
+﻿using DFC.App.ActionPlans.Models;
 
 namespace DFC.App.ActionPlans.ViewModels
 {
