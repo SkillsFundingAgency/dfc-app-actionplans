@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Moq;
 using Moq.Protected;
 
-namespace DFC.App.Account.Services.DSS.UnitTest.Helpers
+namespace DFC.App.ActionPlans.Services.DSS.UnitTest.Helpers
 {
       public class DssHelpers
     {

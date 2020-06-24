@@ -2,11 +2,10 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using DFC.App.Account.Services.DSS.UnitTest.Helpers;
-using DFC.App.ActionPlans.Services.DSS;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Services.DSS.Models;
 using DFC.App.ActionPlans.Services.DSS.Services;
+using DFC.App.ActionPlans.Services.DSS.UnitTest.Helpers;
 using DFC.Personalisation.Common.Net.RestClient;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -14,11 +13,11 @@ using NSubstitute;
 using NUnit.Framework;
 using FluentAssertions;
 
-namespace DFC.App.Account.Services.DSS.UnitTest
+namespace DFC.App.ActionPlans.Services.DSS.UnitTest
 {
     public abstract class DssTests
     {
-        protected IDssReader DssService;
+        protected DFC.App.ActionPlans.Services.DSS.Interfaces.IDssReader DssService;
         protected RestClient RestClient;
         protected ILogger<DssService> Logger;
         protected IOptions<DssSettings> DssSettings;
