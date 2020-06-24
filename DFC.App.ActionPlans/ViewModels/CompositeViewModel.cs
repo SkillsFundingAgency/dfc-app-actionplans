@@ -8,7 +8,6 @@ namespace DFC.App.ActionPlans.ViewModels
 {
     public abstract class CompositeViewModel
     {
-        private ContactDetails contactDetails = new ContactDetails();
         public static string AppTitle => "Action plans";
         public static string NcsBranding => "National Careers Service";
 
@@ -73,7 +72,7 @@ namespace DFC.App.ActionPlans.ViewModels
         public Session LatestSession { get; set;}
         public Interaction Interaction { get; set;}
         public Adviser Adviser { get; set;}
-        public ContactDetails ContactDetails { get => contactDetails; set => contactDetails = value; }
+        public ContactDetails ContactDetails { get; set; } = new ContactDetails();
         public string GetElementId(string elementName, string instanceName)
         {
             Throw.IfNullOrWhiteSpace(elementName, nameof(elementName));
