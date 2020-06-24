@@ -46,6 +46,11 @@ namespace DFC.App.Account.Services.DSS.UnitTest.Helpers
             return
                 "{\r\n  \"ActionPlanId\": \"a6676a45-7cd8-4257-96cb-bc9388f9c149\",\r\n  \"CustomerId\": \"53f904b3-77c8-4c94-9a15-c259b518336c\",\r\n  \"InteractionId\": \"2817ea6b-a1d6-4e1a-8eba-46b7d1a427ac\",\r\n  \"SessionId\": \"e3ebf979-4484-4f18-a08f-5f8a4fdde35a\",\r\n  \"SubcontractorId\": \"\",\r\n  \"DateActionPlanCreated\": \"2020-05-10T08:30:00+00:00\",\r\n  \"CustomerCharterShownToCustomer\": true,\r\n  \"DateAndTimeCharterShown\": \"2020-05-10T08:30:00+00:00\",\r\n  \"DateActionPlanSentToCustomer\": \"2020-05-10T08:30:00+00:00\",\r\n  \"ActionPlanDeliveryMethod\": 2,\r\n  \"DateActionPlanAcknowledged\": \"2020-06-15T07:55:00\",\r\n  \"CurrentSituation\": \"this is some text 1st ActionPlan\",\r\n  \"LastModifiedDate\": \"2020-06-17T09:50:05.4998502Z\",\r\n  \"LastModifiedTouchpointId\": \"0000000997\"\r\n}";
         }
+        public static string SuccessfulDssActionDetails()
+        {
+            return
+                "{\r\n  \"ActionId\": \"1681a3a1-87dc-4d1d-832f-af4ea1723a24\",\r\n  \"CustomerId\": \"53f904b3-77c8-4c94-9a15-c259b518336c\",\r\n  \"ActionPlanId\": \"a6676a45-7cd8-4257-96cb-bc9388f9c149\",\r\n  \"DateActionAgreed\": \"2018-06-21T07:20:00Z\",\r\n  \"DateActionAimsToBeCompletedBy\": \"2019-05-01T08:00:00+00:00\",\r\n  \"DateActionActuallyCompleted\": \"2019-05-01T14:38:00Z\",\r\n  \"ActionSummary\": \"this is some text\",\r\n  \"SignpostedTo\": \"ASIST Team (Apprenticeships)\",\r\n  \"ActionType\": 3,\r\n  \"ActionStatus\": 1,\r\n  \"PersonResponsible\": 1,\r\n  \"LastModifiedDate\": \"2020-06-05T08:37:18.8333351Z\",\r\n  \"LastModifiedTouchpointId\": \"9000000000\"\r\n}";
+        }
         public static Mock<HttpMessageHandler> GetMockMessageHandler(string contentToReturn = "{'Id':1,'Value':'1'}", HttpStatusCode statusToReturn = HttpStatusCode.OK)
         {
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Loose);

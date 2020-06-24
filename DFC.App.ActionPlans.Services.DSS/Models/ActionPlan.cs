@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DFC.App.ActionPlans.Services.DSS.Models
 {
@@ -17,7 +15,7 @@ namespace DFC.App.ActionPlans.Services.DSS.Models
         public DateTime DateAndTimeCharterShown { get; set; }
         public DateTime DateActionPlanSentToCustomer { get; set; }
         public string ActionPlanDeliveryMethod { get; set; }
-        public DateTime DateActionPlanAcknowledged { get; set; }
+        public DateTime? DateActionPlanAcknowledged { get; set; }
         public string CurrentSituation { get; set; }
         public DateTime LastModifiedDate { get; set; }
         public string LastModifiedTouchpointId { get; set; }

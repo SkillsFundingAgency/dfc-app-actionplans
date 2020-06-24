@@ -10,28 +10,27 @@ using Microsoft.Extensions.Options;
 
 namespace DFC.App.ActionPlans.Controllers
 {
-    public class ViewGoalController : CompositeSessionController<ViewGoalCompositeViewModel>
+    public class ViewActionController : CompositeSessionController<ViewActionCompositeViewModel>
     {
         private readonly IDssReader _dssReader;
-        
-        public ViewGoalController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader)
-            :base(compositeSettings, dssReader)
+
+        public ViewActionController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings,
+            IDssReader dssReader)
+            : base(compositeSettings, dssReader)
         {
             _dssReader = dssReader;
         }
-        
+
         //  [Authorize]
-        [Route("/body/view-goal/{actionPlanId}/{interactionId}/{goalId}")]
+        [Route("/body/view-action/{actionPlanId}/{interactionId}/{actionId}")]
         [HttpGet]
-        public async  Task<IActionResult> Body(Guid actionPlanId, Guid interactionId, Guid goalId)
+        public async Task<IActionResult> Body(Guid actionPlanId, Guid interactionId, Guid actionId)
         {
             var customer = await GetCustomerDetails();
             await LoadData(customer.CustomerId, actionPlanId, interactionId);
-            ViewModel.Goal = await _dssReader.GetGoalDetails(ViewModel.CustomerId.ToString(), ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString(),goalId.ToString());
+            ViewModel.Action = await _dssReader.GetActionDetails(ViewModel.CustomerId.ToString(),
+                ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString(), actionId.ToString());
             return await base.Body();
         }
-
-
-        
     }
 }

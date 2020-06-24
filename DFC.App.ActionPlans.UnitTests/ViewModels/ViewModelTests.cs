@@ -1,4 +1,5 @@
 ﻿using DFC.App.ActionPlans.Models;
+using DFC.App.ActionPlans.ViewModels;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -20,6 +21,14 @@ namespace DFC.App.ActionPlans.UnitTests.ViewModels
             var errorViewModel = new ErrorViewModel() {RequestId = ""};
             var  showRequestId = errorViewModel.ShowRequestId;
             showRequestId.Should().BeFalse();
+        }
+
+        [Test]
+        public void When_CompositeViewModelContactDetailsUsed_Return_CotactDetails()
+        {
+            ViewActionCompositeViewModel model = new ViewActionCompositeViewModel();
+            model.ContactDetails = new ContactDetails();
+            ContactDetails cd = model.ContactDetails;
         }
     }
 
