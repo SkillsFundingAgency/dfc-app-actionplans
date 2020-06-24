@@ -23,6 +23,24 @@
         "apimDSSApiKey": {
             "value": "__apimDSSApiKey__"
         },
+        "cosmosDBName": {
+            "value": "__appSharedCosmosDBName__"
+        },
+        "cosmosDbKey": {
+            "value": "__appSharedCosmosPrimaryKey__"
+        },
+        "CosmosDbResourceGroup": {
+            "value": "__appSharedResourceGroup__"
+        },
+        "cosmosDbCollectionName": {
+            "value": "__cosmosDbCollectionName__"
+        },
+        "accountAppDatabaseNeedsCreation": {
+            "value": __CosmosDbDatabaseDoesntExist__
+        },
+        "accountAppDatabaseThroughput": {
+            "value": __accountAppDatabaseThroughput__
+        },
         "AuthSettingsIssuer": {
             "value": "__AuthSettingsIssuer__"
         },
