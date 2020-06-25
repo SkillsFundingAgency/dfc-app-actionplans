@@ -315,8 +315,6 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             {
                 throw new DssException($"Failure Get Action Details, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
             }
-                
-            
         }
     }
 }
