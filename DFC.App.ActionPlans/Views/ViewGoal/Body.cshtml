@@ -28,7 +28,10 @@
                         <tr class="govuk-table__row">
                             <td class="govuk-table__cell"><strong>Due on:</strong></td>
                             <td class="govuk-table__cell"><span>@Model.Goal.DateGoalShouldBeCompletedBy.ToString("dd MMMM yyyy")</span></td>
-                            <td class="govuk-table__cell"><a class="govuk-link" href="change-date-goals.html">Change due date</a></td>
+                            <td class="govuk-table__cell">
+                                <govukLink id="@Model.GetElementId("govUkLink", $"change-due-date")" 
+                                           link-href="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.ChangeGoalDueDate/@Model.Goal.ActionPlanId/@Model.InteractionId/@Model.Goal.GoalId" LinkText="Change due date"></govukLink>
+                            </td>
                         </tr>
                         <tr class="govuk-table__row">
                             <td class="govuk-table__cell"><strong>Status:</strong></td>
