@@ -4,6 +4,7 @@
         "Layout": "FullWidth",
         "OfflineHtml": "<H2>Action Plans Service Unavailable</H2>",
         "IsOnline": true,
+		"PhaseBannerHtml":"<div class='govuk-phase-banner'><p class='govuk-phase-banner__content'><strong class='govuk-tag govuk-phase-banner__content__tag'>beta</strong><span class='govuk-phase-banner__text' id='PhaseBannerExplanation'>This is a new service &#8208; your <a class='govuk-link' href='#'>feedback</a> will help us to improve it.</span></p></div>",
         "Regions": [
             {
                 "PageRegion": 1,
