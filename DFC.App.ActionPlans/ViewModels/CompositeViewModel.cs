@@ -59,7 +59,6 @@ namespace DFC.App.ActionPlans.ViewModels
         public bool ShowBreadCrumb { get; set; }
         public CompositeSettings CompositeSettings { get; set; }
 
-        public ContactDetails ContactDetails = new ContactDetails();
         protected CompositeViewModel(PageId pageId, string pageHeading)
         {
             Id = pageId;
@@ -74,6 +73,7 @@ namespace DFC.App.ActionPlans.ViewModels
         public Session LatestSession { get; set;}
         public Interaction Interaction { get; set;}
         public Adviser Adviser { get; set;}
+        public ContactDetails ContactDetails { get; set; } = new ContactDetails();
         public string GetElementId(string elementName, string instanceName)
         {
             Throw.IfNullOrWhiteSpace(elementName, nameof(elementName));

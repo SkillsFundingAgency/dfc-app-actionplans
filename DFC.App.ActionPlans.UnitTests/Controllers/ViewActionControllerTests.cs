@@ -1,41 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
-using Dfc.App.ActionPlans.Controllers;
+using DFC.App.ActionPlans.Controllers;
 using DFC.App.ActionPlans.ViewModels;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Primitives;
 using NUnit.Framework;
 
 namespace DFC.App.ActionPlans.UnitTests.Controllers
 {
-    public class HomeControllerTests : BaseControllerTests
+    class ViewActionControllerTests : BaseControllerTests
     {
-       
-        private HomeController _controller;
+        private ViewActionController _controller;
 
         [SetUp]
         public void Init()
         {
-           
-            _controller = new HomeController(_logger, _compositeSettings, _dssReader,_dssWriter);
+            _controller = new ViewActionController(_logger, _compositeSettings, _dssReader);
             _controller.ControllerContext.HttpContext = new DefaultHttpContext();
-           
         }
 
-        [Test]
-        public void WhenHeadCalled_ReturnHtml()
-        {
-            var result = _controller.Head() as ViewResult;
-            var vm = new HeadViewModel {PageTitle = "Page Title",};
-            var pageTitle = vm.PageTitle;
-            result.Should().NotBeNull();
-            result.Should().BeOfType<ViewResult>();
-            result.ViewName.Should().BeNull();
-        }
+       
 
         [Test]
         public async Task WhenBodyCalled_ReturnHtml()
@@ -48,7 +36,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         [Test]
         public async Task WhenBodyCalledWithParameters_ReturnHtml()
         {
-            var result = await _controller.Body(new Guid(), new Guid()) as ViewResult;
+            var result = await _controller.Body(new Guid(), new Guid(), new Guid()) as ViewResult;
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
             result.ViewName.Should().BeNull();
@@ -106,33 +94,6 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             result.ViewName.Should().BeNull();
         }
 
-        [Test]
-        public void WhenErrorCalled_ReturnHtml()
-        {
-            var result = _controller.Error() as ViewResult;
-            result.Should().NotBeNull();
-            result.Should().BeOfType<ViewResult>();
-            result.ViewName.Should().BeNull();
-        }
-
-        [Test]
-        public async Task WhenBodyCalledWithFormDataAndActionPlanUpdated_ThenRedirectToBody()
-        {
-            var result = await _controller.Body(GetViewModel(), new FormCollection(new Dictionary<string, StringValues>
-            {
-                {"homeGovukCheckBoxAcceptplan", "on"}
-            })) as RedirectResult;
-
-            result.Url.Should().Contain("~/home");
-        }
-        
-
-        private HomeCompositeViewModel GetViewModel()
-        {
-            var homeCompositeViewModel = new HomeCompositeViewModel();
-            return homeCompositeViewModel;
-        }
+   
     }
 }
-
-
