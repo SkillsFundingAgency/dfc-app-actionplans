@@ -6,6 +6,7 @@ using Dfc.App.ActionPlans.Controllers;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -20,6 +21,13 @@ namespace DFC.App.ActionPlans.Controllers
             : base(compositeSettings, dssReader)
         {
             _dssReader = dssReader;
+        }
+
+        [Route("/body/")]
+        [HttpGet]
+        public async Task<IActionResult> Body(Guid actionPlanId, Guid interactionId)
+        {
+            return await base.Body();
         }
     }
 }
