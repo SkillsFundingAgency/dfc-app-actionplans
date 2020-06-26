@@ -46,6 +46,12 @@ namespace DFC.App.ActionPlans.Services.DSS.UnitTest.Helpers
             return
                 "{\r\n  \"ActionPlanId\": \"a6676a45-7cd8-4257-96cb-bc9388f9c149\",\r\n  \"CustomerId\": \"53f904b3-77c8-4c94-9a15-c259b518336c\",\r\n  \"InteractionId\": \"2817ea6b-a1d6-4e1a-8eba-46b7d1a427ac\",\r\n  \"SessionId\": \"e3ebf979-4484-4f18-a08f-5f8a4fdde35a\",\r\n  \"SubcontractorId\": \"\",\r\n  \"DateActionPlanCreated\": \"2020-05-10T08:30:00+00:00\",\r\n  \"CustomerCharterShownToCustomer\": true,\r\n  \"DateAndTimeCharterShown\": \"2020-05-10T08:30:00+00:00\",\r\n  \"DateActionPlanSentToCustomer\": \"2020-05-10T08:30:00+00:00\",\r\n  \"ActionPlanDeliveryMethod\": 2,\r\n  \"DateActionPlanAcknowledged\": \"2020-06-15T07:55:00\",\r\n  \"CurrentSituation\": \"this is some text 1st ActionPlan\",\r\n  \"LastModifiedDate\": \"2020-06-17T09:50:05.4998502Z\",\r\n  \"LastModifiedTouchpointId\": \"0000000997\"\r\n}";
         }
+
+        public static string SuccessfulUpdateGoal()
+        {
+            return
+                "{\r\n  \"GoalId\": \"db02934b-9858-418d-a064-e0449ee095f6\",\r\n  \"CustomerId\": \"53f904b3-77c8-4c94-9a15-c259b518336c\",\r\n  \"ActionPlanId\": \"a6676a45-7cd8-4257-96cb-bc9388f9c149\",\r\n  \"DateGoalCaptured\": \"2018-06-21T11:31:00Z\",\r\n  \"DateGoalShouldBeCompletedBy\": \"2020-06-23T12:01:00\",\r\n  \"DateGoalAchieved\": \"2018-06-22T19:53:00Z\",\r\n  \"GoalSummary\": \"this is some text\",\r\n  \"GoalType\": 1,\r\n  \"GoalStatus\": 2,\r\n  \"LastModifiedDate\": \"2020-06-26T08:52:09.4860557Z\",\r\n  \"LastModifiedBy\": \"0000000997\"\r\n}";
+        }
         public static string SuccessfulDssActionDetails()
         {
             return

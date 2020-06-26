@@ -6,5 +6,6 @@ namespace DFC.App.ActionPlans.Services.DSS.Interfaces
     public interface IDssWriter
     {
         Task UpdateActionPlan(UpdateActionPlan updateActionPlan);
+        Task UpdateGoal(UpdateGoal updateGoal);
     }
 }

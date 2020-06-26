@@ -20,10 +20,11 @@
     <div class="govuk-width-container">
         <div class="govuk-grid-row ">
             <div class="govuk-grid-column-two-thirds ">
-                <form id="@Model.GetElementId("form", "Form")"  action="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.ChangeGoalDueDate/" class="govuk-form-group" method="post">
+                <form id="@Model.GetElementId("form", "Form")" action="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.ChangeGoalDueDate/" class="govuk-form-group" method="post">
                     @Html.HiddenFor(m => m.ActionPlanId)
                     @Html.HiddenFor(m => m.InteractionId)
-                   
+                    @Html.HiddenFor(m => m.Goal.GoalId)
+                    @Html.HiddenFor(m => m.CustomerId)
                     <div class="govuk-form-group">
                         <fieldset class="govuk-fieldset" role="group" aria-describedby="date-goal-should-be-completed-by-hint">
                             <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
@@ -37,27 +38,27 @@
                                 <div class="govuk-date-input__item">
                                     <div class="govuk-form-group">
                                         <govukLabel for="Day" text="Day" additional-class=""></govukLabel>
-                                        <govukTextInput id="Day" additional-class="govuk-date-input__input govuk-input--width-2"   has-error="@(!ViewData.ModelState.IsValid)"></govukTextInput>
+                                        <govukTextInput id="Day" additional-class="govuk-date-input__input govuk-input--width-2" has-error="@(!ViewData.ModelState.IsValid)"></govukTextInput>
                                     </div>
                                 </div>
                                 <div class="govuk-date-input__item">
                                     <div class="govuk-form-group">
                                         <govukLabel for="Month" text="Month" additional-class=""></govukLabel>
-                                        <govukTextInput id="Month"  additional-class="govuk-date-input__input govuk-input--width-2" has-error="@(!ViewData.ModelState.IsValid)"></govukTextInput>
+                                        <govukTextInput id="Month" additional-class="govuk-date-input__input govuk-input--width-2" has-error="@(!ViewData.ModelState.IsValid)"></govukTextInput>
 
                                     </div>
                                 </div>
                                 <div class="govuk-date-input__item">
                                     <div class="govuk-form-group">
-                                        <govukLabel for="Year" text="Year"  additional-class=""></govukLabel>
-                                        <govukTextInput id="Year"  additional-class="govuk-date-input__input govuk-input--width-4" has-error="@(!ViewData.ModelState.IsValid)">
+                                        <govukLabel for="Year" text="Year" additional-class=""></govukLabel>
+                                        <govukTextInput id="Year" additional-class="govuk-date-input__input govuk-input--width-4" has-error="@(!ViewData.ModelState.IsValid)">
                                         </govukTextInput>
                                     </div>
                                 </div>
                             </div>
                         </fieldset>
                     </div>
-                    <br/>
+                    <br />
                     <p>We will tell your adviser about the update for this goal.</p>
                     <govukButton id="@Model.GetElementId("govukSecondaryButton", "Continue");" text="Continue"></govukButton>
                 </form>

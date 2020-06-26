@@ -193,54 +193,7 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             
         }
 
-        private HttpRequestMessage CreateRequestMessage()
-        {
-            var request = new HttpRequestMessage();
-            request.Headers.Add("Ocp-Apim-Subscription-Key", _dssSettings.Value.ApiKey);
-            request.Headers.Add("TouchpointId", _dssSettings.Value.TouchpointId);
-
-            return request;
-        }
-
-        public async Task UpdateActionPlan(UpdateActionPlan updateActionPlan)
-        {
-            
-            if (updateActionPlan == null)
-                throw new DssException($"Failure Update Action Plan, No data provided");
-
-            try
-            {
-
-                ActionPlan result;
-                using (var request = CreateRequestMessage())
-                {
-                    request.Content = new StringContent(
-                        JsonConvert.SerializeObject(updateActionPlan),
-                        Encoding.UTF8,
-                        MediaTypeNames.Application.Json);
-                    request.Headers.Add(VersionHeader, _dssSettings.Value.ActionPlansApiVersion);
-
-                    await _restClient.PatchAsync<ActionPlan>(_dssSettings.Value.ActionPlansApiUrl
-                        .Replace(CustomerIdTag,updateActionPlan.CustomerId.ToString())
-                            .Replace(InteractionIdTag,updateActionPlan.InteractionId.ToString())
-                                .Replace(ActionPlanIdTag,updateActionPlan.ActionPlanId.ToString())
-                         , request);
-                }
-
-                if (!_restClient.LastResponse.IsSuccess)
-                {
-                    throw new DssException($"Failure Update Action Plan, No data provided -Response {_restClient.LastResponse.Content} ");
-                }
-
-                
-            }
-            catch (Exception e)
-            {
-                throw new DssException($"Failure Update Action Plan, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
-            }
-            
-        }
-
+        
         public async Task<ActionPlan> GetActionPlanDetails(string customerId, string interactionId, string actionPlanId)
         {
             
@@ -316,5 +269,94 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
                 throw new DssException($"Failure Get Action Details, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
             }
         }
+
+
+        public async Task UpdateActionPlan(UpdateActionPlan updateActionPlan)
+        {
+            
+            if (updateActionPlan == null)
+                throw new DssException($"Failure Update Action Plan, No data provided");
+
+            try
+            {
+
+                ActionPlan result;
+                using (var request = CreateRequestMessage())
+                {
+                    request.Content = new StringContent(
+                        JsonConvert.SerializeObject(updateActionPlan),
+                        Encoding.UTF8,
+                        MediaTypeNames.Application.Json);
+                    request.Headers.Add(VersionHeader, _dssSettings.Value.ActionPlansApiVersion);
+
+                    await _restClient.PatchAsync<ActionPlan>(_dssSettings.Value.ActionPlansApiUrl
+                            .Replace(CustomerIdTag,updateActionPlan.CustomerId.ToString())
+                            .Replace(InteractionIdTag,updateActionPlan.InteractionId.ToString())
+                            .Replace(ActionPlanIdTag,updateActionPlan.ActionPlanId.ToString())
+                        , request);
+                }
+
+                if (!_restClient.LastResponse.IsSuccess)
+                {
+                    throw new DssException($"Failure Update Action Plan - Response {_restClient.LastResponse.Content} ");
+                }
+
+                
+            }
+            catch (Exception e)
+            {
+                throw new DssException($"Failure Update Action Plan, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
+            }
+            
+        }
+
+        public async Task UpdateGoal(UpdateGoal updateGoal)
+        {
+            
+            if (updateGoal == null)
+                throw new DssException($"Failure Update Goal, No data provided");
+
+            try
+            {
+
+                ActionPlan result;
+                using (var request = CreateRequestMessage())
+                {
+                    request.Content = new StringContent(
+                        JsonConvert.SerializeObject(updateGoal),
+                        Encoding.UTF8,
+                        MediaTypeNames.Application.Json);
+                    request.Headers.Add(VersionHeader, _dssSettings.Value.GoalsApiVersion);
+
+                    await _restClient.PatchAsync<Goal>(_dssSettings.Value.GoalsApiUrl
+                            .Replace(CustomerIdTag,updateGoal.CustomerId.ToString())
+                            .Replace(InteractionIdTag,updateGoal.InteractionId.ToString())
+                            .Replace(ActionPlanIdTag,updateGoal.ActionPlanId.ToString()) + "/" + updateGoal.GoalId
+                        , request);
+                }
+
+                if (_restClient.LastResponse.StatusCode==HttpStatusCode.NoContent)
+                {
+                    throw new DssException($"Failure Update Goal - Response {_restClient.LastResponse.Content} ");
+                }
+
+                
+            }
+            catch (Exception e)
+            {
+                throw new DssException($"Failure Update Action Plan, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
+            }
+            
+        }
+        private HttpRequestMessage CreateRequestMessage()
+        {
+            var request = new HttpRequestMessage();
+            request.Headers.Add("Ocp-Apim-Subscription-Key", _dssSettings.Value.ApiKey);
+            request.Headers.Add("TouchpointId", _dssSettings.Value.TouchpointId);
+
+            return request;
+        }
+
+
     }
 }
