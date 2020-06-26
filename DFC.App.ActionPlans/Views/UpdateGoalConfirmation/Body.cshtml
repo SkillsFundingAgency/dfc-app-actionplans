@@ -1,0 +1,15 @@
+﻿@using DFC.Personalisation.Common.Extensions
+@model UpdateGoalConfirmationCompositeViewModel
+<div class="govuk-main-wrapper">
+    <div class="govuk-width-container">
+        <div class="govuk-grid-row ">
+            <div class="govuk-grid-column-two-thirds">
+               
+            </div>
+            <div class="action-plan-secondary-content govuk-grid-column-one-third  ">
+                <partial name="~/ViewComponents/YourAdviser/youradvisor.cshtml" model="@Model.Adviser"/>
+                <partial name="~/ViewComponents/contact/contact.cshtml" model="@Model.ContactDetails"/>
+            </div>
+        </div>
+    </div>
+</div>

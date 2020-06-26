@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using DFC.App.ActionPlans.Helpers;
+using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Models;
 
 namespace DFC.App.ActionPlans.ViewModels
@@ -21,14 +22,6 @@ namespace DFC.App.ActionPlans.ViewModels
         
         public String ErrorMessage { get; set; } = "Entered due date is in the past or invalid";
 
-        [RegularExpression(RegexPatterns.Day, ErrorMessage = "Day must be a number between 1 and 31")]
-        [Required]
-        public string Day { get; set; }
-        [Required]
-        [RegularExpression(RegexPatterns.Month, ErrorMessage = "Month must be a number between 1 and 12")]
-        public string Month { get; set; }
-        [Required]
-        [RegularExpression(RegexPatterns.Numeric, ErrorMessage = "Year must be a number")]
-        public string Year { get; set; }
+        public SplitDate DateGoalShouldBeCompletedBy { get; set; }
     }
 }

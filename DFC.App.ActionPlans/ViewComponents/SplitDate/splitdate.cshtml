@@ -1,0 +1,24 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, DFC.Personalisation.CommonUI
+@model DFC.App.ActionPlans.Models.SplitDate
+
+<div class="govuk-date-input__item">
+    <div class="govuk-form-group">
+        <govukLabel for="@nameof(Model.Day)" text="Day" additional-class=""></govukLabel>
+        <govukTextInput id="@nameof(Model.Day)" additional-class="govuk-date-input__input govuk-input--width-2" has-error="@(!ViewData.ModelState.IsValid)"></govukTextInput>
+    </div>
+</div>
+<div class="govuk-date-input__item">
+    <div class="govuk-form-group">
+        <govukLabel for="@nameof(Model.Month)" text="Month" additional-class=""></govukLabel>
+        <govukTextInput id="@nameof(Model.Month)" additional-class="govuk-date-input__input govuk-input--width-2" has-error="@(!ViewData.ModelState.IsValid)"></govukTextInput>
+
+    </div>
+</div>
+<div class="govuk-date-input__item">
+    <div class="govuk-form-group">
+        <govukLabel for="@nameof(Model.Year)" text="Year" additional-class=""></govukLabel>
+        <govukTextInput id="@nameof(Model.Year)" additional-class="govuk-date-input__input govuk-input--width-4" has-error="@(!ViewData.ModelState.IsValid)">
+        </govukTextInput>
+    </div>
+</div>

@@ -34,27 +34,10 @@
                                 For example, 12 9 2020
                             </span>
                             <govukTextInputError Id="@dayInputError" Text="@Model.ErrorMessage" hidden="@(ViewData.ModelState.IsValid)"></govukTextInputError>
-                            <div class="govuk-date-input @(ViewData.ModelState.IsValid?"":"govuk-form-group--error")" id="date-goal-should-be-completed-by">
-                                <div class="govuk-date-input__item">
-                                    <div class="govuk-form-group">
-                                        <govukLabel for="Day" text="Day" additional-class=""></govukLabel>
-                                        <govukTextInput id="Day" additional-class="govuk-date-input__input govuk-input--width-2" has-error="@(!ViewData.ModelState.IsValid)"></govukTextInput>
-                                    </div>
-                                </div>
-                                <div class="govuk-date-input__item">
-                                    <div class="govuk-form-group">
-                                        <govukLabel for="Month" text="Month" additional-class=""></govukLabel>
-                                        <govukTextInput id="Month" additional-class="govuk-date-input__input govuk-input--width-2" has-error="@(!ViewData.ModelState.IsValid)"></govukTextInput>
-
-                                    </div>
-                                </div>
-                                <div class="govuk-date-input__item">
-                                    <div class="govuk-form-group">
-                                        <govukLabel for="Year" text="Year" additional-class=""></govukLabel>
-                                        <govukTextInput id="Year" additional-class="govuk-date-input__input govuk-input--width-4" has-error="@(!ViewData.ModelState.IsValid)">
-                                        </govukTextInput>
-                                    </div>
-                                </div>
+                            <div class="govuk-date-input @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")" id="date-goal-should-be-completed-by">
+                                DateGoalShouldBeCompletedBy
+                                <partial name="~/ViewComponents/SplitDate/splitdate.cshtml" model="@Model.DateGoalShouldBeCompletedBy" />
+                               
                             </div>
                         </fieldset>
                     </div>

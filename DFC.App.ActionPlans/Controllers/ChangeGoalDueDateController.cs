@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Dfc.App.ActionPlans.Controllers;
+using DFC.App.ActionPlans.Helpers;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Services.DSS.Models;
@@ -11,6 +13,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using NSubstitute.Proxies.CastleDynamicProxy;
 
 namespace DFC.App.ActionPlans.Controllers
 {
@@ -18,7 +21,7 @@ namespace DFC.App.ActionPlans.Controllers
     {
         
             private readonly IDssWriter _dssWriter;
-        
+
             public ChangeGoalDueDateController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter)
                 :base(compositeSettings, dssReader)
             {
@@ -40,26 +43,33 @@ namespace DFC.App.ActionPlans.Controllers
 
             [Route("/body/change-goal-due-date")]
             [HttpPost]
-            public async  Task<IActionResult> Body(ChangeGoalDueDateCompositeViewModel model)
+            public async  Task<IActionResult> Body(ChangeGoalDueDateCompositeViewModel model, IFormCollection formCollection)
             {
+
+                #region Setup ViewModel
 
                 ViewModel.ActionPlanId = model.ActionPlanId;
                 ViewModel.InteractionId = model.InteractionId;
-                ViewModel.Day = model.Day;
-                ViewModel.Month = model.Month;
-                ViewModel.Year = model.Year;
-
-                if (ModelState.IsValid)
+                ViewModel.Goal = new Goal(){GoalId = model.Goal.GoalId};
+                ViewModel.DateGoalShouldBeCompletedBy = new SplitDate()
                 {
-                    DateTime dateValue;
-                    if (DateTime.TryParse($"{model.Day}/{model.Month}/{model.Year}",out dateValue))
+                    Day = formCollection["Day"],
+                    Month = formCollection["Month"],
+                    Year = formCollection["Year"]
+                };
+
+                #endregion
+
+                DateTime dateValue;
+                bool isValidDueDate = Validate.CheckValidDueDate(ViewModel.DateGoalShouldBeCompletedBy, out dateValue);
+                {
+                    if (isValidDueDate)
                     {
-                        if (dateValue >= DateTime.Now.Date)
-                        {
-                            await UpdateGoal(model, dateValue);
-                        }
+                        await UpdateGoal(model, dateValue);
+                        return RedirectTo("UpdateGoalConfirmation");
                     }
                 }
+
 
                 ModelState.Clear(); //Remove model binding errors as we will check if the date is valid  or not.
                 ModelState.AddModelError(string.Empty, model.ErrorMessage);
