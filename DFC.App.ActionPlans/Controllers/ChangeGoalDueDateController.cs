@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using Dfc.App.ActionPlans.Controllers;
 using DFC.App.ActionPlans.Helpers;
 using DFC.App.ActionPlans.Models;
@@ -13,7 +10,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using NSubstitute.Proxies.CastleDynamicProxy;
 
 namespace DFC.App.ActionPlans.Controllers
 {
@@ -62,15 +58,13 @@ namespace DFC.App.ActionPlans.Controllers
 
                 DateTime dateValue;
                 bool isValidDueDate = Validate.CheckValidDueDate(ViewModel.DateGoalShouldBeCompletedBy, out dateValue);
+                
+                if (isValidDueDate)
                 {
-                    if (isValidDueDate)
-                    {
-                        await UpdateGoal(model, dateValue);
-                        return RedirectTo("UpdateGoalConfirmation");
-                    }
+                    await UpdateGoal(model, dateValue);
+                    return RedirectTo("UpdateGoalConfirmation");
                 }
-
-
+                
                 ModelState.Clear(); //Remove model binding errors as we will check if the date is valid  or not.
                 ModelState.AddModelError(string.Empty, model.ErrorMessage);
                    
