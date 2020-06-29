@@ -98,7 +98,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         }
         
         [Test]
-        public async Task WhenBodyCalledWithBlankFormDataAndGoalUpdated_ThenReturnToBody()
+        public async Task WhenBodyCalledWithBlankDateAndGoalUpdated_ThenReturnToBodyWithError()
         {
             var result = await _controller.Body(GetViewModel(), new FormCollection(new Dictionary<string, StringValues>
             {
@@ -116,6 +116,39 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             
         }
 
+        [Test]
+        public async Task WhenBodyCalledWithInvalidDateAndGoalUpdated_ThenReturnToBodyWithError()
+        {
+            var result = await _controller.Body(GetViewModel(), new FormCollection(new Dictionary<string, StringValues>
+            {
+                {"Day", "1"},
+                {"Month", "31"},
+                {"Year", "2000"}
+            })) as ViewResult;;
+
+            result.Should().NotBeNull();
+            result.Should().BeOfType<ViewResult>();
+            result.ViewName.Should().BeNull();
+            var model = result.ViewData.Model as ChangeGoalDueDateCompositeViewModel;
+            result.ViewData.ModelState.IsValid.Should().BeFalse();
+        }
+
+        [Test]
+        public async Task WhenBodyCalledWithHisotricDateAndGoalUpdated_ThenReturnToBodyWithError()
+        {
+            var result = await _controller.Body(GetViewModel(), new FormCollection(new Dictionary<string, StringValues>
+            {
+                {"Day", "1"},
+                {"Month", "12"},
+                {"Year", "2000"}
+            })) as ViewResult;;
+
+            result.Should().NotBeNull();
+            result.Should().BeOfType<ViewResult>();
+            result.ViewName.Should().BeNull();
+            var model = result.ViewData.Model as ChangeGoalDueDateCompositeViewModel;
+            result.ViewData.ModelState.IsValid.Should().BeFalse();
+        }
         private ChangeGoalDueDateCompositeViewModel GetViewModel()
         {
             var changeGoalDueDateCompositeViewModel = new ChangeGoalDueDateCompositeViewModel()
