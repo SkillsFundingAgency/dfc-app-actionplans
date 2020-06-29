@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Dfc.App.ActionPlans.Controllers;
+using DFC.App.ActionPlans.Extensions;
 using DFC.App.ActionPlans.Helpers;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
@@ -56,15 +57,31 @@ namespace DFC.App.ActionPlans.Controllers
 
                 #endregion
 
-                DateTime dateValue;
-                bool isValidDueDate = Validate.CheckValidDueDate(ViewModel.DateGoalShouldBeCompletedBy, out dateValue);
-                
-                if (isValidDueDate)
+                if (!ViewModel.DateGoalShouldBeCompletedBy.isEmpty())
                 {
-                    await UpdateGoal(model, dateValue);
-                    return RedirectTo("UpdateGoalConfirmation");
+
+                    DateTime dateValue;
+                    if (Validate.CheckValidSplitDate(ViewModel.DateGoalShouldBeCompletedBy, out dateValue))
+                    {
+
+                        if (Validate.CheckValidDueDate(ViewModel.DateGoalShouldBeCompletedBy, out dateValue))
+                        {
+                            await UpdateGoal(model, dateValue);
+                            return RedirectTo("UpdateGoalConfirmation");
+                        }
+
+                        model.ErrorMessage = "The goal due date must be today or in the future";
+                    }
+                    else
+                    {
+                        model.ErrorMessage = "The goal due date must be a real date";
+                    }
                 }
-                
+                else
+                {
+                    model.ErrorMessage = "Enter the date that you would like to achieve this goal";
+                }
+
                 ModelState.Clear(); //Remove model binding errors as we will check if the date is valid  or not.
                 ModelState.AddModelError(string.Empty, model.ErrorMessage);
                    

@@ -14,7 +14,7 @@ namespace DFC.App.ActionPlans.ViewModels
 
         public Goal Goal{ get; set; }
         
-        public String ErrorMessage { get; set; } = "Entered due date is in the past or invalid";
+        public String ErrorMessage { get; set; } = "";
 
         public SplitDate DateGoalShouldBeCompletedBy { get; set; }
     }
