@@ -5,20 +5,20 @@
 <div class="govuk-date-input__item">
     <div class="govuk-form-group">
         <govukLabel for="@nameof(Model.Day)" text="Day" additional-class=""></govukLabel>
-        <govukTextInput id="@nameof(Model.Day)" additional-class="govuk-date-input__input govuk-input--width-2" has-error="@(!ViewData.ModelState.IsValid)"></govukTextInput>
+        <govukTextInput id="@nameof(Model.Day)" value="@Model.Day" additional-class="govuk-date-input__input govuk-input--width-2" has-error="@(!ViewData.ModelState.IsValid)"></govukTextInput>
     </div>
 </div>
 <div class="govuk-date-input__item">
     <div class="govuk-form-group">
         <govukLabel for="@nameof(Model.Month)" text="Month" additional-class=""></govukLabel>
-        <govukTextInput id="@nameof(Model.Month)" additional-class="govuk-date-input__input govuk-input--width-2" has-error="@(!ViewData.ModelState.IsValid)"></govukTextInput>
+        <govukTextInput id="@nameof(Model.Month)" value="@Model.Month" additional-class="govuk-date-input__input govuk-input--width-2" has-error="@(!ViewData.ModelState.IsValid)"></govukTextInput>
 
     </div>
 </div>
 <div class="govuk-date-input__item">
     <div class="govuk-form-group">
         <govukLabel for="@nameof(Model.Year)" text="Year" additional-class=""></govukLabel>
-        <govukTextInput id="@nameof(Model.Year)" additional-class="govuk-date-input__input govuk-input--width-4" has-error="@(!ViewData.ModelState.IsValid)">
+        <govukTextInput id="@nameof(Model.Year)" value="@Model.Year" additional-class="govuk-date-input__input govuk-input--width-4" has-error="@(!ViewData.ModelState.IsValid)">
         </govukTextInput>
     </div>
 </div>

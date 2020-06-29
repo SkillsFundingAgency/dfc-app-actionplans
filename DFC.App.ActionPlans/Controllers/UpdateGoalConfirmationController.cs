@@ -12,16 +12,22 @@ namespace DFC.App.ActionPlans.Controllers
 {
     public class UpdateGoalConfirmationController : CompositeSessionController<UpdateGoalConfirmationCompositeViewModel>
     {
+        private readonly IDssReader _dssReader;
         public UpdateGoalConfirmationController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings,
             IDssReader dssReader)
             : base(compositeSettings, dssReader)
         {
+            _dssReader = dssReader;
         }
 
-        [Route("/body/")]
+        
+        [Route("/body/update-goal-confirmation/{actionPlanId}/{interactionId}/{goalId}")]
         [HttpGet]
-        public async Task<IActionResult> Body(Guid actionPlanId, Guid interactionId)
+        public async  Task<IActionResult> Body(Guid actionPlanId, Guid interactionId, Guid goalId)
         {
+            var customer = await GetCustomerDetails();
+            await LoadData(customer.CustomerId, actionPlanId, interactionId);
+            ViewModel.Goal = await _dssReader.GetGoalDetails(ViewModel.CustomerId.ToString(), ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString(),goalId.ToString());
             return await base.Body();
         }
     }

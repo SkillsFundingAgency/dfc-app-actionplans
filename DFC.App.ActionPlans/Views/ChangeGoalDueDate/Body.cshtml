@@ -1,4 +1,5 @@
-﻿@model DFC.App.ActionPlans.ViewModels.ChangeGoalDueDateCompositeViewModel
+﻿@using DFC.App.ActionPlans.Models
+@model DFC.App.ActionPlans.ViewModels.ChangeGoalDueDateCompositeViewModel
 @{
     var dayInputElement = @Model.GetElementId("input", "Day");
     var dayInputError = Model.GetElementId("govukTextInputError", "DayInpuError");
@@ -33,7 +34,7 @@
                             <govukTextInputError Id="@dayInputError" Text="@Model.ErrorMessage" hidden="@(ViewData.ModelState.IsValid)"></govukTextInputError>
                             <div class="govuk-date-input @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")" id="date-goal-should-be-completed-by">
                                 DateGoalShouldBeCompletedBy
-                                <partial name="~/ViewComponents/SplitDate/splitdate.cshtml" model="@Model.DateGoalShouldBeCompletedBy" />
+                                <partial name="~/ViewComponents/SplitDate/splitdate.cshtml" model="@Model.DateGoalShouldBeCompletedBy??new SplitDate()" />
                                
                             </div>
                         </fieldset>
