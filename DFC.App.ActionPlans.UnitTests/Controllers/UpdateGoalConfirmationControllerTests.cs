@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using DFC.App.ActionPlans.Controllers;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
@@ -21,9 +22,9 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         }
 
         [Test]
-        public async Task WhenBodyCalled_ReturnHtml()
+        public async Task WhenBodyCalledWithParameters_ReturnHtml()
         {
-            var result = await _controller.Body() as ViewResult;
+            var result = await _controller.Body(new Guid(), new Guid()) as ViewResult;
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
             result.ViewName.Should().BeNull();

@@ -1,7 +1,4 @@
-﻿@using DFC.Personalisation.Common.Extensions
-@using System.Web.WebPages.Html
-@using Microsoft.AspNetCore.Mvc.ModelBinding
-@model DFC.App.ActionPlans.ViewModels.ChangeGoalDueDateCompositeViewModel
+﻿@model DFC.App.ActionPlans.ViewModels.ChangeGoalDueDateCompositeViewModel
 @{
     var dayInputElement = @Model.GetElementId("input", "Day");
     var dayInputError = Model.GetElementId("govukTextInputError", "DayInpuError");

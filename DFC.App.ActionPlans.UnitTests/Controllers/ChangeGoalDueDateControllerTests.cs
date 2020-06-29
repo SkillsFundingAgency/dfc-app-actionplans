@@ -97,7 +97,24 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             result.Url.Should().Contain("UpdateGoalConfirmation");
         }
         
-        
+        [Test]
+        public async Task WhenBodyCalledWithBlankFormDataAndGoalUpdated_ThenReturnToBody()
+        {
+            var result = await _controller.Body(GetViewModel(), new FormCollection(new Dictionary<string, StringValues>
+            {
+                {"Day", ""},
+                {"Month", ""},
+                {"Year", ""}
+            })) as ViewResult;;
+
+          
+            result.Should().NotBeNull();
+            result.Should().BeOfType<ViewResult>();
+            result.ViewName.Should().BeNull();
+            var model = result.ViewData.Model as ChangeGoalDueDateCompositeViewModel;
+            result.ViewData.ModelState.IsValid.Should().BeFalse();
+            
+        }
 
         private ChangeGoalDueDateCompositeViewModel GetViewModel()
         {
