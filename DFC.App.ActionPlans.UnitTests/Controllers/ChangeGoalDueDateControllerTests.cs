@@ -42,7 +42,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         [Test]
         public async Task WhenBodyCalled_ReturnHtml()
         {
-            var result = await _controller.Body() as ViewResult;
+            var result = await _controller.Body(new Guid(), new Guid(), new Guid()) as ViewResult;
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
             result.ViewName.Should().BeNull();
@@ -57,14 +57,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             result.ViewName.Should().BeNull();
         }
 
-        [Test]
-        public async Task WhenBodyTopCalled_ReturnHtml()
-        {
-            var result = await _controller.BodyTop() as ViewResult;
-            result.Should().NotBeNull();
-            result.Should().BeOfType<ViewResult>();
-            result.ViewName.Should().BeNull();
-        }
+      
 
         [Test]
         public async Task WhenBodyTopCalled_ReturnHtmlWithUserName()
@@ -91,15 +84,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             model.Name.Should().NotBe(null);
         }
 
-        [Test]
-        public void WhenBodyFooterCalled_ReturnHtml()
-        {
-            var result = _controller.BodyFooter() as ViewResult;
-            result.Should().NotBeNull();
-            result.Should().BeOfType<ViewResult>();
-            result.ViewName.Should().BeNull();
-        }
-
+      
        
         [Test]
         public async Task WhenBodyCalledWithFormDataAndGoalUpdated_ThenRedirectToBody()
@@ -113,6 +98,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
 
             result.Url.Should().Contain("UpdateGoalConfirmation");
         }
+        
         
 
         private ChangeGoalDueDateCompositeViewModel GetViewModel()

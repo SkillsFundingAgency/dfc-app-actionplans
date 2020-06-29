@@ -14,13 +14,10 @@ namespace DFC.App.ActionPlans.Controllers
 {
     public class UpdateGoalConfirmationController : CompositeSessionController<UpdateGoalConfirmationCompositeViewModel>
     {
-        private readonly IDssReader _dssReader;
-
         public UpdateGoalConfirmationController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings,
             IDssReader dssReader)
             : base(compositeSettings, dssReader)
         {
-            _dssReader = dssReader;
         }
 
         [Route("/body/")]

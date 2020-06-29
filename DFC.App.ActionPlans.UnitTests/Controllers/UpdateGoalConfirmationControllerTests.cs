@@ -24,9 +24,9 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         }
 
         [Test]
-        public async Task WhenBodyTopCalled_ReturnHtml()
+        public async Task WhenBodyCalled_ReturnHtml()
         {
-            var result = await _controller.BodyTop() as ViewResult;
+            var result = await _controller.Body() as ViewResult;
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
             result.ViewName.Should().BeNull();
