@@ -1,4 +1,5 @@
 ﻿@using DFC.Personalisation.Common.Extensions
+@using DFC.App.ActionPlans.Extensions
 @model HomeCompositeViewModel
 <div class="govuk-main-wrapper">
     <div class="govuk-width-container">
@@ -33,7 +34,7 @@
                 <br/>
                 <govukHeadingH1 text="Your action plan"></govukHeadingH1>
                 <p>
-                    During your careers advice appointment on @Model.LatestSession.DateandTimeOfSession.ToString("dd MMMM yyyy") , you and @Model.Adviser.AdviserName spoke about your current situation and goals.
+                    During your careers advice appointment on @Model.LatestSession.DateandTimeOfSession.DateOnly() , you and @Model.Adviser.AdviserName spoke about your current situation and goals.
                 </p>
                 <p>At the end of your appointment, you agreed your next steps and made an action plan with goals and actions for you to complete. You can contact @Model.Adviser.AdviserName if you want to add new goals or actions.</p>
                 <hr class="govuk-section-break--visible govuk-section-break govuk-section-break--xl">
