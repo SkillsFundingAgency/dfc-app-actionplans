@@ -94,7 +94,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
                 {"Year", "2030"}
             })) as RedirectResult;
 
-            result.Url.Should().Contain("UpdateGoalConfirmation");
+            result.Url.Should().Contain("update-goal-confirmation");
         }
         
         [Test]
