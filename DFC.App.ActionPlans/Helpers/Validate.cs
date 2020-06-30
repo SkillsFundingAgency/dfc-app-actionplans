@@ -9,7 +9,7 @@ namespace DFC.App.ActionPlans.Helpers
         public static bool CheckValidSplitDate(SplitDate splitDate, out DateTime dateValue)
         {
             CultureInfo enGb = new CultureInfo("en-GB");
-            if (DateTime.TryParseExact($"{splitDate.Day}/{splitDate.Month}/{splitDate.Year}","dd/MM/yyyy", enGb, DateTimeStyles.AdjustToUniversal,out dateValue))
+            if (DateTime.TryParseExact($"{splitDate.Day.PadLeft(2,'0')}/{splitDate.Month.PadLeft(2,'0')}/{splitDate.Year}","dd/MM/yyyy", enGb, DateTimeStyles.AdjustToUniversal,out dateValue))
                 return true;
             return false;
 
