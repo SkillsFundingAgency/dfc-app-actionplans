@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using DFC.App.ActionPlans.Constants;
 using Dfc.App.ActionPlans.Controllers;
 using DFC.App.ActionPlans.Extensions;
 using DFC.App.ActionPlans.Helpers;
@@ -83,7 +84,7 @@ namespace DFC.App.ActionPlans.Controllers
                 }
 
                 ModelState.Clear(); //Remove model binding errors as we will check if the date is valid  or not.
-                ModelState.AddModelError(string.Empty, model.ErrorMessage);
+                ModelState.AddModelError(ChangeDueDate.DateGoalShouldBeCompletedBy, model.ErrorMessage);
                    
                 var customer = await GetCustomerDetails();
                 await LoadData(customer.CustomerId, model.ActionPlanId, model.InteractionId);
