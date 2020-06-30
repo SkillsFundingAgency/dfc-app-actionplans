@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using DFC.App.ActionPlans.Models;
 
 namespace DFC.App.ActionPlans.Helpers
@@ -7,7 +8,8 @@ namespace DFC.App.ActionPlans.Helpers
     {
         public static bool CheckValidSplitDate(SplitDate splitDate, out DateTime dateValue)
         {
-            if (DateTime.TryParse($"{splitDate.Day}/{splitDate.Month}/{splitDate.Year}", out dateValue))
+            CultureInfo enGb = new CultureInfo("en-GB");
+            if (DateTime.TryParseExact($"{splitDate.Day}/{splitDate.Month}/{splitDate.Year}","dd/MM/yyyy", enGb, DateTimeStyles.AdjustToUniversal,out dateValue))
                 return true;
             return false;
 

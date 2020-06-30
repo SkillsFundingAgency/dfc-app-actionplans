@@ -6,7 +6,7 @@ using DFC.App.ActionPlans.Models;
 
 namespace DFC.App.ActionPlans.UnitTests.Helpers
 {
-    class ValidateTests
+    class DateExtension
     {
         [Test]
         public void WhenCheckValidSplitDateCalledWithInvalidDate_Then_ReturnFalse()
