@@ -1,4 +1,5 @@
 ﻿@using DFC.App.ActionPlans.Models
+@using DFC.App.ActionPlans.Constants
 @model DFC.App.ActionPlans.ViewModels.ChangeGoalDueDateCompositeViewModel
 @{
     var dayInputElement = @Model.GetElementId("input", "Day");
@@ -31,7 +32,8 @@
                             <span id="date-goal-should-be-completed-by-hint" class="govuk-hint">
                                 For example, 12 9 2020
                             </span>
-                            <govukTextInputError Id="@dayInputError" Text="@Model.ErrorMessage" hidden="@(ViewData.ModelState.IsValid)"></govukTextInputError>
+                            
+                            <govukError id="@dayInputError" hidden="@ViewData.ModelState.IsValid" text="@(ViewData.ModelState[ChangeDueDate.DateGoalShouldBeCompletedBy]==null?"":ViewData.ModelState[ChangeDueDate.DateGoalShouldBeCompletedBy].Errors[0].ErrorMessage)"></govukError>
                             <div class="govuk-date-input @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")" id="date-goal-should-be-completed-by">
                                 DateGoalShouldBeCompletedBy
                                 <partial name="~/ViewComponents/SplitDate/splitdate.cshtml" model="@Model.DateGoalShouldBeCompletedBy??new SplitDate()" />
@@ -40,7 +42,7 @@
                         </fieldset>
                     </div>
                     <br />
-                    <p>We will tell your adviser about the update for this goal.</p>
+                    <p>We will update your adviser's record with this change.</p>
                     <govukButton id="@Model.GetElementId("govukSecondaryButton", "Continue");" text="Continue"></govukButton>
                 </form>
             </div>
