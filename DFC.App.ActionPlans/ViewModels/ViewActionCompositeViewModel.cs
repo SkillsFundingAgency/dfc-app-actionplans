@@ -3,7 +3,7 @@
     public class ViewActionCompositeViewModel:CompositeViewModel
         {
             public ViewActionCompositeViewModel()
-                : base(CompositeViewModel.PageId.ViewGoal, "View or update goal")
+                : base(CompositeViewModel.PageId.ViewAction, "View or update action")
             {
             
             }

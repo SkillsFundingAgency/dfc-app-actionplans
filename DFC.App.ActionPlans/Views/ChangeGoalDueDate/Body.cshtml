@@ -1,0 +1,53 @@
+﻿@using DFC.App.ActionPlans.Models
+@model DFC.App.ActionPlans.ViewModels.ChangeGoalDueDateCompositeViewModel
+@{
+    var dayInputElement = @Model.GetElementId("input", "Day");
+    var dayInputError = Model.GetElementId("govukTextInputError", "DayInpuError");
+
+    var monthInputElement = @Model.GetElementId("input", "Month");
+    var monthInputError = Model.GetElementId("govukTextInputError", "MonthInpuError");
+
+    var yearInputElement = @Model.GetElementId("input", "Day");
+    var yearInputError = Model.GetElementId("govukTextInputError", "YearInpuError");
+
+    var searchButton = Model.GetElementId("govukSecondaryButton", "Search");
+
+}
+    <partial name="~/ViewComponents/ErrorSummary/ErrorSummary.cshtml" />
+<div class="govuk-main-wrapper">
+    <div class="govuk-width-container">
+        <div class="govuk-grid-row ">
+            <div class="govuk-grid-column-two-thirds ">
+                <form id="@Model.GetElementId("form", "Form")" action="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.ChangeGoalDueDate/" class="govuk-form-group" method="post">
+                    @Html.HiddenFor(m => m.ActionPlanId)
+                    @Html.HiddenFor(m => m.InteractionId)
+                    @Html.HiddenFor(m => m.Goal.GoalId)
+                    @Html.HiddenFor(m => m.CustomerId)
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" role="group" aria-describedby="date-goal-should-be-completed-by-hint">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
+                                <govukHeadingH1 text="When would you like to achieve this goal?" additional-class="govuk-fieldset__heading"></govukHeadingH1>
+                            </legend>
+                            <span id="date-goal-should-be-completed-by-hint" class="govuk-hint">
+                                For example, 12 9 2020
+                            </span>
+                            <govukTextInputError Id="@dayInputError" Text="@Model.ErrorMessage" hidden="@(ViewData.ModelState.IsValid)"></govukTextInputError>
+                            <div class="govuk-date-input @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")" id="date-goal-should-be-completed-by">
+                                DateGoalShouldBeCompletedBy
+                                <partial name="~/ViewComponents/SplitDate/splitdate.cshtml" model="@Model.DateGoalShouldBeCompletedBy??new SplitDate()" />
+                               
+                            </div>
+                        </fieldset>
+                    </div>
+                    <br />
+                    <p>We will tell your adviser about the update for this goal.</p>
+                    <govukButton id="@Model.GetElementId("govukSecondaryButton", "Continue");" text="Continue"></govukButton>
+                </form>
+            </div>
+            <div class="action-plan-secondary-content govuk-grid-column-one-third  ">
+                <partial name="~/ViewComponents/YourAdviser/youradvisor.cshtml" model="@Model.Adviser"/>
+                <partial name="~/ViewComponents/contact/contact.cshtml" model="@Model.ContactDetails"/>
+            </div>
+        </div>
+    </div>
+</div>

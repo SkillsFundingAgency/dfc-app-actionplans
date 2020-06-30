@@ -2,11 +2,10 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using DFC.App.Account.Services.DSS.UnitTest.Helpers;
-using DFC.App.ActionPlans.Services.DSS;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Services.DSS.Models;
 using DFC.App.ActionPlans.Services.DSS.Services;
+using DFC.App.ActionPlans.Services.DSS.UnitTest.Helpers;
 using DFC.Personalisation.Common.Net.RestClient;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -14,7 +13,7 @@ using NSubstitute;
 using NUnit.Framework;
 using FluentAssertions;
 
-namespace DFC.App.Account.Services.DSS.UnitTest
+namespace DFC.App.ActionPlans.Services.DSS.UnitTest
 {
     public abstract class DssTests
     {
@@ -284,6 +283,70 @@ namespace DFC.App.Account.Services.DSS.UnitTest
                 _dssWriter.Invoking(sut => sut.UpdateActionPlan(updateActionPlan))
                     .Should().Throw<DssException>();
 
+            }
+
+        }
+
+        public class UpdateGoal: DssTests
+        {
+            private IDssWriter _dssWriter;   
+            Models.UpdateGoal updateGoal;
+                
+            [SetUp]
+            public void Init()
+            {
+                
+                Logger = Substitute.For<ILogger<DssService>>();
+                var mockHandler = DssHelpers.GetMockMessageHandler(DssHelpers.SuccessfulUpdateGoal(),
+                    statusToReturn: HttpStatusCode.Created);
+                RestClient = new RestClient(mockHandler.Object);
+                DssSettings = Options.Create(new DssSettings()
+                {
+                    ApiKey = "9238dfjsjdsidfs83fds",
+                    SessionApiUrl = "https://this.is.anApi.org.uk",
+                    CustomerApiVersion = "V3",
+                    CustomerApiUrl = "https://this.is.anApi.org.uk",
+                    SessionApiVersion = "V3",
+                    GoalsApiUrl = "https://this.is.anApi.org.uk",
+                    GoalsApiVersion = "V2",
+                    ActionsApiUrl= "https://this.is.anApi.org.uk",
+                    ActionsApiVersion= "v3",
+                    InteractionsApiUrl = "https://this.is.anApi.org.uk",
+                    AdviserDetailsApiVersion = "v2",
+                    ActionPlansApiUrl = "https://this.is.anApi.org.uk",
+                    ActionPlansApiVersion = "v2",
+                    AdviserDetailsApiUrl = "https://this.is.anApi.org.uk",
+                    TouchpointId = "9000000001"
+                });
+                _dssWriter = new DssService(RestClient, DssSettings, Logger);
+                updateGoal = new Models.UpdateGoal()
+                {
+                    CustomerId = new Guid(),
+                    InteractionId = new Guid(),
+                    ActionPlanId = new Guid(),
+                    DateGoalShouldBeCompletedBy = DateTime.Now.AddDays(1)
+                };
+            }
+
+            
+            [Test]
+            public async Task When_UpdateGoal_ReturnActionPlan()
+            {
+                await _dssWriter.UpdateGoal(updateGoal);
+            }
+
+            [Test]
+            public async Task When_UpdateGoalNoSuccess_Throw_Exception()
+            {
+                var restClient = Substitute.For<IRestClient>();
+                restClient.LastResponse = new RestClient.APIResponse(new HttpResponseMessage(HttpStatusCode.NoContent))
+                {
+                    IsSuccess = false
+                };
+                _dssWriter = new DssService(restClient, DssSettings, Logger);
+
+                _dssWriter.Invoking(sut => sut.UpdateGoal(updateGoal))
+                    .Should().Throw<DssException>();
             }
 
         }

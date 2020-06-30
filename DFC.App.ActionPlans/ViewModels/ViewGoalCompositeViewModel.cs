@@ -1,4 +1,4 @@
-﻿using DFC.App.ActionPlans.Models;
+﻿using DFC.App.ActionPlans.Services.DSS.Models;
 
 namespace DFC.App.ActionPlans.ViewModels
 {
