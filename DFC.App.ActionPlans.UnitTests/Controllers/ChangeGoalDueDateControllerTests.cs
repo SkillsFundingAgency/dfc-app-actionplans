@@ -111,7 +111,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
             result.ViewName.Should().BeNull();
-            var model = result.ViewData.Model as ChangeGoalDueDateCompositeViewModel;
+            var model = result.ViewData.Model as ChangeGoalCompositeViewModel;
             result.ViewData.ModelState.IsValid.Should().BeFalse();
             
         }
@@ -129,7 +129,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
             result.ViewName.Should().BeNull();
-            var model = result.ViewData.Model as ChangeGoalDueDateCompositeViewModel;
+            var model = result.ViewData.Model as ChangeGoalCompositeViewModel;
             result.ViewData.ModelState.IsValid.Should().BeFalse();
         }
 
@@ -146,12 +146,12 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
             result.ViewName.Should().BeNull();
-            var model = result.ViewData.Model as ChangeGoalDueDateCompositeViewModel;
+            var model = result.ViewData.Model as ChangeGoalCompositeViewModel;
             result.ViewData.ModelState.IsValid.Should().BeFalse();
         }
-        private ChangeGoalDueDateCompositeViewModel GetViewModel()
+        private ChangeGoalCompositeViewModel GetViewModel()
         {
-            var changeGoalDueDateCompositeViewModel = new ChangeGoalDueDateCompositeViewModel()
+            var changeGoalDueDateCompositeViewModel = new ChangeGoalCompositeViewModel()
                 {
                     Goal = new Goal(){GoalId = new Guid().ToString()}
                     };

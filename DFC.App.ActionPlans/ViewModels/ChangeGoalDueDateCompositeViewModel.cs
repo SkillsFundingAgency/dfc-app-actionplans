@@ -4,10 +4,10 @@ using DFC.App.ActionPlans.Services.DSS.Models;
 
 namespace DFC.App.ActionPlans.ViewModels
 {
-    public class ChangeGoalDueDateCompositeViewModel : CompositeViewModel
+    public class ChangeGoalCompositeViewModel : CompositeViewModel
     {
-        public ChangeGoalDueDateCompositeViewModel()
-            : base(CompositeViewModel.PageId.ViewGoal, "Change Goal due date")
+        public ChangeGoalCompositeViewModel()
+            : base(CompositeViewModel.PageId.ViewGoal, "")
         {
             
         }

@@ -1,20 +1,8 @@
 ﻿@using DFC.App.ActionPlans.Models
 @using DFC.App.ActionPlans.Constants
-@model DFC.App.ActionPlans.ViewModels.ChangeGoalDueDateCompositeViewModel
-@{
-    var dayInputElement = @Model.GetElementId("input", "Day");
-    var dayInputError = Model.GetElementId("govukTextInputError", "DayInpuError");
+@model DFC.App.ActionPlans.ViewModels.ChangeGoalCompositeViewModel
 
-    var monthInputElement = @Model.GetElementId("input", "Month");
-    var monthInputError = Model.GetElementId("govukTextInputError", "MonthInpuError");
-
-    var yearInputElement = @Model.GetElementId("input", "Day");
-    var yearInputError = Model.GetElementId("govukTextInputError", "YearInpuError");
-
-    var searchButton = Model.GetElementId("govukSecondaryButton", "Search");
-
-}
-    <partial name="~/ViewComponents/ErrorSummary/ErrorSummary.cshtml" />
+<partial name="~/ViewComponents/ErrorSummary/ErrorSummary.cshtml" />
 <div class="govuk-main-wrapper">
     <div class="govuk-width-container">
         <div class="govuk-grid-row ">
@@ -33,7 +21,7 @@
                                 For example, 12 9 2020
                             </span>
                             
-                            <govukError id="@dayInputError" hidden="@ViewData.ModelState.IsValid" text="@(ViewData.ModelState[ChangeDueDate.DateGoalShouldBeCompletedBy]==null?"":ViewData.ModelState[ChangeDueDate.DateGoalShouldBeCompletedBy].Errors[0].ErrorMessage)"></govukError>
+                            <govukError id="@Model.GetElementId("govukTextInputError", "DateInpuError")" hidden="@ViewData.ModelState.IsValid" text="@(ViewData.ModelState[Constants.DateGoalShouldBeCompletedBy]==null?"":ViewData.ModelState[Constants.DateGoalShouldBeCompletedBy].Errors[0].ErrorMessage)"></govukError>
                             <div class="govuk-date-input @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")" id="date-goal-should-be-completed-by">
                                 DateGoalShouldBeCompletedBy
                                 <partial name="~/ViewComponents/SplitDate/splitdate.cshtml" model="@Model.DateGoalShouldBeCompletedBy??new SplitDate()" />

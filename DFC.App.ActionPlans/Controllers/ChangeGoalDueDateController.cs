@@ -15,7 +15,7 @@ using Microsoft.Extensions.Options;
 
 namespace DFC.App.ActionPlans.Controllers
 {
-    public class ChangeGoalDueDateController: CompositeSessionController<ChangeGoalDueDateCompositeViewModel>
+    public class ChangeGoalDueDateController: CompositeSessionController<ChangeGoalCompositeViewModel>
     {
         
             private readonly IDssWriter _dssWriter;
@@ -24,6 +24,7 @@ namespace DFC.App.ActionPlans.Controllers
                 :base(compositeSettings, dssReader)
             {
                 _dssWriter = dssWriter;
+                ViewModel.PageTitle = "Change Goal due date";
             }
         
             //  [Authorize]
@@ -41,7 +42,7 @@ namespace DFC.App.ActionPlans.Controllers
 
             [Route("/body/change-goal-due-date")]
             [HttpPost]
-            public async  Task<IActionResult> Body(ChangeGoalDueDateCompositeViewModel model, IFormCollection formCollection)
+            public async  Task<IActionResult> Body(ChangeGoalCompositeViewModel model, IFormCollection formCollection)
             {
 
                 #region Setup ViewModel
@@ -84,14 +85,14 @@ namespace DFC.App.ActionPlans.Controllers
                 }
 
                 ModelState.Clear(); //Remove model binding errors as we will check if the date is valid  or not.
-                ModelState.AddModelError(ChangeDueDate.DateGoalShouldBeCompletedBy, model.ErrorMessage);
+                ModelState.AddModelError(Constants.Constants.DateGoalShouldBeCompletedBy, model.ErrorMessage);
                    
                 var customer = await GetCustomerDetails();
                 await LoadData(customer.CustomerId, model.ActionPlanId, model.InteractionId);
                 return await base.Body();
             }
 
-            private async Task UpdateGoal(ChangeGoalDueDateCompositeViewModel model, DateTime dateValue)
+            private async Task UpdateGoal(ChangeGoalCompositeViewModel model, DateTime dateValue)
             {
                 var updateGoal = new UpdateGoal()
                 {
@@ -99,7 +100,8 @@ namespace DFC.App.ActionPlans.Controllers
                     InteractionId = model.InteractionId,
                     ActionPlanId = model.ActionPlanId,
                     GoalId = new Guid(model.Goal.GoalId),
-                    DateGoalShouldBeCompletedBy = dateValue
+                    DateGoalShouldBeCompletedBy = dateValue,
+                    GoalStatus = model.Goal.GoalStatus
                 };
                 await _dssWriter.UpdateGoal(updateGoal);
             }
