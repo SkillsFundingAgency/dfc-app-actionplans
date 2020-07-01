@@ -30,6 +30,7 @@ namespace DFC.App.ActionPlans.ViewModels
             public static PageId Error { get; } = new PageId("error");
             public static PageId ViewGoal { get; } = new PageId("view-goal");
             public static PageId ChangeGoalDueDate { get; } = new PageId("change-goal-due-date");
+            public static PageId ChangeGoalStatus { get; } = new PageId("change-goal-status");
             public static PageId ViewAction { get; } = new PageId("view-action");
             public static PageId UpdateGoalConfirmation { get; } = new PageId("update-goal-confirmation");
 

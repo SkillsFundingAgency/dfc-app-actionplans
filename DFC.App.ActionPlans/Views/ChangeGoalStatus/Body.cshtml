@@ -1,6 +1,7 @@
 ﻿@using DFC.App.ActionPlans.Models
 @using DFC.App.ActionPlans.Constants
 @using DFC.App.ActionPlans.Services.DSS.Enums
+@using DFC.Personalisation.Common.Extensions
 @model DFC.App.ActionPlans.ViewModels.ChangeGoalCompositeViewModel
 
 <partial name="~/ViewComponents/ErrorSummary/ErrorSummary.cshtml"/>
@@ -13,6 +14,7 @@
                     @Html.HiddenFor(m => m.InteractionId)
                     @Html.HiddenFor(m => m.Goal.GoalId)
                     @Html.HiddenFor(m => m.CustomerId)
+                    @Html.HiddenFor(m => m.Goal.DateGoalShouldBeCompletedBy)
                     <div class="govuk-form-group">
                         <fieldset class="govuk-fieldset" role="group" aria-describedby="date-goal-should-be-completed-by-hint">
                             <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
@@ -26,48 +28,28 @@
 
 
                             <div class="govuk-radios @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")" id="GoalStatus">
-                                
+
                                 @{
-                                    foreach (var status in (GoalStatus[]) Enum.GetValues(typeof(GoalStatus)))
+                                    foreach (var status in ((GoalStatus[])Enum.GetValues(typeof(GoalStatus))).OrderBy(_ => _.ToString()))
                                     {
                                         <div class="govuk-radios__item">
-                                            
-                                            <input name="Achieved" class="govuk-radios__input" id="Achieved" type="radio" value="Achieved">
-                                            <label class="govuk-label govuk-radios__label" for="Achieved">
-                                                Achieved
-                                            </label>
+                                            <govukRadioButton id="@Model.GetElementId("govUkRadioButton", "GoalStatus")" name="GoalStatus" value="@((int)status)">
+                                                <govukRadioLabel text="@status.GetDisplayName()" for="@Model.GetElementId("govUkRadioButton", @status.ToString())"></govukRadioLabel>
+                                            </govukRadioButton>
                                         </div>
                                     }
                                 }
-                                
-                                <div class="govuk-radios__item">
-                                    <input name="Achieved" class="govuk-radios__input" id="Achieved" type="radio" value="Achieved">
-                                    <label class="govuk-label govuk-radios__label" for="Achieved">
-                                        Achieved
-                                    </label>
-                                </div>
-                                <div class="govuk-radios__item">
-                                    <input name="in-progress" class="govuk-radios__input" id="in-progress" type="radio" value="in-progress">
-                                    <label class="govuk-label govuk-radios__label" for="in-progress">
-                                        In progress
-                                    </label>
-                                </div>
-                                <div class="govuk-radios__item">
-                                    <input name="no-longer-relevant" class="govuk-radios__input" id="no-longer-relevant" type="radio" value="No longer relevant">
-                                    <label class="govuk-label govuk-radios__label" for="no-longer-relevant">
-                                        No longer relevant
-                                    </label>
-                                </div>
+
                             </div>
 
 
                         </fieldset>
                     </div>
                     <br />
-                    
+
                     <govukButton id="@Model.GetElementId("govukSecondaryButton", "Continue");" text="Update status"></govukButton>
                     <govuksecondarybutton id="@Model.GetElementId("govukSecondaryButton", "Cancel");" text="Cancel"></govuksecondarybutton>
-                    
+
                 </form>
             </div>
             <div class="action-plan-secondary-content govuk-grid-column-one-third  ">

@@ -21,11 +21,13 @@ namespace DFC.App.ActionPlans.Controllers
     public class ChangeGoalStatusController : CompositeSessionController<ChangeGoalCompositeViewModel>
     {
         private readonly IDssWriter _dssWriter;
+        private readonly IDssReader _dssReader;
 
         public ChangeGoalStatusController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter)
             :base(compositeSettings, dssReader)
         {
             _dssWriter = dssWriter;
+            _dssReader = dssReader;
             ViewModel.PageTitle = "Change Goal Status";
         }
 
@@ -34,10 +36,10 @@ namespace DFC.App.ActionPlans.Controllers
             [HttpGet]
             public async  Task<IActionResult> Body(Guid actionPlanId, Guid interactionId, Guid goalId)
             {
-                ViewModel.Goal = new Goal(){GoalId  = goalId.ToString()};
-
                 var customer = await GetCustomerDetails();
+
                 await LoadData(customer.CustomerId, actionPlanId, interactionId);
+                ViewModel.Goal = await _dssReader.GetGoalDetails(ViewModel.CustomerId.ToString(), interactionId.ToString(), actionPlanId.ToString(), goalId.ToString());
                 
                 return await base.Body();
             }
@@ -46,18 +48,21 @@ namespace DFC.App.ActionPlans.Controllers
             [HttpPost]
             public async  Task<IActionResult> Body(ChangeGoalCompositeViewModel model, IFormCollection formCollection)
             {
-                ViewModel.ActionPlanId = model.ActionPlanId;
-                ViewModel.InteractionId = model.InteractionId;
+               
+                InitVM(model);
+
                 GoalStatus newGoalStatus;
+            
                 if (Enum.TryParse(formCollection["GoalStatus"], true, out newGoalStatus))
                 {
-
                     ViewModel.Goal = new Goal()
                     {
                         GoalId = model.Goal.GoalId,
-                        GoalStatus = newGoalStatus
+                        GoalStatus = newGoalStatus,
+                        DateGoalShouldBeCompletedBy = model.Goal.DateGoalShouldBeCompletedBy
                     };
-                    await UpdateGoal(model);
+
+                    await UpdateGoal();
                     return RedirectTo($"{CompositeViewModel.PageId.UpdateGoalConfirmation}/{ViewModel.ActionPlanId}/{ViewModel.InteractionId}/{ViewModel.Goal.GoalId}");
                 }
                 else
@@ -67,22 +72,33 @@ namespace DFC.App.ActionPlans.Controllers
 
                 ModelState.Clear(); //Remove model binding errors as we will check if the date is valid  or not.
                 ModelState.AddModelError(Constants.Constants.GoalStatus, model.ErrorMessage);
-                   
+                
                 var customer = await GetCustomerDetails();
                 await LoadData(customer.CustomerId, model.ActionPlanId, model.InteractionId);
                 return await base.Body();
             }
 
-            private async Task UpdateGoal(ChangeGoalCompositeViewModel model)
+            private void InitVM(ChangeGoalCompositeViewModel model)
+            {
+                ViewModel.ActionPlanId = model.ActionPlanId;
+                ViewModel.InteractionId = model.InteractionId;
+                ViewModel.CustomerId = model.CustomerId;
+                ViewModel.DateGoalShouldBeCompletedBy = model.DateGoalShouldBeCompletedBy;
+                ViewModel.Goal = new Goal(){
+                    GoalId = model.Goal.GoalId,
+                    DateGoalShouldBeCompletedBy = model.Goal.DateGoalShouldBeCompletedBy
+                };   
+            }
+            private async Task UpdateGoal()
             {
                 var updateGoal = new UpdateGoal()
                 {
-                    CustomerId = model.CustomerId,
-                    InteractionId = model.InteractionId,
-                    ActionPlanId = model.ActionPlanId,
-                    GoalId = new Guid(model.Goal.GoalId),
-                    DateGoalShouldBeCompletedBy = model.Goal.DateGoalShouldBeCompletedBy,
-                    GoalStatus = model.Goal.GoalStatus
+                    CustomerId = ViewModel.CustomerId,
+                    InteractionId = ViewModel.InteractionId,
+                    ActionPlanId = ViewModel.ActionPlanId,
+                    GoalId = new Guid(ViewModel.Goal.GoalId),
+                    DateGoalShouldBeCompletedBy = ViewModel.Goal.DateGoalShouldBeCompletedBy,
+                    GoalStatus = ViewModel.Goal.GoalStatus
                 };
                 await _dssWriter.UpdateGoal(updateGoal);
             }

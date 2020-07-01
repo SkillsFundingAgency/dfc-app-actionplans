@@ -36,7 +36,11 @@
                         <tr class="govuk-table__row">
                             <td class="govuk-table__cell"><strong>Status:</strong></td>
                             <td class="govuk-table__cell"><span>@Model.Goal.GoalStatus.GetDisplayName()</span></td>
-                            <td class="govuk-table__cell"><a class="" href="change-status-goals.html">Update status</a></td>
+
+                            <td class="govuk-table__cell">
+                                <govukLink id="@Model.GetElementId("govUkLink", $"change-due-date")" link-href="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.ChangeGoalStatus/@Model.Goal.ActionPlanId/@Model.InteractionId/@Model.Goal.GoalId" LinkText="Update status"></govukLink>
+
+                            </td>
                         </tr>
                         </tbody>
                     </table>

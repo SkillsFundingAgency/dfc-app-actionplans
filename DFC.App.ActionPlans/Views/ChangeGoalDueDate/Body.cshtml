@@ -1,5 +1,6 @@
 ﻿@using DFC.App.ActionPlans.Models
 @using DFC.App.ActionPlans.Constants
+@using DFC.App.ActionPlans.Services.DSS.Models
 @model DFC.App.ActionPlans.ViewModels.ChangeGoalCompositeViewModel
 
 <partial name="~/ViewComponents/ErrorSummary/ErrorSummary.cshtml" />
@@ -12,6 +13,7 @@
                     @Html.HiddenFor(m => m.InteractionId)
                     @Html.HiddenFor(m => m.Goal.GoalId)
                     @Html.HiddenFor(m => m.CustomerId)
+                    @Html.HiddenFor(m => m.Goal.GoalStatus)
                     <div class="govuk-form-group">
                         <fieldset class="govuk-fieldset" role="group" aria-describedby="date-goal-should-be-completed-by-hint">
                             <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
@@ -20,12 +22,12 @@
                             <span id="date-goal-should-be-completed-by-hint" class="govuk-hint">
                                 For example, 12 9 2020
                             </span>
-                            
+
                             <govukError id="@Model.GetElementId("govukTextInputError", "DateInpuError")" hidden="@ViewData.ModelState.IsValid" text="@(ViewData.ModelState[Constants.DateGoalShouldBeCompletedBy]==null?"":ViewData.ModelState[Constants.DateGoalShouldBeCompletedBy].Errors[0].ErrorMessage)"></govukError>
                             <div class="govuk-date-input @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")" id="date-goal-should-be-completed-by">
                                 DateGoalShouldBeCompletedBy
                                 <partial name="~/ViewComponents/SplitDate/splitdate.cshtml" model="@Model.DateGoalShouldBeCompletedBy??new SplitDate()" />
-                               
+
                             </div>
                         </fieldset>
                     </div>
