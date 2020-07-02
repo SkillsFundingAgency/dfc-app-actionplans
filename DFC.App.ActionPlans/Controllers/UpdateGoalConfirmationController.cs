@@ -33,10 +33,7 @@ namespace DFC.App.ActionPlans.Controllers
                     ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString(), goalId.ToString());
                 ViewModel.PropertyUpdated = propertyUpdated;
             }
-            else
-            {
-                
-            }
+            
             return await base.Body();
         }
     }
