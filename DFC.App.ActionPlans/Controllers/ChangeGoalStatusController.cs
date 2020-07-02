@@ -31,10 +31,8 @@ namespace DFC.App.ActionPlans.Controllers
             [HttpGet]
             public async  Task<IActionResult> Body(Guid actionPlanId, Guid interactionId, Guid goalId)
             {
-                ViewModel.ActionPlanId = actionPlanId;
-                ViewModel.InteractionId = interactionId;
                 
-                await LoadViewData();
+                await LoadViewData(actionPlanId,interactionId);
                 
                 ViewModel.Goal = await _dssReader.GetGoalDetails(ViewModel.CustomerId.ToString(), ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString(), goalId.ToString());
                 
@@ -75,10 +73,10 @@ namespace DFC.App.ActionPlans.Controllers
                 await LoadData(customer.CustomerId, model.ActionPlanId, model.InteractionId);
                 return await base.Body();
             }
-            private async Task LoadViewData()
+            private async Task LoadViewData(Guid actionPlanId,Guid interactionId)
             {
                 var customer = await GetCustomerDetails();
-                await LoadData(customer.CustomerId, ViewModel.ActionPlanId, ViewModel.InteractionId);
+                await LoadData(customer.CustomerId, actionPlanId, interactionId);
             }
 
             private void InitVM(ChangeGoalCompositeViewModel model)
