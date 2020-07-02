@@ -31,14 +31,17 @@ namespace DFC.App.ActionPlans.Controllers
             [HttpGet]
             public async  Task<IActionResult> Body(Guid actionPlanId, Guid interactionId, Guid goalId)
             {
-                var customer = await GetCustomerDetails();
-
-                await LoadData(customer.CustomerId, actionPlanId, interactionId);
-                ViewModel.Goal = await _dssReader.GetGoalDetails(ViewModel.CustomerId.ToString(), interactionId.ToString(), actionPlanId.ToString(), goalId.ToString());
+                ViewModel.ActionPlanId = actionPlanId;
+                ViewModel.InteractionId = interactionId;
+                
+                await LoadViewData();
+                
+                ViewModel.Goal = await _dssReader.GetGoalDetails(ViewModel.CustomerId.ToString(), ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString(), goalId.ToString());
                 
                 return await base.Body();
             }
 
+           
             [Route("/body/change-goal-status")]
             [HttpPost]
             public async  Task<IActionResult> Body(ChangeGoalCompositeViewModel model, IFormCollection formCollection)
@@ -71,6 +74,11 @@ namespace DFC.App.ActionPlans.Controllers
                 var customer = await GetCustomerDetails();
                 await LoadData(customer.CustomerId, model.ActionPlanId, model.InteractionId);
                 return await base.Body();
+            }
+            private async Task LoadViewData()
+            {
+                var customer = await GetCustomerDetails();
+                await LoadData(customer.CustomerId, ViewModel.ActionPlanId, ViewModel.InteractionId);
             }
 
             private void InitVM(ChangeGoalCompositeViewModel model)
