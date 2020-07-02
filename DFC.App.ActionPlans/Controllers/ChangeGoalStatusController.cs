@@ -58,8 +58,7 @@ namespace DFC.App.ActionPlans.Controllers
                     };
 
                     await UpdateGoal();
-                    return RedirectTo($"{CompositeViewModel.PageId.UpdateGoalConfirmation}/{ViewModel.ActionPlanId}/{ViewModel.InteractionId}/{ViewModel.Goal.GoalId}" +
-                                      $"{Constants.Constants.Goal}/{Constants.Constants.Status}");
+                    return RedirectTo($"{CompositeViewModel.PageId.UpdateGoalConfirmation}/{ViewModel.ActionPlanId}/{ViewModel.InteractionId}/{ViewModel.Goal.GoalId}/{Constants.Constants.Goal}/{Constants.Constants.Status}");
                 }
                 else
                 {
