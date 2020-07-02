@@ -15,15 +15,18 @@ using Microsoft.Extensions.Options;
 
 namespace DFC.App.ActionPlans.Controllers
 {
-    public class ChangeGoalDueDateController: CompositeSessionController<ChangeGoalDueDateCompositeViewModel>
+    public class ChangeGoalDueDateController: CompositeSessionController<ChangeGoalCompositeViewModel>
     {
         
             private readonly IDssWriter _dssWriter;
+            private readonly IDssReader _dssReader;
 
             public ChangeGoalDueDateController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter)
                 :base(compositeSettings, dssReader)
             {
                 _dssWriter = dssWriter;
+                _dssReader = dssReader;
+                ViewModel.PageTitle = "Change Goal due date";
             }
         
             //  [Authorize]
@@ -31,24 +34,20 @@ namespace DFC.App.ActionPlans.Controllers
             [HttpGet]
             public async  Task<IActionResult> Body(Guid actionPlanId, Guid interactionId, Guid goalId)
             {
-                ViewModel.Goal = new Goal(){GoalId  = goalId.ToString()};
-
                 var customer = await GetCustomerDetails();
                 await LoadData(customer.CustomerId, actionPlanId, interactionId);
-                
+                ViewModel.Goal = await _dssReader.GetGoalDetails(ViewModel.CustomerId.ToString(), interactionId.ToString(), actionPlanId.ToString(), goalId.ToString());
                 return await base.Body();
             }
 
             [Route("/body/change-goal-due-date")]
             [HttpPost]
-            public async  Task<IActionResult> Body(ChangeGoalDueDateCompositeViewModel model, IFormCollection formCollection)
+            public async  Task<IActionResult> Body(ChangeGoalCompositeViewModel model, IFormCollection formCollection)
             {
 
-                #region Setup ViewModel
 
-                ViewModel.ActionPlanId = model.ActionPlanId;
-                ViewModel.InteractionId = model.InteractionId;
-                ViewModel.Goal = new Goal(){GoalId = model.Goal.GoalId};
+                InitVM(model);
+
                 ViewModel.DateGoalShouldBeCompletedBy = new SplitDate()
                 {
                     Day = formCollection["Day"],
@@ -56,19 +55,16 @@ namespace DFC.App.ActionPlans.Controllers
                     Year = formCollection["Year"]
                 };
 
-                #endregion
-
                 if (!ViewModel.DateGoalShouldBeCompletedBy.isEmpty())
                 {
-
                     DateTime dateValue;
                     if (Validate.CheckValidSplitDate(ViewModel.DateGoalShouldBeCompletedBy, out dateValue))
                     {
 
                         if (Validate.CheckValidDueDate(ViewModel.DateGoalShouldBeCompletedBy, out dateValue))
                         {
-                            await UpdateGoal(model, dateValue);
-                            return RedirectTo($"{CompositeViewModel.PageId.UpdateGoalConfirmation}/{ViewModel.ActionPlanId}/{ViewModel.InteractionId}/{ViewModel.Goal.GoalId}");
+                            await UpdateGoal(dateValue);
+                            return RedirectTo($"{CompositeViewModel.PageId.UpdateGoalConfirmation}/{ViewModel.ActionPlanId}/{ViewModel.InteractionId}/{ViewModel.Goal.GoalId}/{Constants.Constants.Goal}/{Constants.Constants.Date}");
                         }
 
                         model.ErrorMessage = "The goal due date must be today or in the future";
@@ -84,22 +80,34 @@ namespace DFC.App.ActionPlans.Controllers
                 }
 
                 ModelState.Clear(); //Remove model binding errors as we will check if the date is valid  or not.
-                ModelState.AddModelError(ChangeDueDate.DateGoalShouldBeCompletedBy, model.ErrorMessage);
+                ModelState.AddModelError(Constants.Constants.DateGoalShouldBeCompletedBy, model.ErrorMessage);
                    
                 var customer = await GetCustomerDetails();
                 await LoadData(customer.CustomerId, model.ActionPlanId, model.InteractionId);
                 return await base.Body();
             }
 
-            private async Task UpdateGoal(ChangeGoalDueDateCompositeViewModel model, DateTime dateValue)
+            private void InitVM(ChangeGoalCompositeViewModel model)
+            {
+                ViewModel.CustomerId = model.CustomerId;
+                ViewModel.ActionPlanId = model.ActionPlanId;
+                ViewModel.InteractionId = model.InteractionId;
+                ViewModel.Goal = new Goal(){
+                    GoalId = model.Goal.GoalId,
+                    GoalStatus = model.Goal.GoalStatus
+                };
+            }
+
+            private async Task UpdateGoal(DateTime dateValue)
             {
                 var updateGoal = new UpdateGoal()
                 {
-                    CustomerId = model.CustomerId,
-                    InteractionId = model.InteractionId,
-                    ActionPlanId = model.ActionPlanId,
-                    GoalId = new Guid(model.Goal.GoalId),
-                    DateGoalShouldBeCompletedBy = dateValue
+                    CustomerId = ViewModel.CustomerId,
+                    InteractionId = ViewModel.InteractionId,
+                    ActionPlanId = ViewModel.ActionPlanId,
+                    GoalId = new Guid(ViewModel.Goal.GoalId),
+                    DateGoalShouldBeCompletedBy = dateValue,
+                    GoalStatus = ViewModel.Goal.GoalStatus
                 };
                 await _dssWriter.UpdateGoal(updateGoal);
             }

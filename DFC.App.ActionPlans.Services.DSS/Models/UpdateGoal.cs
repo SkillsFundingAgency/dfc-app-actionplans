@@ -1,4 +1,5 @@
 ﻿using System;
+using DFC.App.ActionPlans.Services.DSS.Enums;
 
 namespace DFC.App.ActionPlans.Services.DSS.Models
 {
@@ -8,6 +9,7 @@ namespace DFC.App.ActionPlans.Services.DSS.Models
         public Guid CustomerId { get; set; }
         public Guid InteractionId { get; set; }
         public Guid GoalId { get; set; }
+        public GoalStatus GoalStatus { get; set; }
         public DateTime DateGoalShouldBeCompletedBy { get; set; }
     }
 }
