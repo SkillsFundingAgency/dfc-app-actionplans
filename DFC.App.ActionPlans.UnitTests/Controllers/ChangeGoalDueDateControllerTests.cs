@@ -46,43 +46,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             result.ViewName.Should().BeNull();
         }
         
-        [Test]
-        public void WhenBreadCrumbCalled_ReturnHtml()
-        {
-            var result = _controller.Breadcrumb() as ViewResult;
-            result.Should().NotBeNull();
-            result.Should().BeOfType<ViewResult>();
-            result.ViewName.Should().BeNull();
-        }
-
-      
-
-        [Test]
-        public async Task WhenBodyTopCalled_ReturnHtmlWithUserName()
-        {
-          
-        
-            _controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    HttpContext =
-                    {
-                        User = new ClaimsPrincipal(
-                            new ClaimsIdentity(new List<Claim> {new Claim("CustomerId", "test")},
-                                "testType"))
-                    }
-                }
-            };
-            var result = await _controller.BodyTop() as ViewResult;
-            result.Should().NotBeNull();
-            result.Should().BeOfType<ViewResult>();
-            result.ViewName.Should().BeNull();
-            var model = result.ViewData.Model as CompositeViewModel;
-            model.Name.Should().NotBe(null);
-        }
-
-      
+       
        
         [Test]
         public async Task WhenBodyCalledWithFormDataAndGoalUpdated_ThenRedirectToBody()

@@ -9,5 +9,8 @@ namespace DFC.App.ActionPlans.ViewModels
         }
 
         public Goal Goal { get; set; }
+        public Action Action { get; set; }
+        public int ObjectUpdated { get; set; }
+        public int PropertyUpdated { get; set; }
     }
 }

@@ -21,13 +21,23 @@ namespace DFC.App.ActionPlans.Controllers
         }
 
         
-        [Route("/body/update-goal-confirmation/{actionPlanId}/{interactionId}/{goalId}")]
+        [Route("/body/update-goal-confirmation/{actionPlanId}/{interactionId}/{goalId}" +
+               "{objectupdated}/{propertyupdated}")]
         [HttpGet]
-        public async  Task<IActionResult> Body(Guid actionPlanId, Guid interactionId, Guid goalId)
+        public async  Task<IActionResult> Body(Guid actionPlanId, Guid interactionId, Guid goalId, int objectUpdated, int propertyUpdated)
         {
             var customer = await GetCustomerDetails();
             await LoadData(customer.CustomerId, actionPlanId, interactionId);
-            ViewModel.Goal = await _dssReader.GetGoalDetails(ViewModel.CustomerId.ToString(), ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString(),goalId.ToString());
+            if (objectUpdated == Constants.Constants.GoalUpdated)
+            {
+                ViewModel.Goal = await _dssReader.GetGoalDetails(ViewModel.CustomerId.ToString(),
+                    ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString(), goalId.ToString());
+                ViewModel.PropertyUpdated = propertyUpdated;
+            }
+            else
+            {
+                
+            }
             return await base.Body();
         }
     }

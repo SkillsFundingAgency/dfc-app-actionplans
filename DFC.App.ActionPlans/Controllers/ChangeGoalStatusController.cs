@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using DFC.App.ActionPlans.Constants;
 using Dfc.App.ActionPlans.Controllers;
-using DFC.App.ActionPlans.Extensions;
-using DFC.App.ActionPlans.Helpers;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Enums;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
@@ -63,7 +58,8 @@ namespace DFC.App.ActionPlans.Controllers
                     };
 
                     await UpdateGoal();
-                    return RedirectTo($"{CompositeViewModel.PageId.UpdateGoalConfirmation}/{ViewModel.ActionPlanId}/{ViewModel.InteractionId}/{ViewModel.Goal.GoalId}");
+                    return RedirectTo($"{CompositeViewModel.PageId.UpdateGoalConfirmation}/{ViewModel.ActionPlanId}/{ViewModel.InteractionId}/{ViewModel.Goal.GoalId}" +
+                                      $"{Constants.Constants.GoalUpdated}/{Constants.Constants.Status}");
                 }
                 else
                 {
