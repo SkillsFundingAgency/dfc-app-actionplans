@@ -28,7 +28,7 @@ namespace DFC.App.ActionPlans.Controllers
         {
             var customer = await GetCustomerDetails();
             await LoadData(customer.CustomerId, actionPlanId, interactionId);
-            if (objectUpdated == Constants.Constants.GoalUpdated)
+            if (objectUpdated == Constants.Constants.Goal)
             {
                 ViewModel.Goal = await _dssReader.GetGoalDetails(ViewModel.CustomerId.ToString(),
                     ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString(), goalId.ToString());
