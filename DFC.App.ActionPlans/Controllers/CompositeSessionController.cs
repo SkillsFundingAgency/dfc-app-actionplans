@@ -32,14 +32,14 @@ namespace Dfc.App.ActionPlans.Controllers
         }
 
         [HttpGet]
-        [Route("/head/[controller]/{actionPlanId?}/{interactionId?}/{docId?}")]
+        [Route("/head/[controller]/{actionPlanId?}/{interactionId?}/{docId?}/{objupdated?}/{itemupdated?}")]
         public virtual IActionResult Head()
         {
             return View(ViewModel);
         }
 
         [HttpGet]
-        [Route("/bodytop/[controller]/{actionPlanId?}/{interactionId?}/{docId?}")]
+        [Route("/bodytop/[controller]/{actionPlanId?}/{interactionId?}/{docId?}/{objupdated?}/{itemupdated?}")]
         public virtual async Task<IActionResult> BodyTop()
         {
             if (User.Identity.IsAuthenticated)
@@ -52,7 +52,7 @@ namespace Dfc.App.ActionPlans.Controllers
         }
 
         [HttpGet]
-        [Route("/breadcrumb/[controller]/{actionPlanId?}/{interactionId?}/{docId?}")]
+        [Route("/breadcrumb/[controller]/{actionPlanId?}/{interactionId?}/{docId?}/{objupdated?}/{itemupdated?}")]
         public virtual IActionResult Breadcrumb()
         {
            var viewModel = new BreadCrumbViewModel()
@@ -71,7 +71,7 @@ namespace Dfc.App.ActionPlans.Controllers
         }
 
         [HttpGet]
-        [Route("/bodyfooter/[controller]/{actionPlanId?}/{interactionId?}/{docId?}")]
+        [Route("/bodyfooter/[controller]/{actionPlanId?}/{interactionId?}/{docId?}/{objupdated?}/{itemupdated?}")]
         public virtual IActionResult BodyFooter()
         {
             return View(ViewModel);
