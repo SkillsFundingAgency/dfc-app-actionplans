@@ -16,7 +16,7 @@
                     @Html.HiddenFor(m => m.CustomerId)
                     @Html.HiddenFor(m => m.Goal.DateGoalShouldBeCompletedBy)
                     <div class="govuk-form-group">
-                        <fieldset class="govuk-fieldset" role="group" aria-describedby="date-goal-should-be-completed-by-hint">
+                        <fieldset class="govuk-fieldset @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")" role="group" aria-describedby="date-goal-should-be-completed-by-hint">
                             <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
                                 <govukHeadingH1 text="Change goal status" additional-class="govuk-fieldset__heading"></govukHeadingH1>
                             </legend>
@@ -27,7 +27,7 @@
                             <govukError id="@Model.GetElementId("govukTextInputError", "GoalStatusInpuError");" hidden="@ViewData.ModelState.IsValid" text="@(ViewData.ModelState[Constants.GoalStatus] == null ? "" : ViewData.ModelState[Constants.GoalStatus].Errors[0].ErrorMessage)"></govukError>
 
 
-                            <div class="govuk-radios @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")" id="GoalStatus">
+                            <div class="govuk-radios" id="GoalStatus">
 
                                 @{
                                     foreach (var status in ((GoalStatus[])Enum.GetValues(typeof(GoalStatus))).OrderBy(_ => _.ToString()))

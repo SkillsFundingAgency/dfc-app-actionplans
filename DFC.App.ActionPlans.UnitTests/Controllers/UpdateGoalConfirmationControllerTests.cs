@@ -42,12 +42,9 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
                 Interaction = null,
                 Adviser = null,
                 ContactDetails = null,
-                Goal = null,
-                Action = new Services.DSS.Models.Action(){ActionId = new Guid().ToString()},
                 ObjectUpdated = Constants.Constants.Goal,
                 PropertyUpdated = 0
             };
-            var action = vm.Action;
             var objUpdated = vm.ObjectUpdated;
 
             var result = await _controller.Body(new Guid(), new Guid(),new Guid(),Constants.Constants.Goal,Constants.Constants.Date) as ViewResult;

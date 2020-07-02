@@ -14,7 +14,7 @@
                     @Html.HiddenFor(m => m.Goal.GoalId)
                     @Html.HiddenFor(m => m.CustomerId)
                     @Html.HiddenFor(m => m.Goal.GoalStatus)
-                    <div class="govuk-form-group">
+                    <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")">
                         <fieldset class="govuk-fieldset" role="group" aria-describedby="date-goal-should-be-completed-by-hint">
                             <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
                                 <govukHeadingH1 text="When would you like to achieve this goal?" additional-class="govuk-fieldset__heading"></govukHeadingH1>
@@ -24,7 +24,7 @@
                             </span>
 
                             <govukError id="@Model.GetElementId("govukTextInputError", "DateInpuError")" hidden="@ViewData.ModelState.IsValid" text="@(ViewData.ModelState[Constants.DateGoalShouldBeCompletedBy]==null?"":ViewData.ModelState[Constants.DateGoalShouldBeCompletedBy].Errors[0].ErrorMessage)"></govukError>
-                            <div class="govuk-date-input @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")" id="date-goal-should-be-completed-by">
+                            <div class="govuk-date-input" id="date-goal-should-be-completed-by">
                                 DateGoalShouldBeCompletedBy
                                 <partial name="~/ViewComponents/SplitDate/splitdate.cshtml" model="@Model.DateGoalShouldBeCompletedBy??new SplitDate()" />
 

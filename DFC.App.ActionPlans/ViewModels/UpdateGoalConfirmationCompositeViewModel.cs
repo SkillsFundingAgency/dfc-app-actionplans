@@ -1,4 +1,6 @@
-﻿using DFC.App.ActionPlans.Services.DSS.Models;
+﻿using System;
+using DFC.App.ActionPlans.Services.DSS.Models;
+using Action = DFC.App.ActionPlans.Services.DSS.Models.Action;
 
 namespace DFC.App.ActionPlans.ViewModels
 {
@@ -8,9 +10,12 @@ namespace DFC.App.ActionPlans.ViewModels
         {
         }
 
-        public Goal Goal { get; set; }
-        public Action Action { get; set; }
         public int ObjectUpdated { get; set; }
         public int PropertyUpdated { get; set; }
+        public String WhatChanged { get; set; }
+        public String Name { get; set; }
+        public String UpdateMessage { get; set; }
+        public String ObjLink { get; set; }
+        public String ObjLinkText { get; set; }
     }
 }

@@ -6,17 +6,17 @@
         <div class="govuk-grid-row ">
             <div class="govuk-grid-column-two-thirds">
                 <div class="govuk-panel govuk-panel--confirmation">
-                    <govukHeadingH1 text="Due date changed" additional-class="govuk-panel__title"></govukHeadingH1>
-                    <div class="govuk-panel__body">@Model.Goal.GoalSummary - @Model.Goal.GoalType.GetDisplayName()</div>
+                    <govukHeadingH1 text="@Model.WhatChanged" additional-class="govuk-panel__title"></govukHeadingH1>
+                    <div class="govuk-panel__body">@Model.Name</div>
                 </div>
                 <p>
-                    You have changed the due date of this goal to <strong>@Model.Goal.DateGoalShouldBeCompletedBy.DateOnly()</strong>.
+                    @Html.Raw(@Model.UpdateMessage)
                 </p>
                 <p>
                     We will update your adviser's records with this change.
                 </p>
                 <p>You can 
-                    <govukLink link-href="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.ViewGoal/@Model.ActionPlanId/@Model.InteractionId/@Model.Goal.GoalId" LinkText="view or update this goal"></govukLink> or <govukLink link-href="@Model.CompositeSettings.Path/@Model.ActionPlanId/@Model.InteractionId" LinkText="return to your action plan"></govukLink>.
+                    <govukLink link-href="@Model.ObjLink" LinkText="@Model.ObjLinkText"></govukLink> or <govukLink link-href="@Model.CompositeSettings.Path/@Model.ActionPlanId/@Model.InteractionId" LinkText="return to your action plan"></govukLink>.
                 </p>
 
             </div>
