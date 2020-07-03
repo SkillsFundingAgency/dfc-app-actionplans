@@ -73,7 +73,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             var ObjLink = vm.ObjLink;
             var ObjLinkText = vm.ObjLinkText;
             var WhatChanged = vm.WhatChanged;
-            var result = await _controller.Body(new Guid(), new Guid(),new Guid(),Constants.Constants.Goal,Constants.Constants.Date) as ViewResult;
+            var result = await _controller.Body(new Guid(), new Guid(),new Guid(),objectUpdated,propertyUpdated) as ViewResult;
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
             result.ViewName.Should().BeNull();
