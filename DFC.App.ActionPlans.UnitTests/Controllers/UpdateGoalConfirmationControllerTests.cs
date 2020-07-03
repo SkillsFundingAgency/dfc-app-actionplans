@@ -83,7 +83,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         public async Task WhenBodyCalledWithInvalidObjectUpdated_ExceptoinThrown()
         {
             
-             _controller.Invoking(sut => sut.Body(new Guid(), new Guid(),new Guid(),0,Constants.Constants.Date))
+              _controller.Invoking(async sut => await sut.Body(new Guid(), new Guid(),new Guid(),0,Constants.Constants.Date))
                 .Should().Throw<ObjectUpdatedNotSet>();
         }
 
@@ -91,7 +91,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         public async Task WhenBodyCalledWithInvalidPropertyUpdated_ExceptoinThrown()
         {
             
-            _controller.Invoking(sut => sut.Body(new Guid(), new Guid(),new Guid(),Constants.Constants.Goal,0))
+            _controller.Invoking(async sut => await sut.Body(new Guid(), new Guid(),new Guid(),Constants.Constants.Goal,0))
                 .Should().Throw<PropertyUpdatedNotSet>();
         }
     }
