@@ -1,6 +1,4 @@
 ﻿using System;
-using DFC.App.ActionPlans.Services.DSS.Models;
-using Action = DFC.App.ActionPlans.Services.DSS.Models.Action;
 
 namespace DFC.App.ActionPlans.ViewModels
 {
