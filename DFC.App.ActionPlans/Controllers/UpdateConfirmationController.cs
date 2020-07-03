@@ -13,10 +13,10 @@ using Microsoft.Extensions.Options;
 
 namespace DFC.App.ActionPlans.Controllers
 {
-    public class UpdateGoalConfirmationController : CompositeSessionController<UpdateGoalConfirmationCompositeViewModel>
+    public class UpdateConfirmationController : CompositeSessionController<UpdateGoalConfirmationCompositeViewModel>
     {
         private readonly IDssReader _dssReader;
-        public UpdateGoalConfirmationController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings,
+        public UpdateConfirmationController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings,
             IDssReader dssReader)
             : base(compositeSettings, dssReader)
         {

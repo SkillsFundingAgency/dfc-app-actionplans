@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using DFC.App.ActionPlans.Controllers;
 using DFC.App.ActionPlans.Services.DSS.Models;
@@ -9,32 +10,24 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using NUnit.Framework;
+using Action = DFC.App.ActionPlans.Services.DSS.Models.Action;
 
 namespace DFC.App.ActionPlans.UnitTests.Controllers
 {
-    class ChangeGoalDueDateControllerTests : BaseControllerTests
+    class ChangeActionDueDateControllerTests: BaseControllerTests
     {
-         private ChangeGoalDueDateController _controller;
+         private ChangeActionDueDateController _controller;
 
         [SetUp]
         public void Init()
         {
            
-            _controller = new ChangeGoalDueDateController(_logger, _compositeSettings, _dssReader,_dssWriter);
+            _controller = new ChangeActionDueDateController(_logger, _compositeSettings, _dssReader,_dssWriter);
             _controller.ControllerContext.HttpContext = new DefaultHttpContext();
            
         }
 
-        [Test]
-        public void WhenHeadCalled_ReturnHtml()
-        {
-            var result = _controller.Head() as ViewResult;
-            var vm = new HeadViewModel {PageTitle = "Page Title",};
-            var pageTitle = vm.PageTitle;
-            result.Should().NotBeNull();
-            result.Should().BeOfType<ViewResult>();
-            result.ViewName.Should().BeNull();
-        }
+       
 
         [Test]
         public async Task WhenBodyCalled_ReturnHtml()
@@ -112,15 +105,15 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             var model = result.ViewData.Model as ChangeGoalCompositeViewModel;
             result.ViewData.ModelState.IsValid.Should().BeFalse();
         }
-        private ChangeGoalCompositeViewModel GetViewModel()
+        private ChangeActionCompositeViewModel GetViewModel()
         {
-            var changeGoalDueDateCompositeViewModel = new ChangeGoalCompositeViewModel()
+            var changeActionDueDateCompositeViewModel = new ChangeActionCompositeViewModel()
                 {
-                    Goal = new Goal(){GoalId = new Guid().ToString()}
+                    Action = new Action(){ActionId = new Guid().ToString()}
                     };
             
-            return changeGoalDueDateCompositeViewModel;
+            return changeActionDueDateCompositeViewModel;
         }
     }
+  
 }
-

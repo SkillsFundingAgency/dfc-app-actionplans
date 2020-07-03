@@ -64,8 +64,8 @@ namespace DFC.App.ActionPlans.Controllers
                         if (Validate.CheckValidDueDate(ViewModel.DateGoalShouldBeCompletedBy, out dateValue))
                         {
                             await UpdateAction(dateValue);
-                            return RedirectTo($"{CompositeViewModel.PageId.UpdateGoalConfirmation}/{ViewModel.ActionPlanId}/{ViewModel.InteractionId}/{ViewModel.Action.ActionId}/{Constants.Constants.Goal}/{Constants.Constants.Date}");
-                        }
+                            return RedirectTo(Links.GetUpdateConfirmationLink(ViewModel.ActionPlanId, ViewModel.InteractionId, new Guid( ViewModel.Action.ActionId), Constants.Constants.Action, Constants.Constants.Date));
+                        } 
 
                         model.ErrorMessage = "The goal due date must be today or in the future";
                     }
