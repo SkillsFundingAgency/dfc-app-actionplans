@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using DFC.App.ActionPlans.Controllers;
+using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Services.DSS.Models;
 using DFC.App.ActionPlans.Services.DSS.Services;
 using DFC.App.ActionPlans.Services.DSS.Models;
@@ -8,6 +9,7 @@ using DFC.App.ActionPlans.ViewModels;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NSubstitute;
 using NUnit.Framework;
 
 namespace DFC.App.ActionPlans.UnitTests.Controllers
@@ -19,7 +21,6 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         [SetUp]
         public void Init()
         {
-           
             _controller = new UpdateGoalConfirmationController(_logger, _compositeSettings, _dssReader);
             _controller.ControllerContext.HttpContext = new DefaultHttpContext();
            
