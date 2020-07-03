@@ -103,7 +103,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
                 DateGoalAchieved = default,
                 GoalSummary = null,
                 GoalType = GoalType.Skills,
-                GoalStatus = 0,
+                GoalStatus = GoalStatus.Achieved,
                 LastModifiedDate = default,
                 LastModifiedBy = null
             };
@@ -118,8 +118,8 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
                 ActionSummary = null,
                 SignpostedTo = null,
                 SignpostedToCategory = null,
-                ActionType = (ActionType) 0,
-                ActionStatus = (ActionStatus) 0,
+                ActionType = ActionType.ApplyForApprenticeship,
+                ActionStatus = ActionStatus.InProgress,
                 PersonResponsible = 0,
                 LastModifiedDate = default,
                 LastModifiedTouchpointId = null
