@@ -48,7 +48,7 @@ namespace DFC.App.ActionPlans.Controllers
                     break;
                 
                 default:
-                    throw new ObjectUpdatedNotSet(
+                    throw new ObjectUpdatedNotSetException(
                         $"Object updated has not been provided or is incorrect.");
             }
         }
@@ -78,7 +78,7 @@ namespace DFC.App.ActionPlans.Controllers
                 }
                 default:
                 {
-                    throw new PropertyUpdatedNotSet($"Property updated has not been provided or is incorrect for Goal. {ViewModel.Name}");
+                    throw new PropertyUpdatedNotSetException($"Property updated has not been provided or is incorrect for Goal. {ViewModel.Name}");
                 }
             }
         }
@@ -102,7 +102,7 @@ namespace DFC.App.ActionPlans.Controllers
                         $"You have changed the status of this action. {Action.ActionStatus.GetDisplayName()}.";
                     break;
                 default:
-                    throw new PropertyUpdatedNotSet(
+                    throw new PropertyUpdatedNotSetException(
                         $"Property updated has not been provided or is incorrect for Action. {ViewModel.Name}");
             }
         }

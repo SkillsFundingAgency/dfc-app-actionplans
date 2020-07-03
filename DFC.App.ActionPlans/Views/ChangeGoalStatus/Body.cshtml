@@ -2,7 +2,9 @@
 @using DFC.App.ActionPlans.Services.DSS.Enums
 @using DFC.Personalisation.Common.Extensions
 @model DFC.App.ActionPlans.ViewModels.ChangeGoalCompositeViewModel
-
+@{
+    var goalStatusId = @Model.GetElementId("govUkRadioButton", "GoalStatus");
+}
 <partial name="~/ViewComponents/ErrorSummary/ErrorSummary.cshtml"/>
 <div class="govuk-main-wrapper">
     <div class="govuk-width-container">
@@ -29,13 +31,11 @@
                             <div class="govuk-radios" id="GoalStatus">
 
                                 @{
-                                    foreach (var status in ((GoalStatus[])Enum.GetValues(typeof(GoalStatus))).OrderBy(_ => _.ToString()))
+                                    foreach (var status in ((GoalStatus[])Enum.GetValues(typeof(GoalStatus))))
                                     {
-                                        <div class="govuk-radios__item">
-                                            <govukRadioButton id="@Model.GetElementId("govUkRadioButton", "GoalStatus")" name="GoalStatus" value="@((int)status)">
-                                                <govukRadioLabel text="@status.GetDisplayName()" for="@Model.GetElementId("govUkRadioButton", @status.ToString())"></govukRadioLabel>
-                                            </govukRadioButton>
-                                        </div>
+                                        <govukRadioButton id="@(goalStatusId+status)" name="GoalStatus" value="@((int)status)">
+                                            <govukRadioLabel text="@status.GetDisplayName()" for="@(goalStatusId+status)" ></govukRadioLabel>
+                                        </govukRadioButton>
                                     }
                                 }
 

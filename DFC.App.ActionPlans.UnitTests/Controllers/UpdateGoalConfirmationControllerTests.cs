@@ -84,7 +84,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         {
             
               _controller.Invoking(async sut => await sut.Body(new Guid(), new Guid(),new Guid(),0,Constants.Constants.Date))
-                .Should().Throw<ObjectUpdatedNotSet>();
+                .Should().Throw<ObjectUpdatedNotSetException>();
         }
 
         [Test]
@@ -92,7 +92,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         {
             
             _controller.Invoking(async sut => await sut.Body(new Guid(), new Guid(),new Guid(),Constants.Constants.Goal,0))
-                .Should().Throw<PropertyUpdatedNotSet>();
+                .Should().Throw<PropertyUpdatedNotSetException>();
         }
     }
 }

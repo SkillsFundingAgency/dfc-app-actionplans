@@ -4,9 +4,9 @@ using System.Runtime.Serialization;
 namespace DFC.App.ActionPlans.Exceptions
 {
     [Serializable]
-    public class ObjectUpdatedNotSet : System.Exception, ISerializable
+    public class ObjectUpdatedNotSetException : System.Exception, ISerializable
     {
-        public ObjectUpdatedNotSet(string message)
+        public ObjectUpdatedNotSetException(string message)
             : base(message)
         {
 
