@@ -42,7 +42,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             };
             var adviser = new Adviser
             {
-                AdviserDetailId = null,
+                AdviserDetailId = new Guid().ToString(),
                 AdviserName = null,
                 AdviserEmailAddress = null,
                 AdviserContactNumber = null,
@@ -52,7 +52,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             };
             var actionPlan = new ActionPlan
             {
-                ActionPlanId = null,
+                ActionPlanId = new Guid().ToString(),
                 CustomerId = null,
                 InteractionId = null,
                 SessionId = null,
@@ -94,7 +94,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             };
             var goal = new Goal
             {
-                GoalId = null,
+                GoalId = new Guid().ToString(),
                 CustomerId = null,
                 ActionPlanId = null,
                 SubcontractorId = null,
@@ -103,13 +103,13 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
                 DateGoalAchieved = default,
                 GoalSummary = null,
                 GoalType = GoalType.Skills,
-                GoalStatus = 0,
+                GoalStatus = GoalStatus.Achieved,
                 LastModifiedDate = default,
                 LastModifiedBy = null
             };
             var action = new Services.DSS.Models.Action
             {
-                ActionId = null,
+                ActionId = new Guid().ToString(),
                 CustomerId = null,
                 ActionPlanId = null,
                 DateActionAgreed = default,
@@ -118,8 +118,8 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
                 ActionSummary = null,
                 SignpostedTo = null,
                 SignpostedToCategory = null,
-                ActionType = (ActionType) 0,
-                ActionStatus = (ActionStatus) 0,
+                ActionType = ActionType.ApplyForApprenticeship,
+                ActionStatus = ActionStatus.InProgress,
                 PersonResponsible = 0,
                 LastModifiedDate = default,
                 LastModifiedTouchpointId = null
@@ -136,7 +136,10 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             _dssReader.GetActions(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>())
                 .ReturnsForAnyArgs(new List<Services.DSS.Models.Action> {action});
             _dssWriter.UpdateActionPlan(Arg.Any<UpdateActionPlan>());
-
+            _dssReader.GetGoalDetails(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(),Arg.Any<string>())
+                .ReturnsForAnyArgs(goal);
+            _dssReader.GetActionDetails(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(),Arg.Any<string>())
+                .ReturnsForAnyArgs(action);
         }
 
 
