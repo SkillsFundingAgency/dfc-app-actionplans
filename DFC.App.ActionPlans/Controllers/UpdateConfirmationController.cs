@@ -24,7 +24,7 @@ namespace DFC.App.ActionPlans.Controllers
         }
 
         
-        [Route("/body/update-goal-confirmation/{actionPlanId}/{interactionId}/{objId}/{objectupdated}/{propertyupdated}")]
+        [Route("/body/update-confirmation/{actionPlanId}/{interactionId}/{objId}/{objectupdated}/{propertyupdated}")]
         [HttpGet]
         public async  Task<IActionResult> Body(Guid actionPlanId, Guid interactionId, Guid objId, int objectUpdated, int propertyUpdated)
         {

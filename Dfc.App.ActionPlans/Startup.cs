@@ -132,15 +132,10 @@ namespace Dfc.App.ActionPlans
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
+                /*
                 endpoints.MapControllerRoute("action-plans", appPath + "/action-plans", new {controller = "home", action = "body"});
-
                 endpoints.MapControllerRoute("viewGoal", appPath + "/view-goal", new {controller = "viewGoal", action = "body"});
-
-               
-
-                endpoints.MapControllerRoute("shcDeleted", appPath + "/shc-deleted", new { controller = "shcDeleted", action = "body" });
-                endpoints.MapControllerRoute("shcDeletedBody", "/body/shc-deleted", new { controller = "shcDeleted", action = "body" });
-                
+                */
                 endpoints.MapControllers();
             });
 

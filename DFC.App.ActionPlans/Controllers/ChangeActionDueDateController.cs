@@ -40,42 +40,42 @@ namespace DFC.App.ActionPlans.Controllers
             return await base.Body();
         }
 
-           [Route("/body/change-actio0n-due-date")]
+           [Route("/body/change-action-due-date")]
             [HttpPost]
             public async  Task<IActionResult> Body(ChangeActionCompositeViewModel model, IFormCollection formCollection)
             {
 
                 InitVM(model);
 
-                ViewModel.DateGoalShouldBeCompletedBy = new SplitDate()
+                ViewModel.DateActionShouldBeCompletedBy = new SplitDate()
                 {
                     Day = formCollection["Day"],
                     Month = formCollection["Month"],
                     Year = formCollection["Year"]
                 };
 
-                if (!ViewModel.DateGoalShouldBeCompletedBy.isEmpty())
+                if (!ViewModel.DateActionShouldBeCompletedBy.isEmpty())
                 {
                     DateTime dateValue;
-                    if (Validate.CheckValidSplitDate(ViewModel.DateGoalShouldBeCompletedBy, out dateValue))
+                    if (Validate.CheckValidSplitDate(ViewModel.DateActionShouldBeCompletedBy, out dateValue))
                     {
 
-                        if (Validate.CheckValidDueDate(ViewModel.DateGoalShouldBeCompletedBy, out dateValue))
+                        if (Validate.CheckValidDueDate(ViewModel.DateActionShouldBeCompletedBy, out dateValue))
                         {
                             await UpdateAction(dateValue);
-                            return RedirectTo( Links.GetUpdateConfirmationLink(ViewModel.CompositeSettings.Path,ViewModel.ActionPlanId, ViewModel.InteractionId, new Guid( ViewModel.Action.ActionId), Constants.Constants.Action, Constants.Constants.Date));
+                            return RedirectTo( Links.GetUpdateConfirmationLink(ViewModel.ActionPlanId, ViewModel.InteractionId, new Guid( ViewModel.Action.ActionId), Constants.Constants.Action, Constants.Constants.Date));
                         } 
 
-                        model.ErrorMessage = "The goal due date must be today or in the future";
+                        model.ErrorMessage = "The action due date must be today or in the future";
                     }
                     else
                     {
-                        model.ErrorMessage = "The goal due date must be a real date";
+                        model.ErrorMessage = "The action due date must be a real date";
                     }
                 }
                 else
                 {
-                    model.ErrorMessage = "Enter the date that you would like to achieve this goal";
+                    model.ErrorMessage = "Enter the date that you would like to complete this action by";
                 }
 
                 ModelState.Clear(); //Remove model binding errors as we will check if the date is valid  or not.
@@ -101,16 +101,16 @@ namespace DFC.App.ActionPlans.Controllers
 
             private async Task UpdateAction(DateTime dateValue)
             {
-                var updateGoal = new UpdateAction()
+                var updateAction = new UpdateAction()
                 {
                     CustomerId = ViewModel.CustomerId,
                     InteractionId = ViewModel.InteractionId,
                     ActionPlanId = ViewModel.ActionPlanId,
                     ActionId = new Guid(ViewModel.Action.ActionId),
-                    DateActionShouldBeCompletedBy = dateValue,
+                    DateActionAimsToBeCompletedBy = dateValue,
                     ActionStatus = ViewModel.Action.ActionStatus
                 };
-                await _dssWriter.UpdateAction(updateGoal);
+                await _dssWriter.UpdateAction(updateAction);
             }
 
             private void  BackLink()

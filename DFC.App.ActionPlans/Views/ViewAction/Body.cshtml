@@ -36,7 +36,8 @@
                                     <span> @Model.Action.DateActionAimsToBeCompletedBy.ToString("dd MMMM yyyy")</span>
                                 </td>
                                 <td class="govuk-table__cell">
-                                    <a class="govuk-link" href="change-date.html">Change due date</a>
+                                    <govukLink id="@Model.GetElementId("govUkLink", $"change-due-date")" 
+                                               link-href="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.ChangeActionDueDate/@Model.Action.ActionPlanId/@Model.InteractionId/@Model.Action.ActionId" LinkText="Change due date"></govukLink>
                                 </td>
                             </tr>
                             <tr class="govuk-table__row">

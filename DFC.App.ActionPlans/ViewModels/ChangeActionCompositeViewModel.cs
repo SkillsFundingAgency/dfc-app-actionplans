@@ -15,6 +15,6 @@ namespace DFC.App.ActionPlans.ViewModels
         
         public String ErrorMessage { get; set; } = "";
 
-        public SplitDate DateGoalShouldBeCompletedBy { get; set; }
+        public SplitDate DateActionShouldBeCompletedBy { get; set; }
     }
 }

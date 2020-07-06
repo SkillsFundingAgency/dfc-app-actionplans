@@ -5,9 +5,9 @@ namespace DFC.App.ActionPlans.Helpers
 {
     public static class Links
     {
-        public static string GetUpdateConfirmationLink(String CompositePath,Guid ActionPlanId, Guid InteractionId, Guid ObjectId, int ObjectUpdated, int PropertyUpdated)
+        public static string GetUpdateConfirmationLink(Guid ActionPlanId, Guid InteractionId, Guid ObjectId, int ObjectUpdated, int PropertyUpdated)
         {
-            var link = $"{CompositePath}/{CompositeViewModel.PageId.UpdateConfirmation}/{ActionPlanId}/{InteractionId}/{ObjectId}/{ObjectUpdated}/{PropertyUpdated}";
+            var link = $"{CompositeViewModel.PageId.UpdateConfirmation}/{ActionPlanId}/{InteractionId}/{ObjectId}/{ObjectUpdated}/{PropertyUpdated}";
             return link;
         }
 

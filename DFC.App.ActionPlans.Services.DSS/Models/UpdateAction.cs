@@ -10,6 +10,6 @@ namespace DFC.App.ActionPlans.Services.DSS.Models
         public Guid InteractionId { get; set; }
         public Guid ActionId { get; set; }
         public ActionStatus ActionStatus { get; set; }
-        public DateTime DateActionShouldBeCompletedBy { get; set; }
+        public DateTime DateActionAimsToBeCompletedBy { get; set; }
     }
 }

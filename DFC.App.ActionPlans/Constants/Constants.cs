@@ -3,6 +3,7 @@
     public static class Constants
     {
         public const string DateGoalShouldBeCompletedBy = "DateGoalShouldBeCompletedBy";
+        public const string DateActionShouldBeCompletedBy = "DateActionShouldBeCompletedBy";
         public const string GoalStatus = "GoalStatus";
         public const int Goal = 1;
         public const int Action = 2;

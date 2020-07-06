@@ -391,7 +391,7 @@ namespace DFC.App.ActionPlans.Services.DSS.UnitTest
                     CustomerId = new Guid(),
                     InteractionId = new Guid(),
                     ActionPlanId = new Guid(),
-                    DateActionShouldBeCompletedBy = DateTime.Now.AddDays(1),
+                    DateActionAimsToBeCompletedBy = DateTime.Now.AddDays(1),
                     ActionStatus = ActionStatus.InProgress,
                     ActionId = new Guid()
                 };
