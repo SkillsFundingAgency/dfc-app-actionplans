@@ -123,7 +123,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
                 {"homeGovukCheckBoxAcceptplan", "on"}
             })) as RedirectResult;
 
-            result.Url.Should().Contain("~/home");
+            result.Url.Should().Contain("~Path/home");
         }
         
 
