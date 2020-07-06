@@ -21,5 +21,11 @@ namespace DFC.App.ActionPlans.Helpers
             var link = $"{CompositePath}/{CompositeViewModel.PageId.ViewAction}/{ActionPlanId}/{InteractionId}/{GoalId}";
             return link;
         }
+
+        public static string GetViewActionPlanLink(String CompositePath, Guid ActionPlanId, Guid InteractionId)
+        {
+            var link = $"{CompositePath}/{CompositeViewModel.PageId.Home}/{ActionPlanId}/{InteractionId}";
+            return link;
+        }
     }
 }

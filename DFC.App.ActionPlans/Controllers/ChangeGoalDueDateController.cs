@@ -36,6 +36,7 @@ namespace DFC.App.ActionPlans.Controllers
                 var customer = await GetCustomerDetails();
                 await LoadData(customer.CustomerId, actionPlanId, interactionId);
                 ViewModel.Goal = await _dssReader.GetGoalDetails(ViewModel.CustomerId.ToString(), interactionId.ToString(), actionPlanId.ToString(), goalId.ToString());
+                SetBackLink();
                 return await base.Body();
             }
 
@@ -109,6 +110,11 @@ namespace DFC.App.ActionPlans.Controllers
                     GoalStatus = ViewModel.Goal.GoalStatus
                 };
                 await _dssWriter.UpdateGoal(updateGoal);
+            }
+
+            private void  SetBackLink()
+            {
+                ViewModel.BackLink = @Links.GetViewGoalLink(ViewModel.CompositeSettings.Path, ViewModel.ActionPlanId, ViewModel.InteractionId, new Guid(ViewModel.Goal.GoalId));
             }
     }
 }
