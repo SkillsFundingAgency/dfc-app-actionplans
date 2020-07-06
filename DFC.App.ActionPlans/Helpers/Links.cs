@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.ViewModels;
 
 namespace DFC.App.ActionPlans.Helpers
