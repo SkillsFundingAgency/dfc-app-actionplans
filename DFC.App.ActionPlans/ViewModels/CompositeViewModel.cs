@@ -57,7 +57,7 @@ namespace DFC.App.ActionPlans.ViewModels
         public string PageTitle { get; set;}
         public string PageHeading { get; set;}
         public string Name { get; set; }
-
+        public string BackLink { get; set; }
         public bool ShowBreadCrumb { get; set; }
         public CompositeSettings CompositeSettings { get; set; }
 

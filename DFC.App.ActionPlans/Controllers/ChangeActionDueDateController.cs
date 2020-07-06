@@ -9,6 +9,7 @@ using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Services.DSS.Models;
 using DFC.App.ActionPlans.ViewModels;
+using DFC.Personalisation.CommonUI.ViewComponents.Components.BackLink;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -38,6 +39,7 @@ namespace DFC.App.ActionPlans.Controllers
             var customer = await GetCustomerDetails();
             await LoadData(customer.CustomerId, actionPlanId, interactionId);
             ViewModel.Action = await _dssReader.GetActionDetails(ViewModel.CustomerId.ToString(), interactionId.ToString(), actionPlanId.ToString(), id.ToString());
+            BackLink();
             return await base.Body();
         }
 
@@ -64,7 +66,7 @@ namespace DFC.App.ActionPlans.Controllers
                         if (Validate.CheckValidDueDate(ViewModel.DateGoalShouldBeCompletedBy, out dateValue))
                         {
                             await UpdateAction(dateValue);
-                            return RedirectTo(Links.GetUpdateConfirmationLink(ViewModel.ActionPlanId, ViewModel.InteractionId, new Guid( ViewModel.Action.ActionId), Constants.Constants.Action, Constants.Constants.Date));
+                            return RedirectTo( Links.GetUpdateConfirmationLink(ViewModel.CompositeSettings.Path,ViewModel.ActionPlanId, ViewModel.InteractionId, new Guid( ViewModel.Action.ActionId), Constants.Constants.Action, Constants.Constants.Date));
                         } 
 
                         model.ErrorMessage = "The goal due date must be today or in the future";
@@ -84,6 +86,7 @@ namespace DFC.App.ActionPlans.Controllers
                    
                 var customer = await GetCustomerDetails();
                 await LoadData(customer.CustomerId, model.ActionPlanId, model.InteractionId);
+                BackLink();
                 return await base.Body();
             }
 
@@ -113,5 +116,9 @@ namespace DFC.App.ActionPlans.Controllers
                 await _dssWriter.UpdateAction(updateGoal);
             }
 
+            private void  BackLink()
+            {
+                ViewModel.BackLink = @Links.GetViewActionLink(ViewModel.CompositeSettings.Path,new Guid(ViewModel.Action.ActionPlanId), ViewModel.InteractionId, new Guid(ViewModel.Action.ActionId));
+            }
     }
 }

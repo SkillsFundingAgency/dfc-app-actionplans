@@ -55,12 +55,7 @@ namespace Dfc.App.ActionPlans.Controllers
         [Route("/breadcrumb/[controller]/{actionPlanId?}/{interactionId?}/{docId?}/{objupdated?}/{itemupdated?}")]
         public virtual IActionResult Breadcrumb()
         {
-           var viewModel = new BreadCrumbViewModel()
-           {
-               HomeUrl = $"#"
-           };
-
-            return View(viewModel);
+            return View(ViewModel);
         }
 
         [HttpGet]
