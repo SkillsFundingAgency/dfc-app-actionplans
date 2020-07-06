@@ -118,7 +118,7 @@ namespace DFC.App.ActionPlans.Controllers
 
             private void  BackLink()
             {
-                ViewModel.BackLink = @Links.GetViewActionLink(ViewModel.CompositeSettings.Path,new Guid(ViewModel.Action.ActionPlanId), ViewModel.InteractionId, new Guid(ViewModel.Action.ActionId));
+                ViewModel.BackLink = @Links.GetViewActionLink(ViewModel.CompositeSettings.Path, ViewModel.ActionPlanId, ViewModel.InteractionId, new Guid(ViewModel.Action.ActionId));
             }
     }
 }
