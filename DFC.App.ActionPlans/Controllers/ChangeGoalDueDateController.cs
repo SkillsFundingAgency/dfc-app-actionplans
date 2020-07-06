@@ -36,9 +36,16 @@ namespace DFC.App.ActionPlans.Controllers
                 var customer = await GetCustomerDetails();
                 await LoadData(customer.CustomerId, actionPlanId, interactionId);
                 ViewModel.Goal = await _dssReader.GetGoalDetails(ViewModel.CustomerId.ToString(), interactionId.ToString(), actionPlanId.ToString(), goalId.ToString());
-                SetBackLink();
                 return await base.Body();
             }
+
+           //[Route("/breadcrumb/change-goal-due-date/{actionPlanId}/{interactionId}/{goalId}")]
+            
+           /* public  IActionResult Breadcrumb(Guid actionPlanId, Guid interactionId, Guid goalId)
+            {
+                SetBackLink(actionPlanId, interactionId, goalId);
+                return base.Breadcrumb();
+            }*/
 
             [Route("/body/change-goal-due-date")]
             [HttpPost]
@@ -112,9 +119,6 @@ namespace DFC.App.ActionPlans.Controllers
                 await _dssWriter.UpdateGoal(updateGoal);
             }
 
-            private void  SetBackLink()
-            {
-                ViewModel.BackLink = @Links.GetViewGoalLink(ViewModel.CompositeSettings.Path, ViewModel.ActionPlanId, ViewModel.InteractionId, new Guid(ViewModel.Goal.GoalId));
-            }
+         
     }
 }

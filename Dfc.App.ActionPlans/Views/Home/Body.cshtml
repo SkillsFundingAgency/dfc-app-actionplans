@@ -69,7 +69,6 @@
                                         <govukLink id="@Model.GetElementId("govUkLink", $"action-plan-{goal.GoalId}")"
                                                    link-href="@Links.GetViewGoalLink(Model.CompositeSettings.Path,new Guid(goal.ActionPlanId), @Model.InteractionId, new Guid(goal.GoalId))" LinkText="View"></govukLink>
 
-                                        GetViewGoalLink(Model.CompositeSettings.Path,goal.ActionPlanId, @Model.InteractionId, goal.GoalId)
                                     </td>
                                 </tr>
                             }

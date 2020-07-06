@@ -57,7 +57,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         [Test]
         public void WhenBreadCrumbCalled_ReturnHtml()
         {
-            var result = _controller.Breadcrumb() as ViewResult;
+            var result = _controller.Breadcrumb(new Guid(), new Guid(), new Guid() ) as ViewResult;
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
             result.ViewName.Should().BeNull();

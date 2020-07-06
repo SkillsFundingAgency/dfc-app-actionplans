@@ -70,11 +70,11 @@ namespace Dfc.App.ActionPlans.Controllers
         {
             return await base.BodyTop();
         }
-        [Route("/breadcrumb/home/{id}/{intid}")]
-        [Route("/breadcrumb/{id}/{intid}")]
-        public override IActionResult Breadcrumb()
+        [Route("/breadcrumb/home/{id}/{intid}/{objctId?}")]
+        [Route("/breadcrumb/{id}/{intid}/{objctId?}")]
+        public override IActionResult Breadcrumb(Guid actionPlanId, Guid interactionId, Guid objectId)
         {
-            return base.Breadcrumb();
+            return base.Breadcrumb(actionPlanId, interactionId, objectId);
         }
       
 
