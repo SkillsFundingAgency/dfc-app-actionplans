@@ -343,7 +343,45 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             }
             catch (Exception e)
             {
-                throw new DssException($"Failure Update Action Plan, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
+                throw new DssException($"Failure Update Goal, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
+            }
+            
+        }
+        public async Task UpdateAction(UpdateAction updateAction)
+        {
+            
+            if (updateAction == null)
+                throw new DssException($"Failure Update Action, No data provided");
+
+            try
+            {
+
+                ActionPlan result;
+                using (var request = CreateRequestMessage())
+                {
+                    request.Content = new StringContent(
+                        JsonConvert.SerializeObject(updateAction),
+                        Encoding.UTF8,
+                        MediaTypeNames.Application.Json);
+                    request.Headers.Add(VersionHeader, _dssSettings.Value.ActionsApiVersion);
+
+                    await _restClient.PatchAsync<Goal>(_dssSettings.Value.ActionsApiUrl
+                            .Replace(CustomerIdTag,updateAction.CustomerId.ToString())
+                            .Replace(InteractionIdTag,updateAction.InteractionId.ToString())
+                            .Replace(ActionPlanIdTag,updateAction.ActionPlanId.ToString()) + "/" + updateAction.ActionId
+                        , request);
+                }
+
+                if (_restClient.LastResponse.StatusCode==HttpStatusCode.NoContent)
+                {
+                    throw new DssException($"Failure Update Action - Response {_restClient.LastResponse.Content} ");
+                }
+
+                
+            }
+            catch (Exception e)
+            {
+                throw new DssException($"Failure Update Action, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
             }
             
         }

@@ -7,5 +7,6 @@ namespace DFC.App.ActionPlans.Services.DSS.Interfaces
     {
         Task UpdateActionPlan(UpdateActionPlan updateActionPlan);
         Task UpdateGoal(UpdateGoal updateGoal);
+        Task UpdateAction(UpdateAction updateAction);
     }
 }

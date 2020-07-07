@@ -7,6 +7,7 @@ using DFC.App.ActionPlans.ViewModels;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Primitives;
 using NUnit.Framework;
 
@@ -23,7 +24,8 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
            
             _controller = new HomeController(_logger, _compositeSettings, _dssReader,_dssWriter);
             _controller.ControllerContext.HttpContext = new DefaultHttpContext();
-           
+            _controller.ControllerContext.RouteData = new RouteData();
+            _controller.ControllerContext.RouteData.Values.Add("controller", Constants.Constants.ChangeGoalDueDateController);
         }
 
         [Test]
@@ -57,7 +59,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         [Test]
         public void WhenBreadCrumbCalled_ReturnHtml()
         {
-            var result = _controller.Breadcrumb() as ViewResult;
+            var result = _controller.Breadcrumb(new Guid(), new Guid(), new Guid() ) as ViewResult;
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
             result.ViewName.Should().BeNull();
@@ -123,7 +125,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
                 {"homeGovukCheckBoxAcceptplan", "on"}
             })) as RedirectResult;
 
-            result.Url.Should().Contain("~/home");
+            result.Url.Should().Contain("~Path/home");
         }
         
 

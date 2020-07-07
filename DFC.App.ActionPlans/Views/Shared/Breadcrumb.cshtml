@@ -1,9 +1,9 @@
-﻿@model BreadCrumbViewModel
+﻿@model CompositeViewModel
 <div class="govuk-breadcrumbs">
     <ol class="govuk-breadcrumbs__list">
        
             <li class="govuk-breadcrumbs__list-item">
-                <a class="govuk-breadcrumbs__link" href="@Model.HomeUrl">Back</a>
+                <govukLink additional-class="govuk-breadcrumbs__link" link-href="@Model.BackLink" LinkText="Back"></govukLink>
             </li>
        
     </ol>

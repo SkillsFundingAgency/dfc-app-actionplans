@@ -1,31 +1,31 @@
 ﻿@using DFC.App.ActionPlans.Models
 @using DFC.App.ActionPlans.Constants
-@model DFC.App.ActionPlans.ViewModels.ChangeGoalCompositeViewModel
+@model DFC.App.ActionPlans.ViewModels.ChangeActionCompositeViewModel
 
 <partial name="~/ViewComponents/ErrorSummary/ErrorSummary.cshtml" />
 <div class="govuk-main-wrapper">
     <div class="govuk-width-container">
         <div class="govuk-grid-row ">
             <div class="govuk-grid-column-two-thirds ">
-                <form id="@Model.GetElementId("form", "Form")" action="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.ChangeGoalDueDate/@Model.ActionPlanId/@Model.InteractionId/@Model.Goal.GoalId/" class="govuk-form-group" method="post">
+                <form id="@Model.GetElementId("form", "Form")" action="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.ChangeActionDueDate/@Model.ActionPlanId/@Model.InteractionId/@Model.Action.ActionId/" class="govuk-form-group" method="post">
                     @Html.HiddenFor(m => m.ActionPlanId)
                     @Html.HiddenFor(m => m.InteractionId)
-                    @Html.HiddenFor(m => m.Goal.GoalId)
+                    @Html.HiddenFor(m => m.Action.ActionId)
                     @Html.HiddenFor(m => m.CustomerId)
-                    @Html.HiddenFor(m => m.Goal.GoalStatus)
+                    @Html.HiddenFor(m => m.Action.ActionStatus)
                     <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")">
-                        <fieldset class="govuk-fieldset" role="group" aria-describedby="date-goal-should-be-completed-by-hint">
+                        <fieldset class="govuk-fieldset" role="group" aria-describedby="date-action-should-be-completed-by-hint">
                             <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                                <govukHeadingH1 text="When would you like to achieve this goal?" additional-class="govuk-fieldset__heading"></govukHeadingH1>
+                                <govukHeadingH1 text="When would you like to complete this action by?" additional-class="govuk-fieldset__heading"></govukHeadingH1>
                             </legend>
-                            <span id="date-goal-should-be-completed-by-hint" class="govuk-hint">
+                            <span id="date-action-should-be-completed-by-hint" class="govuk-hint">
                                 For example, 12 9 2020
                             </span>
 
-                            <govukError id="@Model.GetElementId("govukTextInputError", "DateInpuError")" hidden="@ViewData.ModelState.IsValid" text="@(ViewData.ModelState[Constants.DateGoalShouldBeCompletedBy]==null?"":ViewData.ModelState[Constants.DateGoalShouldBeCompletedBy].Errors[0].ErrorMessage)"></govukError>
-                            <div class="govuk-date-input" id="date-goal-should-be-completed-by">
-                                DateGoalShouldBeCompletedBy
-                                <partial name="~/ViewComponents/SplitDate/splitdate.cshtml" model="@Model.DateGoalShouldBeCompletedBy??new SplitDate()" />
+                            <govukError id="@Model.GetElementId("govukTextInputError", "DateInpuError")" hidden="@ViewData.ModelState.IsValid" text="@(ViewData.ModelState[Constants.DateActionShouldBeCompletedBy]==null?"":ViewData.ModelState[Constants.DateActionShouldBeCompletedBy].Errors[0].ErrorMessage)"></govukError>
+                            <div class="govuk-date-input" id="date-action-should-be-completed-by">
+                                DateactionShouldBeCompletedBy
+                                <partial name="~/ViewComponents/SplitDate/splitdate.cshtml" model="@Model.DateActionShouldBeCompletedBy ??new SplitDate()" />
 
                             </div>
                         </fieldset>

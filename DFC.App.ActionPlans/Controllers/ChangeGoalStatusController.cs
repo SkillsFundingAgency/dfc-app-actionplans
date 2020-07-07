@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Dfc.App.ActionPlans.Controllers;
+using DFC.App.ActionPlans.Helpers;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Enums;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
@@ -40,7 +41,7 @@ namespace DFC.App.ActionPlans.Controllers
             }
 
            
-            [Route("/body/change-goal-status")]
+            [Route("/body/change-goal-status/{actionPlanId}/{interactionId}/{goalId}")]
             [HttpPost]
             public async  Task<IActionResult> Body(ChangeGoalCompositeViewModel model, IFormCollection formCollection)
             {
@@ -59,7 +60,7 @@ namespace DFC.App.ActionPlans.Controllers
                     };
 
                     await UpdateGoal();
-                    return RedirectTo($"{CompositeViewModel.PageId.UpdateGoalConfirmation}/{ViewModel.ActionPlanId}/{ViewModel.InteractionId}/{ViewModel.Goal.GoalId}/{Constants.Constants.Goal}/{Constants.Constants.Status}");
+                    return RedirectTo(Links.GetUpdateConfirmationLink(ViewModel.ActionPlanId, ViewModel.InteractionId, new Guid( ViewModel.Goal.GoalId), Constants.Constants.Goal, Constants.Constants.Status));
                 }
                 else
                 {

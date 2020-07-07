@@ -31,8 +31,10 @@ namespace DFC.App.ActionPlans.ViewModels
             public static PageId ViewGoal { get; } = new PageId("view-goal");
             public static PageId ChangeGoalDueDate { get; } = new PageId("change-goal-due-date");
             public static PageId ChangeGoalStatus { get; } = new PageId("change-goal-status");
+            public static PageId ChangeActionDueDate { get; } = new PageId("change-action-due-date");
+            public static PageId ChangeActionStatus { get; } = new PageId("change-action-status");
             public static PageId ViewAction { get; } = new PageId("view-action");
-            public static PageId UpdateGoalConfirmation { get; } = new PageId("update-goal-confirmation");
+            public static PageId UpdateConfirmation { get; } = new PageId("update-confirmation");
 
         }
 
@@ -57,7 +59,7 @@ namespace DFC.App.ActionPlans.ViewModels
         public string PageTitle { get; set;}
         public string PageHeading { get; set;}
         public string Name { get; set; }
-
+        public string BackLink { get; set; }
         public bool ShowBreadCrumb { get; set; }
         public CompositeSettings CompositeSettings { get; set; }
 

@@ -1,5 +1,6 @@
 ﻿@using DFC.Personalisation.Common.Extensions
 @using DFC.App.ActionPlans.Extensions
+@using DFC.App.ActionPlans.Helpers
 @model HomeCompositeViewModel
 <div class="govuk-main-wrapper">
     <div class="govuk-width-container">
@@ -64,9 +65,10 @@
                                     <td class="govuk-table__cell">@goal.DateGoalShouldBeCompletedBy.ToString("dd MMMM yyyy")</td >
                                     <td class="govuk-table__cell">@goal.GoalStatus.GetDisplayName()</td>
                                     <td class="govuk-table__cell">
-                                        
-                                        <govukLink id="@Model.GetElementId("govUkLink", $"action-plan-{goal.GoalId}")" 
-                                                   link-href="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.ViewGoal/@goal.ActionPlanId/@Model.InteractionId/@goal.GoalId" LinkText="View"></govukLink>
+
+                                        <govukLink id="@Model.GetElementId("govUkLink", $"action-plan-{goal.GoalId}")"
+                                                   link-href="@Links.GetViewGoalLink(Model.CompositeSettings.Path,new Guid(goal.ActionPlanId), @Model.InteractionId, new Guid(goal.GoalId))" LinkText="View"></govukLink>
+
                                     </td>
                                 </tr>
                             }
@@ -98,7 +100,8 @@
                                     <td class="govuk-table__cell">@action.DateActionAimsToBeCompletedBy.ToString("dd MMMM yyyy")</td>
                                     <td class="govuk-table__cell">@action.ActionStatus.GetDisplayName()</td>
                                     <td class="govuk-table__cell">
-                                        <govukLink id="@Model.GetElementId("govUkLink", $"action-plan-{action.ActionId}")" link-href="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.ViewAction/@action.ActionPlanId/@Model.InteractionId/@action.ActionId" LinkText="View"></govukLink>
+                                        <govukLink id="@Model.GetElementId("govUkLink", $"action-plan-{action.ActionId}")" 
+                                                   link-href="@Links.GetViewActionLink(Model.CompositeSettings.Path,new Guid(action.ActionPlanId), @Model.InteractionId, new Guid(action.ActionId))" LinkText="View"></govukLink>
                                     </td>
                                 </tr>
                             }

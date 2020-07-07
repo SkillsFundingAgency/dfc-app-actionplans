@@ -1,4 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using DFC.App.ActionPlans.Cosmos.Interfaces;
+using DFC.App.ActionPlans.Cosmos.Models;
+using DFC.App.ActionPlans.Cosmos.Services;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services;
@@ -9,6 +12,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -44,6 +48,11 @@ namespace Dfc.App.ActionPlans
             services.AddScoped<IDssWriter, DssService>();
             services.Configure<DssSettings>(Configuration.GetSection(nameof(DssSettings)));
             services.Configure<CompositeSettings>(Configuration.GetSection(nameof(CompositeSettings)));
+            services.Configure<CosmosSettings>(Configuration.GetSection(nameof(CosmosSettings)));
+            services.AddScoped((x) => new CosmosClient(
+                accountEndpoint: Configuration.GetSection("CosmosSettings:ApiUrl").Value, 
+                authKeyOrResourceToken: Configuration.GetSection("CosmosSettings:ApiKey").Value));
+            services.AddScoped<ICosmosService, CosmosService>();
 
             services.Configure<AuthSettings>(Configuration.GetSection("AuthSettings"));
             var authSettings = new AuthSettings();
@@ -132,15 +141,10 @@ namespace Dfc.App.ActionPlans
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
+                /*
                 endpoints.MapControllerRoute("action-plans", appPath + "/action-plans", new {controller = "home", action = "body"});
-
                 endpoints.MapControllerRoute("viewGoal", appPath + "/view-goal", new {controller = "viewGoal", action = "body"});
-
-               
-
-                endpoints.MapControllerRoute("shcDeleted", appPath + "/shc-deleted", new { controller = "shcDeleted", action = "body" });
-                endpoints.MapControllerRoute("shcDeletedBody", "/body/shc-deleted", new { controller = "shcDeleted", action = "body" });
-                
+                */
                 endpoints.MapControllers();
             });
 

@@ -7,6 +7,8 @@ using DFC.App.ActionPlans.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
+using DFC.App.ActionPlans.Constants;
+using DFC.App.ActionPlans.Helpers;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Services.DSS.Models;
 
@@ -52,21 +54,19 @@ namespace Dfc.App.ActionPlans.Controllers
         }
 
         [HttpGet]
-        [Route("/breadcrumb/[controller]/{actionPlanId?}/{interactionId?}/{docId?}/{objupdated?}/{itemupdated?}")]
-        public virtual IActionResult Breadcrumb()
+        [Route("/breadcrumb/[controller]/{actionPlanId?}/{interactionId?}/{objectId?}/{objupdated?}/{itemupdated?}")]
+        public virtual IActionResult Breadcrumb(Guid actionPlanId, Guid interactionId, Guid objectId)
         {
-           var viewModel = new BreadCrumbViewModel()
-           {
-               HomeUrl = $"#"
-           };
-
-            return View(viewModel);
+            string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
+            ViewModel.BackLink = GetBackLink(controllerName,actionPlanId, interactionId, objectId);
+            return View(ViewModel);
         }
 
         [HttpGet]
         [Route("/body/[controller]/{id?}")]
         public virtual Task<IActionResult> Body()
         {
+
             return Task.FromResult<IActionResult>(View(ViewModel));
         }
 
@@ -110,6 +110,30 @@ namespace Dfc.App.ActionPlans.Controllers
             ViewModel.Adviser = await _dssReader.GetAdviserDetails(ViewModel.Interaction.AdviserDetailsId);
             sessions = await _dssReader.GetSessions(ViewModel.CustomerId.ToString(), ViewModel.InteractionId.ToString());
             ViewModel.LatestSession = sessions.OrderByDescending(s => s.DateandTimeOfSession).First();
+        }
+
+        private string GetBackLink(String controllerName, Guid actionPlanId, Guid interactionId, Guid objectId)
+        {
+            switch (controllerName)
+            {
+                case Constants.ChangeGoalDueDateController: 
+                    return @Links.GetViewGoalLink(ViewModel.CompositeSettings.Path, actionPlanId, interactionId, objectId);
+                    
+                case Constants.ChangeGoalStatusController:
+                    return @Links.GetViewGoalLink(ViewModel.CompositeSettings.Path, actionPlanId, interactionId, objectId); 
+
+                case Constants.ChangeActionDueDateController: 
+                    return @Links.GetViewActionLink(ViewModel.CompositeSettings.Path, actionPlanId, interactionId, objectId);
+                    
+                case Constants.ChangeActionStatusController:
+                    return @Links.GetViewActionLink(ViewModel.CompositeSettings.Path, actionPlanId, interactionId, objectId);
+                    
+                default:
+                    return @Links.GetViewActionPlanLink(ViewModel.CompositeSettings.Path, actionPlanId, interactionId);;
+                    
+            }
+
+            
         }
     }
 

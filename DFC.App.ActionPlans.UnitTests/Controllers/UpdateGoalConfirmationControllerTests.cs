@@ -12,12 +12,12 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
 {
     class UpdateGoalConfirmationControllerTests : BaseControllerTests
     {
-        private UpdateGoalConfirmationController _controller;
+        private UpdateConfirmationController _controller;
 
         [SetUp]
         public void Init()
         {
-            _controller = new UpdateGoalConfirmationController(_logger, _compositeSettings, _dssReader);
+            _controller = new UpdateConfirmationController(_logger, _compositeSettings, _dssReader);
             _controller.ControllerContext.HttpContext = new DefaultHttpContext();
             var vm = new UpdateGoalConfirmationCompositeViewModel
             {
@@ -84,7 +84,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         {
             
               _controller.Invoking(async sut => await sut.Body(new Guid(), new Guid(),new Guid(),0,Constants.Constants.Date))
-                .Should().Throw<ObjectUpdatedNotSet>();
+                .Should().Throw<ObjectUpdatedNotSetException>();
         }
 
         [Test]
@@ -92,7 +92,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         {
             
             _controller.Invoking(async sut => await sut.Body(new Guid(), new Guid(),new Guid(),Constants.Constants.Goal,0))
-                .Should().Throw<PropertyUpdatedNotSet>();
+                .Should().Throw<PropertyUpdatedNotSetException>();
         }
     }
 }

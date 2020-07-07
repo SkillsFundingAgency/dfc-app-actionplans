@@ -25,7 +25,12 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         public void SetupBase()
         {
             _logger = new Logger<HomeController>(new LoggerFactory());
-            _compositeSettings = Options.Create(new CompositeSettings());
+            _compositeSettings = Options.Create(new CompositeSettings
+            {
+                Cdn = "cdn",
+                Path = "Path"
+
+            });
             _logger = Substitute.For<ILogger<HomeController>>();
             _dssReader = Substitute.For<IDssReader>();
             _dssWriter = Substitute.For<IDssWriter>();

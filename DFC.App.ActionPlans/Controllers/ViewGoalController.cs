@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Dfc.App.ActionPlans.Controllers;
+using DFC.App.ActionPlans.Helpers;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.ViewModels;
@@ -28,10 +29,14 @@ namespace DFC.App.ActionPlans.Controllers
             var customer = await GetCustomerDetails();
             await LoadData(customer.CustomerId, actionPlanId, interactionId);
             ViewModel.Goal = await _dssReader.GetGoalDetails(ViewModel.CustomerId.ToString(), ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString(),goalId.ToString());
+            SetBackLink();
             return await base.Body();
         }
 
-
+        private void  SetBackLink()
+        {
+            ViewModel.BackLink = @Links.GetViewActionPlanLink(ViewModel.CompositeSettings.Path, ViewModel.ActionPlanId, ViewModel.InteractionId);
+        }
         
     }
 }

@@ -13,10 +13,10 @@ using Microsoft.Extensions.Options;
 
 namespace DFC.App.ActionPlans.Controllers
 {
-    public class UpdateGoalConfirmationController : CompositeSessionController<UpdateGoalConfirmationCompositeViewModel>
+    public class UpdateConfirmationController : CompositeSessionController<UpdateGoalConfirmationCompositeViewModel>
     {
         private readonly IDssReader _dssReader;
-        public UpdateGoalConfirmationController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings,
+        public UpdateConfirmationController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings,
             IDssReader dssReader)
             : base(compositeSettings, dssReader)
         {
@@ -24,7 +24,7 @@ namespace DFC.App.ActionPlans.Controllers
         }
 
         
-        [Route("/body/update-goal-confirmation/{actionPlanId}/{interactionId}/{objId}/{objectupdated}/{propertyupdated}")]
+        [Route("/body/update-confirmation/{actionPlanId}/{interactionId}/{objId}/{objectupdated}/{propertyupdated}")]
         [HttpGet]
         public async  Task<IActionResult> Body(Guid actionPlanId, Guid interactionId, Guid objId, int objectUpdated, int propertyUpdated)
         {
@@ -48,7 +48,7 @@ namespace DFC.App.ActionPlans.Controllers
                     break;
                 
                 default:
-                    throw new ObjectUpdatedNotSet(
+                    throw new ObjectUpdatedNotSetException(
                         $"Object updated has not been provided or is incorrect.");
             }
         }
@@ -78,7 +78,7 @@ namespace DFC.App.ActionPlans.Controllers
                 }
                 default:
                 {
-                    throw new PropertyUpdatedNotSet($"Property updated has not been provided or is incorrect for Goal. {ViewModel.Name}");
+                    throw new PropertyUpdatedNotSetException($"Property updated has not been provided or is incorrect for Goal. {ViewModel.Name}");
                 }
             }
         }
@@ -102,7 +102,7 @@ namespace DFC.App.ActionPlans.Controllers
                         $"You have changed the status of this action. {Action.ActionStatus.GetDisplayName()}.";
                     break;
                 default:
-                    throw new PropertyUpdatedNotSet(
+                    throw new PropertyUpdatedNotSetException(
                         $"Property updated has not been provided or is incorrect for Action. {ViewModel.Name}");
             }
         }
