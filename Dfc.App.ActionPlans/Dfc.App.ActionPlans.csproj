@@ -35,6 +35,7 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.6.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DFC.App.ActionPlans.Services.Cosmos\DFC.App.ActionPlans.Services.Cosmos.csproj" />
     <ProjectReference Include="..\DFC.App.ActionPlans.Services.DSS\DFC.App.ActionPlans.Services.DSS.csproj" />
   </ItemGroup>
 </Project>

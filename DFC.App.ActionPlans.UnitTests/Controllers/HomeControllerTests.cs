@@ -7,6 +7,7 @@ using DFC.App.ActionPlans.ViewModels;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Primitives;
 using NUnit.Framework;
 
@@ -23,7 +24,8 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
            
             _controller = new HomeController(_logger, _compositeSettings, _dssReader,_dssWriter);
             _controller.ControllerContext.HttpContext = new DefaultHttpContext();
-           
+            _controller.ControllerContext.RouteData = new RouteData();
+            _controller.ControllerContext.RouteData.Values.Add("controller", Constants.Constants.ChangeGoalDueDateController);
         }
 
         [Test]

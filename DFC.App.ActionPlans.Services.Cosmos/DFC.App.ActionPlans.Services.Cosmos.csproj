@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<ProjectGuid>596AC70A-ACBE-4CBC-B7A0-30B9DC0EA91C</ProjectGuid>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="9.0.0" />
+		<PackageReference Include="DFC.Personalisation.Common" Version="0.1.27" />
+		<PackageReference Include="Dfc.ProviderPortal.Packages" Version="0.1.1" />
+		<PackageReference Include="Microsoft.Azure.Cosmos" Version="3.10.1" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.3" />
+		<PackageReference Include="NSubstitute" Version="4.2.2" />
+	</ItemGroup>
+
+</Project>
