@@ -10,7 +10,7 @@
     <div class="govuk-width-container">
         <div class="govuk-grid-row ">
             <div class="govuk-grid-column-two-thirds ">
-                <form id="@Model.GetElementId("form", "Form")" action="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.ChangeGoalStatus/" class="govuk-form-group" method="post">
+                <form id="@Model.GetElementId("form", "Form")" action="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.ChangeGoalStatus/@Model.ActionPlanId/@Model.InteractionId/@Model.Goal.GoalId/" class="govuk-form-group" method="post">
                     @Html.HiddenFor(m => m.ActionPlanId)
                     @Html.HiddenFor(m => m.InteractionId)
                     @Html.HiddenFor(m => m.Goal.GoalId)

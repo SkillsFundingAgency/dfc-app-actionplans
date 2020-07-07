@@ -20,8 +20,9 @@ namespace DFC.App.ActionPlans.Controllers
         private readonly IDssWriter _dssWriter;
         private readonly IDssReader _dssReader;
 
-        public ChangeActionDueDateController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter)
-            :base(compositeSettings, dssReader)
+        public ChangeActionDueDateController(ILogger<HomeController> logger,
+            IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter)
+            : base(compositeSettings, dssReader)
         {
             _dssWriter = dssWriter;
             _dssReader = dssReader;
@@ -31,91 +32,86 @@ namespace DFC.App.ActionPlans.Controllers
         //  [Authorize]
         [Route("/body/change-action-due-date/{actionPlanId}/{interactionId}/{Id}")]
         [HttpGet]
-        public async  Task<IActionResult> Body(Guid actionPlanId, Guid interactionId, Guid id)
+        public async Task<IActionResult> Body(Guid actionPlanId, Guid interactionId, Guid id)
         {
             var customer = await GetCustomerDetails();
             await LoadData(customer.CustomerId, actionPlanId, interactionId);
-            ViewModel.Action = await _dssReader.GetActionDetails(ViewModel.CustomerId.ToString(), interactionId.ToString(), actionPlanId.ToString(), id.ToString());
-            BackLink();
+            ViewModel.Action = await _dssReader.GetActionDetails(ViewModel.CustomerId.ToString(),
+                interactionId.ToString(), actionPlanId.ToString(), id.ToString());
             return await base.Body();
         }
 
-           [Route("/body/change-action-due-date")]
-            [HttpPost]
-            public async  Task<IActionResult> Body(ChangeActionCompositeViewModel model, IFormCollection formCollection)
+        [Route("/body/change-action-due-date/{actionPlanId}/{interactionId}/{Id}")]
+        [HttpPost]
+        public async Task<IActionResult> Body(ChangeActionCompositeViewModel model, IFormCollection formCollection)
+        {
+            InitVM(model);
+
+            ViewModel.DateActionShouldBeCompletedBy = new SplitDate()
             {
+                Day = formCollection["Day"],
+                Month = formCollection["Month"],
+                Year = formCollection["Year"]
+            };
 
-                InitVM(model);
-
-                ViewModel.DateActionShouldBeCompletedBy = new SplitDate()
+            if (!ViewModel.DateActionShouldBeCompletedBy.isEmpty())
+            {
+                DateTime dateValue;
+                if (Validate.CheckValidSplitDate(ViewModel.DateActionShouldBeCompletedBy, out dateValue))
                 {
-                    Day = formCollection["Day"],
-                    Month = formCollection["Month"],
-                    Year = formCollection["Year"]
-                };
-
-                if (!ViewModel.DateActionShouldBeCompletedBy.isEmpty())
-                {
-                    DateTime dateValue;
-                    if (Validate.CheckValidSplitDate(ViewModel.DateActionShouldBeCompletedBy, out dateValue))
+                    if (Validate.CheckValidDueDate(ViewModel.DateActionShouldBeCompletedBy, out dateValue))
                     {
-
-                        if (Validate.CheckValidDueDate(ViewModel.DateActionShouldBeCompletedBy, out dateValue))
-                        {
-                            await UpdateAction(dateValue);
-                            return RedirectTo( Links.GetUpdateConfirmationLink(ViewModel.ActionPlanId, ViewModel.InteractionId, new Guid( ViewModel.Action.ActionId), Constants.Constants.Action, Constants.Constants.Date));
-                        } 
-
-                        model.ErrorMessage = "The action due date must be today or in the future";
+                        await UpdateAction(dateValue);
+                        return RedirectTo(Links.GetUpdateConfirmationLink(ViewModel.ActionPlanId,
+                            ViewModel.InteractionId, new Guid(ViewModel.Action.ActionId), Constants.Constants.Action,
+                            Constants.Constants.Date));
                     }
-                    else
-                    {
-                        model.ErrorMessage = "The action due date must be a real date";
-                    }
+
+                    model.ErrorMessage = "The action due date must be today or in the future";
                 }
                 else
                 {
-                    model.ErrorMessage = "Enter the date that you would like to complete this action by";
+                    model.ErrorMessage = "The action due date must be a real date";
                 }
-
-                ModelState.Clear(); //Remove model binding errors as we will check if the date is valid  or not.
-                ModelState.AddModelError(Constants.Constants.DateGoalShouldBeCompletedBy, model.ErrorMessage);
-                   
-                var customer = await GetCustomerDetails();
-                await LoadData(customer.CustomerId, model.ActionPlanId, model.InteractionId);
-                BackLink();
-                return await base.Body();
             }
-
-
-            private void InitVM(ChangeActionCompositeViewModel model)
+            else
             {
-                ViewModel.CustomerId = model.CustomerId;
-                ViewModel.ActionPlanId = model.ActionPlanId;
-                ViewModel.InteractionId = model.InteractionId;
-                ViewModel.Action = new Action(){
-                     ActionId= model.Action.ActionId,
-                    ActionStatus = model.Action.ActionStatus
-                };
+                model.ErrorMessage = "Enter the date that you would like to complete this action by";
             }
 
-            private async Task UpdateAction(DateTime dateValue)
-            {
-                var updateAction = new UpdateAction()
-                {
-                    CustomerId = ViewModel.CustomerId,
-                    InteractionId = ViewModel.InteractionId,
-                    ActionPlanId = ViewModel.ActionPlanId,
-                    ActionId = new Guid(ViewModel.Action.ActionId),
-                    DateActionAimsToBeCompletedBy = dateValue,
-                    ActionStatus = ViewModel.Action.ActionStatus
-                };
-                await _dssWriter.UpdateAction(updateAction);
-            }
+            ModelState.Clear(); //Remove model binding errors as we will check if the date is valid  or not.
+            ModelState.AddModelError(Constants.Constants.DateGoalShouldBeCompletedBy, model.ErrorMessage);
 
-            private void  BackLink()
+            var customer = await GetCustomerDetails();
+            await LoadData(customer.CustomerId, model.ActionPlanId, model.InteractionId);
+            return await base.Body();
+        }
+
+
+        private void InitVM(ChangeActionCompositeViewModel model)
+        {
+            ViewModel.CustomerId = model.CustomerId;
+            ViewModel.ActionPlanId = model.ActionPlanId;
+            ViewModel.InteractionId = model.InteractionId;
+            ViewModel.Action = new Action()
             {
-                ViewModel.BackLink = @Links.GetViewActionLink(ViewModel.CompositeSettings.Path, ViewModel.ActionPlanId, ViewModel.InteractionId, new Guid(ViewModel.Action.ActionId));
-            }
+                ActionId = model.Action.ActionId,
+                ActionStatus = model.Action.ActionStatus
+            };
+        }
+
+        private async Task UpdateAction(DateTime dateValue)
+        {
+            var updateAction = new UpdateAction()
+            {
+                CustomerId = ViewModel.CustomerId,
+                InteractionId = ViewModel.InteractionId,
+                ActionPlanId = ViewModel.ActionPlanId,
+                ActionId = new Guid(ViewModel.Action.ActionId),
+                DateActionAimsToBeCompletedBy = dateValue,
+                ActionStatus = ViewModel.Action.ActionStatus
+            };
+            await _dssWriter.UpdateAction(updateAction);
+        }
     }
 }

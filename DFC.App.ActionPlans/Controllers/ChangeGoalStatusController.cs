@@ -41,7 +41,7 @@ namespace DFC.App.ActionPlans.Controllers
             }
 
            
-            [Route("/body/change-goal-status")]
+            [Route("/body/change-goal-status/{actionPlanId}/{interactionId}/{goalId}")]
             [HttpPost]
             public async  Task<IActionResult> Body(ChangeGoalCompositeViewModel model, IFormCollection formCollection)
             {
