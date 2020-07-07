@@ -35,10 +35,10 @@
                 "description": "The name of the collection to create"
             }
         },
-        "accountAppDatabaseNeedsCreation": {
+        "actionplanAppDatabaseNeedsCreation": {
             "type": "bool"
         },
-        "accountAppDatabaseThroughput": {
+        "actionplanAppDatabaseThroughput": {
             "type": "int"
         },
         "AuthSettingsIssuer": {
@@ -61,7 +61,7 @@
     "variables": {
         "buildingBlocksDfcBaseUrl": "https://raw.githubusercontent.com/SkillsFundingAgency/dfc-devops/master/ArmTemplates/",
         "cosmosDbCollectionPartitionKey": "/PartitionKey",
-        "cosmosDbDatabaseName": "dfc-app-actionplans",
+        "cosmosDbDatabaseName": "dfc-app-actionplan",
         "cosmosDbEndpoint": "[concat('https://', parameters('cosmosDbName'), '.documents.azure.com:443/')]",
         "resourcePrefix": "[tolower(concat('dfc-', parameters('Environment'), '-pers-actplans'))]",
         "webAppName": "[concat(variables('ResourcePrefix'), '-as')]",
@@ -274,10 +274,10 @@
                         "value": true
                     },
                     "offerThroughput": {
-                        "value": "[parameters('accountAppDatabaseThroughput')]"
+                        "value": "[parameters('actionplanAppDatabaseThroughput')]"
                     },
                     "databaseNeedsCreation": {
-                        "value": "[parameters('accountAppDatabaseNeedsCreation')]"
+                        "value": "[parameters('actionplanAppDatabaseNeedsCreation')]"
                     }
                 }
             }
