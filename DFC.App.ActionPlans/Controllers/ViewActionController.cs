@@ -37,7 +37,7 @@ namespace DFC.App.ActionPlans.Controllers
 
         private void  SetBackLink()
         {
-            ViewModel.BackLink = @Links.GetViewActionPlanLink(ViewModel.CompositeSettings.Path, ViewModel.ActionPlanId, ViewModel.InteractionId);
+            ViewModel.BackLink = Urls.GetViewActionPlanUrl(ViewModel.CompositeSettings.Path, ViewModel.ActionPlanId, ViewModel.InteractionId);
         }
     }
 }

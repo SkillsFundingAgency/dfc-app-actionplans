@@ -69,7 +69,7 @@ namespace DFC.App.ActionPlans.Controllers
                     if (Validate.CheckValidDueDate(ViewModel.DateGoalShouldBeCompletedBy, out dateValue))
                     {
                         await UpdateGoal(dateValue);
-                        return RedirectTo(Links.GetUpdateConfirmationLink(ViewModel.ActionPlanId,
+                        return RedirectTo(Urls.GetUpdateConfirmationUrl(ViewModel.ActionPlanId,
                             ViewModel.InteractionId, new Guid(ViewModel.Goal.GoalId), Constants.Constants.Goal,
                             Constants.Constants.Date));
                     }

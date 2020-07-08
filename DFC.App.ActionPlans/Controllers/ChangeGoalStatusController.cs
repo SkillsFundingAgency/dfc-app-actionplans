@@ -60,7 +60,7 @@ namespace DFC.App.ActionPlans.Controllers
                 };
 
                 await UpdateGoal();
-                return RedirectTo(Links.GetUpdateConfirmationLink(ViewModel.ActionPlanId, ViewModel.InteractionId,
+                return RedirectTo(Urls.GetUpdateConfirmationUrl(ViewModel.ActionPlanId, ViewModel.InteractionId,
                     new Guid(ViewModel.Goal.GoalId), Constants.Constants.Goal, Constants.Constants.Status));
             }
             else

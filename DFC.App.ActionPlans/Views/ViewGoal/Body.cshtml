@@ -1,4 +1,5 @@
 ﻿@using DFC.Personalisation.Common.Extensions
+@using DFC.App.ActionPlans.Helpers
 @model DFC.App.ActionPlans.ViewModels.ViewGoalCompositeViewModel
 <div class="govuk-main-wrapper">
     <div class="govuk-width-container">
@@ -30,15 +31,17 @@
                             <td class="govuk-table__cell"><span>@Model.Goal.DateGoalShouldBeCompletedBy.ToString("dd MMMM yyyy")</span></td>
                             <td class="govuk-table__cell">
                                 <govukLink id="@Model.GetElementId("govUkLink", $"change-due-date")" 
-                                           link-href="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.ChangeGoalDueDate/@Model.Goal.ActionPlanId/@Model.InteractionId/@Model.Goal.GoalId" LinkText="Change due date"></govukLink>
-                            </td>
+                                           link-href="@(Urls.GetChangeUrl(@Model.CompositeSettings.Path, @CompositeViewModel.PageId.ChangeGoalDueDate, @Model.ActionPlanId, @Model.InteractionId, new Guid(@Model.Goal.GoalId)))" LinkText="Change due date"></govukLink>
+                                
+                                </td>
                         </tr>
                         <tr class="govuk-table__row">
                             <td class="govuk-table__cell"><strong>Status:</strong></td>
                             <td class="govuk-table__cell"><span>@Model.Goal.GoalStatus.GetDisplayName()</span></td>
 
                             <td class="govuk-table__cell">
-                                <govukLink id="@Model.GetElementId("govUkLink", $"change-due-date")" link-href="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.ChangeGoalStatus/@Model.Goal.ActionPlanId/@Model.InteractionId/@Model.Goal.GoalId" LinkText="Update status"></govukLink>
+                                <govukLink id="@Model.GetElementId("govUkLink", $"change-due-date")" 
+                                           link-href="@(Urls.GetChangeUrl(@Model.CompositeSettings.Path, @CompositeViewModel.PageId.ChangeGoalDueDate, @Model.ActionPlanId, @Model.InteractionId, new Guid(@Model.Goal.GoalId)))" LinkText="Update status"></govukLink>
 
                             </td>
                         </tr>

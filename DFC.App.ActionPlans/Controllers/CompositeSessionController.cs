@@ -112,24 +112,24 @@ namespace Dfc.App.ActionPlans.Controllers
             ViewModel.LatestSession = sessions.OrderByDescending(s => s.DateandTimeOfSession).First();
         }
 
-        private string GetBackLink(String controllerName, Guid actionPlanId, Guid interactionId, Guid objectId)
+        private string GetBackLink(string controllerName, Guid actionPlanId, Guid interactionId, Guid objectId)
         {
             switch (controllerName)
             {
                 case Constants.ChangeGoalDueDateController: 
-                    return @Links.GetViewGoalLink(ViewModel.CompositeSettings.Path, actionPlanId, interactionId, objectId);
+                    return Urls.GetViewGoalUrl(ViewModel.CompositeSettings.Path, actionPlanId, interactionId, objectId);
                     
                 case Constants.ChangeGoalStatusController:
-                    return @Links.GetViewGoalLink(ViewModel.CompositeSettings.Path, actionPlanId, interactionId, objectId); 
+                    return Urls.GetViewGoalUrl(ViewModel.CompositeSettings.Path, actionPlanId, interactionId, objectId); 
 
                 case Constants.ChangeActionDueDateController: 
-                    return @Links.GetViewActionLink(ViewModel.CompositeSettings.Path, actionPlanId, interactionId, objectId);
+                    return Urls.GetViewActionUrl(ViewModel.CompositeSettings.Path, actionPlanId, interactionId, objectId);
                     
                 case Constants.ChangeActionStatusController:
-                    return @Links.GetViewActionLink(ViewModel.CompositeSettings.Path, actionPlanId, interactionId, objectId);
+                    return Urls.GetViewActionUrl(ViewModel.CompositeSettings.Path, actionPlanId, interactionId, objectId);
                     
                 default:
-                    return @Links.GetViewActionPlanLink(ViewModel.CompositeSettings.Path, actionPlanId, interactionId);;
+                    return Urls.GetViewActionPlanUrl(ViewModel.CompositeSettings.Path, actionPlanId, interactionId);;
                     
             }
 
