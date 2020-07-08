@@ -58,28 +58,28 @@ namespace Dfc.App.ActionPlans.Controllers
 
         #region Default Routes
         // The home page uses MVC default routes, so we need non "/[controller]" attribute routed versions of the endpoints just for here
-        [Route("/head/home/{id}/{intid}")]
-        [Route("/head/{id}/{intid}")]
+        [Route("/head/home/{actionPlanId?}/{interactionId?}/{docId?}/{objupdated?}/{itemupdated?}")]
+        [Route("/head/{actionPlanId?}/{interactionId?}/{docId?}/{objupdated?}/{itemupdated?}")]
         public override IActionResult Head()
         {
             return base.Head();
         }
-        [Route("/bodytop/home/{id}/{intid}")]
-        [Route("/bodytop/{id}/{intid}")]
+        [Route("/bodytop/home/{actionPlanId?}/{interactionId?}/{docId?}/{objupdated?}/{itemupdated?}")]
+        [Route("/bodytop/{actionPlanId?}/{interactionId?}/{docId?}/{objupdated?}/{itemupdated?}")]
         public override async Task<IActionResult> BodyTop()
         {
             return await base.BodyTop();
         }
-        [Route("/breadcrumb/home/{id}/{intid}/{objctId?}")]
-        [Route("/breadcrumb/{id}/{intid}/{objctId?}")]
+        [Route("/breadcrumb/home/{actionPlanId?}/{interactionId?}/{docId?}/{objupdated?}/{itemupdated?}")]
+        [Route("/breadcrumb/{id}/{actionPlanId?}/{interactionId?}/{docId?}/{objupdated?}/{itemupdated?}")]
         public override IActionResult Breadcrumb(Guid actionPlanId, Guid interactionId, Guid objectId)
         {
             return base.Breadcrumb(actionPlanId, interactionId, objectId);
         }
       
 
-        [Route("/bodyfooter/home/{id}/{intid}")]
-        [Route("/bodyfooter/{id}/{intid}")]
+        [Route("/bodyfooter/home/{actionPlanId?}/{interactionId?}/{docId?}/{objupdated?}/{itemupdated?}")]
+        [Route("/bodyfooter/{actionPlanId?}/{interactionId?}/{docId?}/{objupdated?}/{itemupdated?}")]
         public override IActionResult BodyFooter()
         {
             return base.BodyFooter();

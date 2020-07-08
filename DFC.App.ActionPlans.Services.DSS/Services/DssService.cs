@@ -56,7 +56,6 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             _logger = logger;
         }
 
-
         public async Task<Customer> GetCustomerDetails(string customerId)
         {
             var request = CreateRequestMessage();
@@ -193,7 +192,6 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             
         }
 
-        
         public async Task<ActionPlan> GetActionPlanDetails(string customerId, string interactionId, string actionPlanId)
         {
             
@@ -347,6 +345,7 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             }
             
         }
+        
         public async Task UpdateAction(UpdateAction updateAction)
         {
             
