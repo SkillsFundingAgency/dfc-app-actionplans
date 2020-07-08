@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using DFC.App.ActionPlans.Cosmos.Interfaces;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Services.DSS.Models;
@@ -17,8 +18,8 @@ namespace Dfc.App.ActionPlans.Controllers
     {
         private readonly IDssReader _dssReader;
         private readonly IDssWriter _dssWriter;
-        public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter)
-            :base(compositeSettings, dssReader)
+        public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService)
+            :base(compositeSettings, dssReader, cosmosServiceService)
         {
             _dssReader = dssReader;
             _dssWriter = dssWriter;

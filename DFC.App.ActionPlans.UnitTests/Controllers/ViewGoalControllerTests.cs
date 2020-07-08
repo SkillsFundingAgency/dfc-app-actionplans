@@ -19,7 +19,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         [SetUp]
         public void Init()
         {
-            _controller = new ViewGoalController(_logger, _compositeSettings, _dssReader);
+            _controller = new ViewGoalController(_logger, _compositeSettings, _dssReader, _cosmosService);
             _controller.ControllerContext.HttpContext = new DefaultHttpContext();
             _controller.ControllerContext.RouteData = new RouteData();
             _controller.ControllerContext.RouteData.Values.Add("controller", Constants.Constants.ChangeGoalDueDateController);

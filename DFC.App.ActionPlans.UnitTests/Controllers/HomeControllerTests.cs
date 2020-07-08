@@ -22,7 +22,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         public void Init()
         {
            
-            _controller = new HomeController(_logger, _compositeSettings, _dssReader,_dssWriter);
+            _controller = new HomeController(_logger, _compositeSettings, _dssReader,_dssWriter, _cosmosService);
             _controller.ControllerContext.HttpContext = new DefaultHttpContext();
             _controller.ControllerContext.RouteData = new RouteData();
             _controller.ControllerContext.RouteData.Values.Add("controller", Constants.Constants.ChangeGoalDueDateController);

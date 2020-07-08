@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using DFC.App.ActionPlans.Constants;
+using DFC.App.ActionPlans.Controllers;
+using DFC.App.ActionPlans.Cosmos.Interfaces;
+using DFC.App.ActionPlans.Cosmos.Services;
 using DFC.App.ActionPlans.Helpers;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Services.DSS.Models;
@@ -20,11 +23,12 @@ namespace Dfc.App.ActionPlans.Controllers
     /// </summary>
     /// 
     [ExcludeFromCodeCoverage]
-    public abstract class CompositeSessionController<TViewModel>:Controller where TViewModel : CompositeViewModel, new()
+    public abstract class CompositeSessionController<TViewModel>:SessionController where TViewModel : CompositeViewModel, new()
     {
         private readonly IDssReader _dssReader;
         protected TViewModel ViewModel { get; }
-        protected CompositeSessionController(IOptions<CompositeSettings> compositeSettings, IDssReader dssReader)
+        protected CompositeSessionController(IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, ICosmosService cosmosServiceService)
+            : base(cosmosServiceService)        
         {
             ViewModel = new TViewModel()
             {
@@ -102,6 +106,13 @@ namespace Dfc.App.ActionPlans.Controllers
 
         protected async Task LoadData(Guid customerId, Guid actionPlanId, Guid interactionId)
         {
+            await CreateUserSession(new UserSession
+            {
+                Id = customerId,
+                ActionPlanId = actionPlanId,
+                InteractionId = interactionId,
+                CustomerId = customerId
+            });
             List<Session> sessions;
             ViewModel.CustomerId = customerId;
             ViewModel.InteractionId = interactionId;

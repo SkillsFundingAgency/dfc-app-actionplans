@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Dfc.App.ActionPlans.Controllers;
+using DFC.App.ActionPlans.Cosmos.Interfaces;
 using DFC.App.ActionPlans.Helpers;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
@@ -15,8 +16,8 @@ namespace DFC.App.ActionPlans.Controllers
     {
         private readonly IDssReader _dssReader;
         
-        public ViewGoalController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader)
-            :base(compositeSettings, dssReader)
+        public ViewGoalController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, ICosmosService cosmosServiceService)
+            :base(compositeSettings, dssReader, cosmosServiceService)
         {
             _dssReader = dssReader;
         }

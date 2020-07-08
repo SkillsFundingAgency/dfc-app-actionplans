@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dfc.App.ActionPlans.Controllers;
+using DFC.App.ActionPlans.Cosmos.Interfaces;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Enums;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
@@ -19,6 +20,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         protected IOptions<AuthSettings> _authSettings;
         protected IDssReader _dssReader;
         protected IDssWriter _dssWriter;
+        protected ICosmosService _cosmosService;
 
 
         [SetUp]
@@ -34,6 +36,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             _logger = Substitute.For<ILogger<HomeController>>();
             _dssReader = Substitute.For<IDssReader>();
             _dssWriter = Substitute.For<IDssWriter>();
+            _cosmosService= Substitute.For<ICosmosService>();
             _authSettings = Options.Create(new AuthSettings
             {
                 RegisterUrl = "reg", SignInUrl = "signin", SignOutUrl = "signout"

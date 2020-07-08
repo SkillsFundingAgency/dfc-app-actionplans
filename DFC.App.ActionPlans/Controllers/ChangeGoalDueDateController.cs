@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Dfc.App.ActionPlans.Controllers;
+using DFC.App.ActionPlans.Cosmos.Interfaces;
 using DFC.App.ActionPlans.Extensions;
 using DFC.App.ActionPlans.Helpers;
 using DFC.App.ActionPlans.Models;
@@ -20,8 +21,8 @@ namespace DFC.App.ActionPlans.Controllers
         private readonly IDssReader _dssReader;
 
         public ChangeGoalDueDateController(ILogger<HomeController> logger,
-            IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter)
-            : base(compositeSettings, dssReader)
+            IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService)
+            : base(compositeSettings, dssReader, cosmosServiceService)
         {
             _dssWriter = dssWriter;
             _dssReader = dssReader;

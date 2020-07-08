@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Dfc.App.ActionPlans.Controllers;
+using DFC.App.ActionPlans.Cosmos.Interfaces;
 using DFC.App.ActionPlans.Exceptions;
 using DFC.App.ActionPlans.Extensions;
 using DFC.App.ActionPlans.Models;
@@ -17,8 +18,8 @@ namespace DFC.App.ActionPlans.Controllers
     {
         private readonly IDssReader _dssReader;
         public UpdateConfirmationController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings,
-            IDssReader dssReader)
-            : base(compositeSettings, dssReader)
+            IDssReader dssReader, ICosmosService cosmosServiceService)
+            : base(compositeSettings, dssReader, cosmosServiceService)
         {
             _dssReader = dssReader;
         }
