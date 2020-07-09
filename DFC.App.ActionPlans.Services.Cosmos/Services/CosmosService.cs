@@ -91,15 +91,12 @@ namespace DFC.App.ActionPlans.Cosmos.Services
 
         internal string GetContainerName(CosmosCollection collection)
         {
-            switch (collection)
+            return collection switch
             {
-                case CosmosCollection.Session:
-                default:
-                    return _settings.UserSessionsCollection;
-                
-                case CosmosCollection.Content:
-                    return _settings.ContentCollection;
-            }
+                CosmosCollection.Session => _settings.UserSessionsCollection,
+                CosmosCollection.Content => _settings.ContentCollection,
+                _ => _settings.UserSessionsCollection
+            };
         }
     }
 }
