@@ -35,7 +35,6 @@ namespace DFC.App.ActionPlans.ViewModels
             public static PageId ChangeActionStatus { get; } = new PageId("change-action-status");
             public static PageId ViewAction { get; } = new PageId("view-action");
             public static PageId UpdateConfirmation { get; } = new PageId("update-confirmation");
-
         }
 
         public class PageRegion
@@ -54,15 +53,6 @@ namespace DFC.App.ActionPlans.ViewModels
             public static PageRegion Body { get; } = new PageRegion("body");
         }
 
-        public PageId Id { get; }
-
-        public string PageTitle { get; set;}
-        public string PageHeading { get; set;}
-        public string Name { get; set; }
-        public string BackLink { get; set; }
-        public bool ShowBreadCrumb { get; set; }
-        public CompositeSettings CompositeSettings { get; set; }
-
         protected CompositeViewModel(PageId pageId, string pageHeading)
         {
             Id = pageId;
@@ -71,13 +61,20 @@ namespace DFC.App.ActionPlans.ViewModels
             PageTitle = string.IsNullOrWhiteSpace(pageHeading) ? $"{AppTitle} | {NcsBranding}" : $"{pageHeading} | {AppTitle} | {NcsBranding}";
         }
 
+        public PageId Id { get; }
+        public string PageTitle { get; set;}
+        public string PageHeading { get; set;}
+        public string Name { get; set; }
+        public string BackLink { get; set; }
+        public bool ShowBreadCrumb { get; set; }
+        public CompositeSettings CompositeSettings { get; set; }
         public Guid CustomerId { get; set;}
         public Guid ActionPlanId { get; set;}
         public Guid InteractionId { get; set;}
-        public Session LatestSession { get; set;}
         public Interaction Interaction { get; set;}
         public Adviser Adviser { get; set;}
         public ContactDetails ContactDetails { get; set; } = new ContactDetails();
+        
         public string GetElementId(string elementName, string instanceName)
         {
             Throw.IfNullOrWhiteSpace(elementName, nameof(elementName));

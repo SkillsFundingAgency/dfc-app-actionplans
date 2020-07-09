@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -41,6 +42,7 @@ namespace Dfc.App.ActionPlans.Controllers
                   DateActionPlanAcknowledged = DateTime.UtcNow.AddMinutes(-1)
                 });
             }
+            ViewModel.LatestSession = await GetLatestSession();
             return RedirectTo($"{CompositeViewModel.PageId.Home.Value}/{viewModel.ActionPlanId}/{viewModel.InteractionId}");
         }
 
@@ -54,6 +56,7 @@ namespace Dfc.App.ActionPlans.Controllers
             ViewModel.Goals = await _dssReader.GetGoals(ViewModel.CustomerId.ToString(), ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString());
             ViewModel.Actions = await _dssReader.GetActions(ViewModel.CustomerId.ToString(), ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString());
             ViewModel.ActionPlan = await _dssReader.GetActionPlanDetails(ViewModel.CustomerId.ToString(), ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString());
+            ViewModel.LatestSession = await GetLatestSession();
             return await base.Body();
         }
 
@@ -93,5 +96,10 @@ namespace Dfc.App.ActionPlans.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        private async Task<Session> GetLatestSession()
+        {
+            List<Session> sessions = await _dssReader.GetSessions(ViewModel.CustomerId.ToString(), ViewModel.InteractionId.ToString());
+            return sessions.OrderByDescending(s => s.DateandTimeOfSession).First();
+        }
     }
 }

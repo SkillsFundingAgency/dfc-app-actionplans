@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using Dfc.App.ActionPlans.Controllers;
 using DFC.App.ActionPlans.Cosmos.Interfaces;
+using DFC.App.ActionPlans.Cosmos.Services;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Enums;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Services.DSS.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using NSubstitute;
 using NUnit.Framework;
 
@@ -148,6 +152,23 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
                 .ReturnsForAnyArgs(goal);
             _dssReader.GetActionDetails(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(),Arg.Any<string>())
                 .ReturnsForAnyArgs(action);
+            
+            var userSession =  new UserSession
+            {
+                Id = default,
+                CustomerId = default,
+                InteractionId = default,
+                ActionPlanId = default,
+                Interaction = null,
+                Adviser = null
+            };
+            var userSessionJson = new StringContent(JsonConvert.SerializeObject(userSession));
+            _cosmosService.ReadItemAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CosmosCollection>())
+                .Returns(new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Content = userSessionJson
+                });
         }
 
 

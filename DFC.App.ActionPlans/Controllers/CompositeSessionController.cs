@@ -106,21 +106,37 @@ namespace Dfc.App.ActionPlans.Controllers
 
         protected async Task LoadData(Guid customerId, Guid actionPlanId, Guid interactionId)
         {
-            await CreateUserSession(new UserSession
+            
+            var userSession = await GetUserSession(GetSessionId(customerId,actionPlanId,interactionId),"");
+            var interaction =
+                await _dssReader.GetInteractionDetails(customerId.ToString(), interactionId.ToString());
+                
+            var adviser = await _dssReader.GetAdviserDetails(interaction.AdviserDetailsId);
+
+            if (userSession == null)
             {
-                Id = customerId,
-                ActionPlanId = actionPlanId,
-                InteractionId = interactionId,
-                CustomerId = customerId
-            });
-            List<Session> sessions;
+                userSession = new UserSession()
+                {
+                    Id = GetSessionId(customerId,actionPlanId,interactionId),
+                    ActionPlanId = actionPlanId,
+                    InteractionId = interactionId,
+                    CustomerId = customerId,
+                    Interaction = interaction, 
+                    Adviser = adviser
+                };
+                await CreateUserSession(userSession);
+            }
+
             ViewModel.CustomerId = customerId;
             ViewModel.InteractionId = interactionId;
             ViewModel.ActionPlanId = actionPlanId;
-            ViewModel.Interaction = await _dssReader.GetInteractionDetails(ViewModel.CustomerId.ToString(), ViewModel.InteractionId.ToString());
-            ViewModel.Adviser = await _dssReader.GetAdviserDetails(ViewModel.Interaction.AdviserDetailsId);
-            sessions = await _dssReader.GetSessions(ViewModel.CustomerId.ToString(), ViewModel.InteractionId.ToString());
-            ViewModel.LatestSession = sessions.OrderByDescending(s => s.DateandTimeOfSession).First();
+            ViewModel.Interaction = userSession.Interaction;
+            ViewModel.Adviser = userSession.Adviser;
+        }
+
+        private string GetSessionId(Guid customerId, Guid actionPlanId, Guid interactionId)
+        {
+            return customerId + "+" + actionPlanId + "+" + interactionId;
         }
 
         private string GetBackLink(string controllerName, Guid actionPlanId, Guid interactionId, Guid objectId)

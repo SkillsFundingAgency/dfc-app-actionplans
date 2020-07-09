@@ -8,6 +8,7 @@ using DFC.App.ActionPlans.Cosmos.Interfaces;
 using DFC.App.ActionPlans.Cosmos.Services;
 using DFC.App.ActionPlans.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace DFC.App.ActionPlans.Controllers
 {
@@ -27,50 +28,16 @@ namespace DFC.App.ActionPlans.Controllers
                 
                 var result = await _cosmosService.CreateItemAsync(userSession, CosmosCollection.Session);
             }
-        /*
-            protected async Task<HttpResponseMessage> UpdateUserSession(string currentPage, UserSession session = null)
+      
+      
+            protected async Task<UserSession> GetUserSession(string Id, string partitionKey)
             {
-                if (session == null)
-                {
-                    session = await _sessionService.GetUserSession();
-                }
-            
-                session.PreviousPage = session.CurrentPage;
-                session.CurrentPage = currentPage;
-                session.LastUpdatedUtc = DateTime.UtcNow;
-
-                return await _sessionService.UpdateUserSessionAsync(session);
+                var result = await _cosmosService.ReadItemAsync(Id, partitionKey, CosmosCollection.Session);
+                return result.IsSuccessStatusCode ? JsonConvert.DeserializeObject<UserSession>(await result.Content.ReadAsStringAsync()) : null;
             }
 
-            protected async Task<UserSession> GetUserSession()
-            {
-                return await _sessionService.GetUserSession();
-            }
-
-            protected async Task<UserSession> GetUserSession(string code)
-            {
-                return await _sessionService.Reload(GetSessionId(code));
-            }
-
-
-            public string GetSessionId(string code)
-            {
-                var result = new StringBuilder();
-
-                if (!string.IsNullOrWhiteSpace(code))
-                {
-                    code = code.ToLower();
-                    foreach (var c in code)
-                    {
-                        if (c != ' ')
-                        {
-                            result.Append(c.ToString());
-                        }
-                    }
-                }
-
-                return result.ToString();
-            }
-        }*/
+           
+           
+        }
     }
-}
+
