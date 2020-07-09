@@ -11,6 +11,7 @@ using DFC.App.ActionPlans.Constants;
 using DFC.App.ActionPlans.Controllers;
 using DFC.App.ActionPlans.Cosmos.Interfaces;
 using DFC.App.ActionPlans.Cosmos.Services;
+using DFC.App.ActionPlans.Exceptions;
 using DFC.App.ActionPlans.Helpers;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Services.DSS.Models;
@@ -89,8 +90,7 @@ namespace Dfc.App.ActionPlans.Controllers
         }
         protected async Task<Customer> GetCustomerDetails()
         {
-            /*
-             TODO: Enable Autorization
+            
             var userId = User.Claims.FirstOrDefault(x => x.Type == "CustomerId")?.Value;
 
             if (userId == null)
@@ -99,8 +99,6 @@ namespace Dfc.App.ActionPlans.Controllers
             }
 
             return await _dssReader.GetCustomerDetails(userId);
-            */
-            return new Customer(){CustomerId = new Guid("53f904b3-77c8-4c94-9a15-c259b518336c"),FamilyName = "Family",GivenName = "Given"};
         }
 
 
@@ -108,13 +106,12 @@ namespace Dfc.App.ActionPlans.Controllers
         {
             
             var userSession = await GetUserSession(GetSessionId(customerId,actionPlanId,interactionId),"");
-            var interaction =
-                await _dssReader.GetInteractionDetails(customerId.ToString(), interactionId.ToString());
-                
-            var adviser = await _dssReader.GetAdviserDetails(interaction.AdviserDetailsId);
-
+           
             if (userSession == null)
             {
+                var interaction =
+                    await _dssReader.GetInteractionDetails(customerId.ToString(), interactionId.ToString());
+                var adviser = await _dssReader.GetAdviserDetails(interaction.AdviserDetailsId);
                 userSession = new UserSession()
                 {
                     Id = GetSessionId(customerId,actionPlanId,interactionId),

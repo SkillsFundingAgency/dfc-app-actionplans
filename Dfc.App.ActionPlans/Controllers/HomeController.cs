@@ -8,6 +8,7 @@ using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Services.DSS.Models;
 using DFC.App.ActionPlans.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -15,10 +16,12 @@ using Microsoft.Extensions.Options;
 
 namespace Dfc.App.ActionPlans.Controllers
 {
+    [Authorize]
     public class HomeController : CompositeSessionController<HomeCompositeViewModel>
     {
         private readonly IDssReader _dssReader;
         private readonly IDssWriter _dssWriter;
+
         public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService)
             :base(compositeSettings, dssReader, cosmosServiceService)
         {

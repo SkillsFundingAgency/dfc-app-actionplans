@@ -62,7 +62,7 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             try
             {
                 request.Headers.Add(VersionHeader, _dssSettings.Value.CustomerApiVersion);
-                var result =  await _restClient.GetAsync<Customer>($"{_dssSettings.Value.CustomerApiUrl}CustomerIdTag",
+                var result =  await _restClient.GetAsync<Customer>($"{_dssSettings.Value.CustomerApiUrl}{customerId}",
                     request);
                 if (_restClient.LastResponse.StatusCode==HttpStatusCode.NoContent)
                     throw new DssException("Customer not found");
@@ -104,9 +104,9 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
         public async Task<Interaction> GetInteractionDetails(string customerId, string interactionId)
         {
             var request = CreateRequestMessage();
-            
             try
             {
+                request.Headers.Add(VersionHeader, "");
                 var result = await _restClient.GetAsync<Interaction>(
                     _dssSettings.Value.InteractionsApiUrl
                         .Replace(CustomerIdTag, customerId)
