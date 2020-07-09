@@ -16,9 +16,9 @@ namespace DFC.App.ActionPlans.Helpers
             var url = $"{CompositePath}/{CompositeViewModel.PageId.ViewGoal}/{ActionPlanId}/{InteractionId}/{GoalId}";
             return url;
         }
-        public static string GetViewActionUrl(String CompositePath, Guid ActionPlanId, Guid InteractionId, Guid GoalId)
+        public static string GetViewActionUrl(String CompositePath, Guid ActionPlanId, Guid InteractionId, Guid ActionId)
         {
-            var url = $"{CompositePath}/{CompositeViewModel.PageId.ViewAction}/{ActionPlanId}/{InteractionId}/{GoalId}";
+            var url = $"{CompositePath}/{CompositeViewModel.PageId.ViewAction}/{ActionPlanId}/{InteractionId}/{ActionId}";
             return url;
         }
 
