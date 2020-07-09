@@ -8,6 +8,7 @@ using Dfc.App.ActionPlans.Controllers;
 using DFC.App.ActionPlans.Controllers;
 using DFC.App.ActionPlans.Cosmos.Interfaces;
 using DFC.App.ActionPlans.Cosmos.Services;
+using DFC.App.ActionPlans.Models;
 using FluentAssertions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
@@ -40,6 +41,10 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         [Test]
         public async Task When_CreateUserSession_Then_NewSessionCreated()
         {
+            var request = new CreateSessionRequest
+            {
+                ActionPlanId = default
+            };
             var result = await _controller.Body(new Guid(), new Guid(), new Guid()) as ViewResult;
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();

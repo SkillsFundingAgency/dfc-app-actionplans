@@ -32,7 +32,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         public async Task WhenBodyCalled_ReturnHtml()
         {
             var viewActionUrl = Urls.GetViewActionUrl("", new Guid(), new Guid(),new Guid());
-            var changeActionUrl = Urls.GetViewActionUrl("", new Guid(), new Guid(),new Guid());
+            var changeActionUrl = Urls.GetChangeUrl("", CompositeViewModel.PageId.ChangeActionStatus,  new Guid(), new Guid(),new Guid());
             
             var result = await _controller.Body(new Guid(), new Guid(), new Guid()) as ViewResult;
             result.Should().NotBeNull();
