@@ -107,12 +107,14 @@ namespace DFC.App.ActionPlans.Services.Cosmos.UnitTest
                     UserSessionsCollection = "UserSessions",
                     ContentCollection = "ContentData"
                 });
-                var userSession = new UserSession()
+                var userSession = new UserSession
                 {
-                    ActionPlanId = Guid.Empty,
-                    InteractionId = Guid.Empty,
-                    CustomerId = Guid.Empty
-                    
+                    Id = null,
+                    CustomerId = default,
+                    InteractionId = default,
+                    ActionPlanId = default,
+                    Interaction = null,
+                    Adviser = null
                 };
                 var cachedLmiData = new StringContent(JsonConvert.SerializeObject(userSession));
                 _service = Substitute.For<ICosmosService>();
