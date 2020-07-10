@@ -1,14 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Dfc.App.ActionPlans.Controllers;
+using DFC.App.ActionPlans.Cosmos.Interfaces;
 using DFC.App.ActionPlans.Helpers;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Enums;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Services.DSS.Models;
 using DFC.App.ActionPlans.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -17,13 +17,15 @@ using Action = DFC.App.ActionPlans.Services.DSS.Models.Action;
 
 namespace DFC.App.ActionPlans.Controllers
 {
+    [Authorize]
     public class ChangeActionStatusController : CompositeSessionController<ChangeActionCompositeViewModel>
     {
         private readonly IDssWriter _dssWriter;
         private readonly IDssReader _dssReader;
 
-        public ChangeActionStatusController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter)
-            :base(compositeSettings, dssReader)
+        public ChangeActionStatusController(ILogger<HomeController> logger,
+            IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService)
+            : base(compositeSettings, dssReader, cosmosServiceService)
         {
             _dssWriter = dssWriter;
             _dssReader = dssReader;
@@ -31,19 +33,19 @@ namespace DFC.App.ActionPlans.Controllers
         }
 
         //  [Authorize]
-        [Route("/body/change-action-status/{actionPlanId}/{interactionId}/{goalId}")]
+        [Route("/body/change-action-status/{actionPlanId}/{interactionId}/{actionId}")]
         [HttpGet]
-        public async Task<IActionResult> Body(Guid actionPlanId, Guid interactionId, Guid goalId)
+        public async Task<IActionResult> Body(Guid actionPlanId, Guid interactionId, Guid actionId)
         {
             await LoadViewData(actionPlanId, interactionId);
 
             ViewModel.Action = await _dssReader.GetActionDetails(ViewModel.CustomerId.ToString(),
-                ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString(), goalId.ToString());
+                ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString(), actionId.ToString());
 
             return await base.Body();
         }
 
-          [Route("/body/change-goal-status/{actionPlanId}/{interactionId}/{goalId}")]
+        [Route("/body/change-action-status/{actionPlanId}/{interactionId}/{actionId}")]
         [HttpPost]
         public async Task<IActionResult> Body(ChangeActionCompositeViewModel model, IFormCollection formCollection)
         {
@@ -61,7 +63,7 @@ namespace DFC.App.ActionPlans.Controllers
                 };
 
                 await UpdateAction();
-                return RedirectTo(Links.GetUpdateConfirmationLink(ViewModel.ActionPlanId,
+                return RedirectTo(Urls.GetUpdateConfirmationUrl(ViewModel.ActionPlanId,
                     ViewModel.InteractionId, new Guid(ViewModel.Action.ActionId), Constants.Constants.Action,
                     Constants.Constants.Status));
             }
@@ -70,8 +72,8 @@ namespace DFC.App.ActionPlans.Controllers
                 model.ErrorMessage = "Choose a status for this action or select ‘Cancel’ to view it.";
             }
 
-            ModelState.Clear(); 
-            ModelState.AddModelError(Constants.Constants.GoalStatus, model.ErrorMessage);
+            ModelState.Clear();
+            ModelState.AddModelError(Constants.Constants.ActionStatus, model.ErrorMessage);
 
             var customer = await GetCustomerDetails();
             await LoadData(customer.CustomerId, model.ActionPlanId, model.InteractionId);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DFC.App.ActionPlans.Controllers;
+using DFC.App.ActionPlans.Helpers;
 using DFC.App.ActionPlans.ViewModels;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
@@ -19,10 +20,8 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         [SetUp]
         public void Init()
         {
-           
-            _controller = new ChangeActionDueDateController(_logger, _compositeSettings, _dssReader,_dssWriter);
-            _controller.ControllerContext.HttpContext = new DefaultHttpContext();
-           
+            _controller = new ChangeActionDueDateController(_logger, _compositeSettings, _dssReader,_dssWriter, _cosmosService);
+            _controller.ControllerContext.HttpContext = new DefaultHttpContext(){User = user};
         }
 
        
@@ -30,6 +29,9 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         [Test]
         public async Task WhenBodyCalled_ReturnHtml()
         {
+            var viewActionUrl = Urls.GetViewActionUrl("", new Guid(), new Guid(),new Guid());
+            var changeActionUrl = Urls.GetChangeUrl("", CompositeViewModel.PageId.ChangeActionStatus,  new Guid(), new Guid(),new Guid());
+            
             var result = await _controller.Body(new Guid(), new Guid(), new Guid()) as ViewResult;
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();

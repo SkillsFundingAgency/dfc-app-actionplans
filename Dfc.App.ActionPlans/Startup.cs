@@ -1,4 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Text;
+using System.Threading.Tasks;
 using DFC.App.ActionPlans.Cosmos.Interfaces;
 using DFC.App.ActionPlans.Cosmos.Models;
 using DFC.App.ActionPlans.Cosmos.Services;
@@ -8,6 +11,7 @@ using DFC.App.ActionPlans.Services;
 using DFC.App.ActionPlans.Services.DSS.Models;
 using DFC.App.ActionPlans.Services.DSS.Services;
 using DFC.Personalisation.Common.Helpers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -17,6 +21,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 
 
 namespace Dfc.App.ActionPlans
@@ -59,7 +64,7 @@ namespace Dfc.App.ActionPlans
             var appPath = Configuration.GetSection("CompositeSettings:Path").Value;
 
             Configuration.GetSection("AuthSettings").Bind(authSettings);
-          /*  services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(cfg =>
                 {
                     cfg.TokenValidationParameters =
@@ -103,8 +108,7 @@ namespace Dfc.App.ActionPlans
 
                     };
                 });
-          */
-   
+
             services.AddMvc().AddMvcOptions(options =>
             {
                 options.Conventions.Add(new RouteTokenTransformerConvention(

@@ -5,6 +5,7 @@
         public const string DateGoalShouldBeCompletedBy = "DateGoalShouldBeCompletedBy";
         public const string DateActionShouldBeCompletedBy = "DateActionShouldBeCompletedBy";
         public const string GoalStatus = "GoalStatus";
+        public const string ActionStatus = "ActionStatus";
 
         public const string ChangeGoalDueDateController = "ChangeGoalDueDate";
         public const string ChangeGoalStatusController = "ChangeGoalStatus";

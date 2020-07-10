@@ -14,7 +14,7 @@ namespace DFC.App.ActionPlans.ViewModels
         }
         public List<Goal> Goals { get; set; }
         public List<Action> Actions { get; set;}
-     
+        public Session LatestSession { get; set;}
         public ActionPlan ActionPlan { get; set;}
        
         

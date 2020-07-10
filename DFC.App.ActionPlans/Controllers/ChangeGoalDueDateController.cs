@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Dfc.App.ActionPlans.Controllers;
+using DFC.App.ActionPlans.Cosmos.Interfaces;
 using DFC.App.ActionPlans.Extensions;
 using DFC.App.ActionPlans.Helpers;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Services.DSS.Models;
 using DFC.App.ActionPlans.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -14,14 +16,15 @@ using Microsoft.Extensions.Options;
 
 namespace DFC.App.ActionPlans.Controllers
 {
+    [Authorize]
     public class ChangeGoalDueDateController : CompositeSessionController<ChangeGoalCompositeViewModel>
     {
         private readonly IDssWriter _dssWriter;
         private readonly IDssReader _dssReader;
 
         public ChangeGoalDueDateController(ILogger<HomeController> logger,
-            IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter)
-            : base(compositeSettings, dssReader)
+            IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService)
+            : base(compositeSettings, dssReader, cosmosServiceService)
         {
             _dssWriter = dssWriter;
             _dssReader = dssReader;
@@ -69,7 +72,7 @@ namespace DFC.App.ActionPlans.Controllers
                     if (Validate.CheckValidDueDate(ViewModel.DateGoalShouldBeCompletedBy, out dateValue))
                     {
                         await UpdateGoal(dateValue);
-                        return RedirectTo(Links.GetUpdateConfirmationLink(ViewModel.ActionPlanId,
+                        return RedirectTo(Urls.GetUpdateConfirmationUrl(ViewModel.ActionPlanId,
                             ViewModel.InteractionId, new Guid(ViewModel.Goal.GoalId), Constants.Constants.Goal,
                             Constants.Constants.Date));
                     }

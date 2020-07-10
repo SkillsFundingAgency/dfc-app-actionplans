@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using DFC.App.ActionPlans.Controllers;
+using DFC.App.ActionPlans.Cosmos.Interfaces;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using FluentAssertions;
@@ -16,7 +17,8 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
     {
         private IOptions<CompositeSettings> _compositeSettings;
         private ILogger<ErrorController> _logger;
-        protected IDssReader _dssReader;
+        protected readonly IDssReader _dssReader;
+        protected readonly ICosmosService _cosmosService;
 
 
         [SetUp]
@@ -31,7 +33,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         [Test]
         public async Task WhenBodyCalled_ReturnHtml()
         {
-            var controller = new ErrorController(_logger, _compositeSettings, _dssReader);
+            var controller = new ErrorController(_logger, _compositeSettings, _dssReader, _cosmosService);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()

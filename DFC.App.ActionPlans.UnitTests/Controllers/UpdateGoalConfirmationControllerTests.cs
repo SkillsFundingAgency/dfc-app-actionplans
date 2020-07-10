@@ -17,8 +17,8 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         [SetUp]
         public void Init()
         {
-            _controller = new UpdateConfirmationController(_logger, _compositeSettings, _dssReader);
-            _controller.ControllerContext.HttpContext = new DefaultHttpContext();
+            _controller = new UpdateConfirmationController(_logger, _compositeSettings, _dssReader, _cosmosService);
+            _controller.ControllerContext.HttpContext = new DefaultHttpContext(){User = user};
             var vm = new UpdateGoalConfirmationCompositeViewModel
             {
                 PageTitle = null,
@@ -29,7 +29,6 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
                 CustomerId = default,
                 ActionPlanId = default,
                 InteractionId = default,
-                LatestSession = null,
                 Interaction = null,
                 Adviser = null,
                 ContactDetails = null,
@@ -57,7 +56,6 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
                 CustomerId = default,
                 ActionPlanId = default,
                 InteractionId = default,
-                LatestSession = null,
                 Interaction = null,
                 Adviser = null,
                 ContactDetails = null,
@@ -80,7 +78,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         }
 
         [Test]
-        public async Task WhenBodyCalledWithInvalidObjectUpdated_ExceptoinThrown()
+        public void WhenBodyCalledWithInvalidObjectUpdated_ExceptoinThrown()
         {
             
               _controller.Invoking(async sut => await sut.Body(new Guid(), new Guid(),new Guid(),0,Constants.Constants.Date))
@@ -88,7 +86,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         }
 
         [Test]
-        public async Task WhenBodyCalledWithInvalidPropertyUpdated_ExceptoinThrown()
+        public void WhenBodyCalledWithInvalidPropertyUpdated_ExceptoinThrown()
         {
             
             _controller.Invoking(async sut => await sut.Body(new Guid(), new Guid(),new Guid(),Constants.Constants.Goal,0))
