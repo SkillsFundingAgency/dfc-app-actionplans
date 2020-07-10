@@ -29,11 +29,23 @@
         "cosmosDbKey": {
             "value": "__appSharedCosmosPrimaryKey__"
         },
+        "cosmosApiKey": {
+            "value": "__cosmosApiKey__"
+        },
+        "UserSessionsCollection": {
+            "value": "__UserSessionsCollection__"
+        },
+        "ContentCollection": {
+            "value": "__ContentCollection__"
+        },
         "CosmosDbResourceGroup": {
             "value": "__persSharedResourceGroup__"
         },
         "cosmosDbCollectionName": {
             "value": "__cosmosDbCollectionName__"
+        },
+        "cosmosContentDbCollectionName": {
+            "value": "__cosmosContentDbCollectionName__"
         },
         "actionplanAppDatabaseNeedsCreation": {
             "value": __CosmosDbDatabaseDoesntExist__
