@@ -154,8 +154,6 @@ namespace Dfc.App.ActionPlans.Controllers
                     return Urls.GetViewActionPlanUrl(ViewModel.CompositeSettings.Path, actionPlanId, interactionId);;
                     
             }
-
-            
         }
     }
 

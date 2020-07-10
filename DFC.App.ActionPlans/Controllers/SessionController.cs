@@ -11,8 +11,7 @@ namespace DFC.App.ActionPlans.Controllers
         public abstract class SessionController : Controller
         {
             private readonly ICosmosService _cosmosService;
-       
-
+            
             protected SessionController(ICosmosService cosmosServiceService)
             {
                 _cosmosService = cosmosServiceService;
@@ -20,8 +19,7 @@ namespace DFC.App.ActionPlans.Controllers
 
             protected async Task CreateUserSession(UserSession userSession)
             {
-                
-                var result = await _cosmosService.CreateItemAsync(userSession, CosmosCollection.Session);
+                await _cosmosService.CreateItemAsync(userSession, CosmosCollection.Session);
             }
       
       
