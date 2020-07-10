@@ -26,8 +26,20 @@
         "cosmosDbKey": {
             "value": "not-a-real-key"
         },
+        "cosmosApiKey": {
+            "value": "not-a-real-key"
+        },
+        "UserSessionsCollection": {
+            "value": "a-test-collection"
+        },
+        "ContentCollection": {
+            "value": "a-test-collection"
+        },
         "cosmosDbCollectionName": {
             "value": "a-test-collection"
+        },
+        "cosmosContentDbCollectionName": {
+            "value": "another-test-collection"
         },
         "CosmosDbResourceGroup": {
             "value": "dfc-dev-app-sharedresources-rg"
