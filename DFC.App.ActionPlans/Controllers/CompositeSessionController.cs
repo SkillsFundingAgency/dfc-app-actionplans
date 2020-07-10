@@ -47,12 +47,6 @@ namespace Dfc.App.ActionPlans.Controllers
         [Route("/bodytop/[controller]/{actionPlanId?}/{interactionId?}/{docId?}/{objupdated?}/{itemupdated?}")]
         public virtual async Task<IActionResult> BodyTop()
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                var customer = await GetCustomerDetails();
-                ViewModel.Name = $"{customer.GivenName} {customer.FamilyName}";
-            }
-
             return View(ViewModel);
         }
 

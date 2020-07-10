@@ -49,7 +49,6 @@ namespace Dfc.App.ActionPlans.Controllers
             return RedirectTo($"{CompositeViewModel.PageId.Home.Value}/{viewModel.ActionPlanId}/{viewModel.InteractionId}");
         }
 
-        //  [Authorize]
         [Route("/body/{actionPlanId}/{interactionId}")]
         [HttpGet]
         public async Task<IActionResult> Body(Guid actionPlanId, Guid interactionId)

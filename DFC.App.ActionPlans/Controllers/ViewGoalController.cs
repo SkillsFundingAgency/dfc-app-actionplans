@@ -6,12 +6,14 @@ using DFC.App.ActionPlans.Helpers;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace DFC.App.ActionPlans.Controllers
 {
+    [Authorize]
     public class ViewGoalController : CompositeSessionController<ViewGoalCompositeViewModel>
     {
         private readonly IDssReader _dssReader;
