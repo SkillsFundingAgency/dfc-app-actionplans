@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using DFC.App.ActionPlans.Models;
@@ -10,7 +9,6 @@ using System.Threading.Tasks;
 using DFC.App.ActionPlans.Constants;
 using DFC.App.ActionPlans.Controllers;
 using DFC.App.ActionPlans.Cosmos.Interfaces;
-using DFC.App.ActionPlans.Cosmos.Services;
 using DFC.App.ActionPlans.Exceptions;
 using DFC.App.ActionPlans.Helpers;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;

@@ -2,8 +2,6 @@
 using DFC.App.ActionPlans.Extensions;
 using FluentAssertions;
 using NUnit.Framework;
-using DFC.App.ActionPlans.Helpers;
-using DFC.App.ActionPlans.Models;
 
 namespace DFC.App.ActionPlans.UnitTests.Extensions
 {

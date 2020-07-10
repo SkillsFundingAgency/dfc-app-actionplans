@@ -18,7 +18,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         public void Init()
         {
             _controller = new UpdateConfirmationController(_logger, _compositeSettings, _dssReader, _cosmosService);
-            _controller.ControllerContext.HttpContext = new DefaultHttpContext();
+            _controller.ControllerContext.HttpContext = new DefaultHttpContext(){User = user};
             var vm = new UpdateGoalConfirmationCompositeViewModel
             {
                 PageTitle = null,

@@ -34,7 +34,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
                 Content = null
             });
             _controller = new ChangeActionDueDateController(_logger, _compositeSettings, _dssReader,_dssWriter, _cosmosService);
-            _controller.ControllerContext.HttpContext = new DefaultHttpContext();
+            _controller.ControllerContext.HttpContext = new DefaultHttpContext(){User = user};
            
         }
 

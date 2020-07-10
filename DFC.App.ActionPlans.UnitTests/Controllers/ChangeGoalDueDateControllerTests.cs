@@ -21,7 +21,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         {
            
             _controller = new ChangeGoalDueDateController(_logger, _compositeSettings, _dssReader,_dssWriter, _cosmosService);
-            _controller.ControllerContext.HttpContext = new DefaultHttpContext();
+            _controller.ControllerContext.HttpContext = new DefaultHttpContext(){User = user};
            
         }
 

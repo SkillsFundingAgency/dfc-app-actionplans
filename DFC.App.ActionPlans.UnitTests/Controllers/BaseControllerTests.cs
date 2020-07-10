@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
+using System.Threading;
 using Dfc.App.ActionPlans.Controllers;
 using DFC.App.ActionPlans.Cosmos.Interfaces;
 using DFC.App.ActionPlans.Cosmos.Services;
@@ -25,11 +27,20 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         protected IDssReader _dssReader;
         protected IDssWriter _dssWriter;
         protected ICosmosService _cosmosService;
-
+        protected ClaimsPrincipal user;
 
         [SetUp]
         public void SetupBase()
         {
+            user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+            {
+                new Claim(ClaimTypes.Name, "example name"),
+                new Claim(ClaimTypes.NameIdentifier, "1"),
+                new Claim("CustomerId", new Guid().ToString()),
+            }, "mock"));
+
+           
+           
             _logger = new Logger<HomeController>(new LoggerFactory());
             _compositeSettings = Options.Create(new CompositeSettings
             {
@@ -172,5 +183,18 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         }
 
 
+    }
+    public class TestPrincipal : ClaimsPrincipal
+    {
+        public TestPrincipal(params Claim[] claims) : base(new TestIdentity(claims))
+        {
+        }
+    }
+
+    public class TestIdentity : ClaimsIdentity
+    {
+        public TestIdentity(params Claim[] claims) : base(claims)
+        {
+        }
     }
 }
