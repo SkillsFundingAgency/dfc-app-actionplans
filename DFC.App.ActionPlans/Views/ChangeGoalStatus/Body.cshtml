@@ -1,4 +1,5 @@
 ﻿@using DFC.App.ActionPlans.Constants
+@using DFC.App.ActionPlans.Helpers
 @using DFC.App.ActionPlans.Services.DSS.Enums
 @using DFC.Personalisation.Common.Extensions
 @model DFC.App.ActionPlans.ViewModels.ChangeGoalCompositeViewModel
@@ -47,7 +48,7 @@
                     <br />
 
                     <govukButton id="@Model.GetElementId("govukSecondaryButton", "Continue");" text="Update status"></govukButton>
-                    <govuksecondarybutton id="@Model.GetElementId("govukSecondaryButton", "Cancel");" text="Cancel"></govuksecondarybutton>
+                    <govukButtonLink additional-class="govuk-button--secondary" id="@Model.GetElementId("govukButtonLink", "Cancel")" LinkTitle="Cancel" LinkText="Cancel" LinkHref="@(Urls.GetViewGoalUrl(Model.CompositeSettings.Path,Model.ActionPlanId, @Model.InteractionId, new Guid(Model.Goal.GoalId)))"></govukButtonLink>
 
                 </form>
             </div>

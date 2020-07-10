@@ -80,8 +80,8 @@ namespace DFC.App.ActionPlans.Controllers
                 model.ErrorMessage = "Enter the date that you would like to complete this action by";
             }
 
-            ModelState.Clear(); //Remove model binding errors as we will check if the date is valid  or not.
-            ModelState.AddModelError(Constants.Constants.DateGoalShouldBeCompletedBy, model.ErrorMessage);
+            ModelState.Clear();
+            ModelState.AddModelError(Constants.Constants.DateActionShouldBeCompletedBy, model.ErrorMessage);
 
             var customer = await GetCustomerDetails();
             await LoadData(customer.CustomerId, model.ActionPlanId, model.InteractionId);

@@ -40,8 +40,8 @@
                             <td class="govuk-table__cell"><span>@Model.Goal.GoalStatus.GetDisplayName()</span></td>
 
                             <td class="govuk-table__cell">
-                                <govukLink id="@Model.GetElementId("govUkLink", $"change-due-date")" 
-                                           link-href="@(Urls.GetChangeUrl(@Model.CompositeSettings.Path, @CompositeViewModel.PageId.ChangeGoalDueDate, @Model.ActionPlanId, @Model.InteractionId, new Guid(@Model.Goal.GoalId)))" LinkText="Update status"></govukLink>
+                                <govukLink id="@Model.GetElementId("govUkLink", $"change-status")" 
+                                           link-href="@(Urls.GetChangeUrl(@Model.CompositeSettings.Path, @CompositeViewModel.PageId.ChangeGoalStatus, @Model.ActionPlanId, @Model.InteractionId, new Guid(@Model.Goal.GoalId)))" LinkText="Update status"></govukLink>
 
                             </td>
                         </tr>
