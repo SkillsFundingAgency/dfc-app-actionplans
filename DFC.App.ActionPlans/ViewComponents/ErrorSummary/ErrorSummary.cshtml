@@ -13,7 +13,7 @@
                     var modelStateVal = ViewData.ModelState[modelStateKey];
                     if (modelStateVal.Errors.Count > 0)
                     {
-                        <li id="@modelStateKey.Replace(".", "_")">
+                        <li id="Error_@modelStateKey.Replace(".", "_")">
                             <a href="#@modelStateKey.Replace(".", "_")">@Html.Raw(modelStateVal.Errors[0].ErrorMessage)</a>
                         </li>
                     }
