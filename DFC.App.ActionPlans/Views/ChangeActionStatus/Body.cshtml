@@ -20,15 +20,15 @@
                     @Html.HiddenFor(m => m.Action.DateActionAimsToBeCompletedBy)
                     
                     <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")">
-                        <fieldset class="govuk-fieldset" role="group" aria-describedby="date-action-should-be-completed-by-hint">
+                        <fieldset class="govuk-fieldset" role="group" aria-describedby="action-status-hint">
                             <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
                                 <govukHeadingH1 text="Change action status" additional-class="govuk-fieldset__heading"></govukHeadingH1>
                             </legend>
-                            <span id="action-status" class="govuk-hint">
+                            <span id="action-status-hint" class="govuk-hint">
                                 We will update your adviser's records with this change.
                             </span>
 
-                            <govukError id="@Model.GetElementId("govukTextInputError", "ActionStatusInpuError");" hidden="@ViewData.ModelState.IsValid" text="@(ViewData.ModelState[Constants.ActionStatus] == null ? "" : ViewData.ModelState[Constants.ActionStatus].Errors[0].ErrorMessage)"></govukError>
+                            <govukError id="@Model.GetElementId("govukTextInputError", "ActionStatusInputError");" hidden="@ViewData.ModelState.IsValid" text="@(ViewData.ModelState[Constants.ActionStatus] == null ? "" : ViewData.ModelState[Constants.ActionStatus].Errors[0].ErrorMessage)"></govukError>
 
 
                             <div class="govuk-radios" id="ActionStatus">
