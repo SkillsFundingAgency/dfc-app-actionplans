@@ -28,7 +28,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         [Test]
         public void WhenHeadCalled_ReturnHtml()
         {
-            var result = _controller.Head() as ViewResult;
+            var result = _controller.Head(default, default, default, default, default) as ViewResult;
             var vm = new HeadViewModel {PageTitle = "Page Title",};
             var pageTitle = vm.PageTitle;
             result.Should().NotBeNull();

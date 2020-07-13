@@ -64,11 +64,11 @@ namespace Dfc.App.ActionPlans.Controllers
 
         #region Default Routes
         // The home page uses MVC default routes, so we need non "/[controller]" attribute routed versions of the endpoints just for here
-        [Route("/head/home/{actionPlanId?}/{interactionId?}/{docId?}/{objupdated?}/{itemupdated?}")]
-        [Route("/head/{actionPlanId?}/{interactionId?}/{docId?}/{objupdated?}/{itemupdated?}")]
-        public override IActionResult Head()
+        [Route("/head/home/{actionPlanId?}/{interactionId?}/{objId?}/{objupdated?}/{propertyUpdated?}")]
+        [Route("/head/{actionPlanId?}/{interactionId?}/{objId?}/{objupdated?}/{propertyUpdated?}")]
+        public override IActionResult Head(Guid actionPlanId, Guid interactionId, Guid objId, int objectUpdated, int propertyUpdated)
         {
-            return base.Head();
+            return base.Head(actionPlanId, interactionId, objId, objectUpdated, propertyUpdated);
         }
         [Route("/bodytop/home/{actionPlanId?}/{interactionId?}/{docId?}/{objupdated?}/{itemupdated?}")]
         [Route("/bodytop/{actionPlanId?}/{interactionId?}/{docId?}/{objupdated?}/{itemupdated?}")]

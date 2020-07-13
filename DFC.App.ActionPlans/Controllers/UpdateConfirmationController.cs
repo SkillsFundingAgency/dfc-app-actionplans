@@ -37,6 +37,19 @@ namespace DFC.App.ActionPlans.Controllers
             await SetUpdateMessages(objId,objectUpdated, propertyUpdated);
             return await base.Body();
         }
+        
+        [Route("/head/update-confirmation/{actionPlanId}/{interactionId}/{objId}/{objectupdated}/{propertyupdated}")]
+        [HttpGet]
+        public override IActionResult Head(Guid actionPlanId, Guid interactionId, Guid objId, int objectUpdated, int propertyUpdated)
+        {
+            ViewModel.PageTitle = objectUpdated switch
+            {
+                Constants.Constants.Goal => "Goal Updated",
+                Constants.Constants.Action => "Action Updated",
+                _ => throw new ObjectUpdatedNotSetException($"Object updated has not been provided or is incorrect.")
+            };
+            return base.Head(actionPlanId, interactionId, objId, objectUpdated, propertyUpdated);
+        }
 
         private async Task SetUpdateMessages(Guid objId, int objectUpdated, int propertyUpdated)
         {
@@ -97,7 +110,7 @@ namespace DFC.App.ActionPlans.Controllers
 
         private async Task SetActionUpdateMessages(Guid actionId, int propertyUpdated)
         {
-            ViewModel.PageTitle = "Action Updated";
+            
             var action = await _dssReader.GetActionDetails(ViewModel.CustomerId.ToString(),
                 ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString(), actionId.ToString());
             ViewModel.Name = $"{action.ActionSummary} - {action.ActionType.GetDisplayName()}";

@@ -38,7 +38,7 @@ namespace Dfc.App.ActionPlans.Controllers
 
         [HttpGet]
         [Route("/head/[controller]/{actionPlanId?}/{interactionId?}/{docId?}/{objupdated?}/{itemupdated?}")]
-        public virtual IActionResult Head()
+        public virtual IActionResult Head(Guid actionPlanId, Guid interactionId, Guid objId, int objectUpdated, int propertyUpdated)
         {
             return View(ViewModel);
         }
