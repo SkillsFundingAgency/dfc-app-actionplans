@@ -45,9 +45,9 @@ namespace Dfc.App.ActionPlans.Controllers
 
         [HttpGet]
         [Route("/bodytop/[controller]/{actionPlanId?}/{interactionId?}/{docId?}/{objupdated?}/{itemupdated?}")]
-        public virtual async Task<IActionResult> BodyTop()
+        public virtual  Task<IActionResult> BodyTop()
         {
-            return View(ViewModel);
+            return Task.FromResult<IActionResult>(View(ViewModel));
         }
 
         [HttpGet]
@@ -145,7 +145,7 @@ namespace Dfc.App.ActionPlans.Controllers
                     return Urls.GetViewActionUrl(ViewModel.CompositeSettings.Path, actionPlanId, interactionId, objectId);
                     
                 default:
-                    return Urls.GetViewActionPlanUrl(ViewModel.CompositeSettings.Path, actionPlanId, interactionId);;
+                    return Urls.GetViewActionPlanUrl(ViewModel.CompositeSettings.Path, actionPlanId, interactionId);
                     
             }
         }
