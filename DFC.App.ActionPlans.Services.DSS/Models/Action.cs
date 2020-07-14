@@ -13,7 +13,7 @@ namespace DFC.App.ActionPlans.Services.DSS.Models
         public DateTime? DateActionActuallyCompleted { get; set; }
         public string ActionSummary { get; set; }
         public string SignpostedTo { get; set; }
-        public SignpostedToCategory SignpostedToCategory { get; set; }
+        public SignpostedToCategory? SignpostedToCategory { get; set; }
         public ActionType ActionType { get; set; }
         public ActionStatus ActionStatus { get; set; }
         public int PersonResponsible { get; set; }
