@@ -17,12 +17,13 @@
                     @Html.HiddenFor(m => m.Goal.GoalId)
                     @Html.HiddenFor(m => m.CustomerId)
                     @Html.HiddenFor(m => m.Goal.DateGoalShouldBeCompletedBy)
+                    
                     <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")">
-                        <fieldset class="govuk-fieldset" role="group" aria-describedby="date-goal-should-be-completed-by-hint">
+                        <fieldset class="govuk-fieldset" role="group" aria-describedby="action-status-hint">
                             <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
                                 <govukHeadingH1 text="Change goal status" additional-class="govuk-fieldset__heading"></govukHeadingH1>
                             </legend>
-                            <span id="goal-status" class="govuk-hint">
+                            <span id="goal-status-hint" class="govuk-hint">
                                 We will update your adviser's records with this change.
                             </span>
 
