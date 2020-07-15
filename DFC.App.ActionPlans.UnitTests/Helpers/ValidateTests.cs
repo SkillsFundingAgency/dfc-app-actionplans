@@ -3,6 +3,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using DFC.App.ActionPlans.Helpers;
 using DFC.App.ActionPlans.Models;
+using DFC.App.ActionPlans.Services.DSS.Enums;
 
 namespace DFC.App.ActionPlans.UnitTests.Helpers
 {
@@ -36,4 +37,26 @@ namespace DFC.App.ActionPlans.UnitTests.Helpers
 
         }
     }
+
+    class Utility
+    {
+        [Test]
+        public void When_GetActionHelperTextWithUrl_Then_ReturnAnchor()
+        {
+            
+            var result = ActionPlans.Helpers.Utility.GetActionHelperText(SignpostedToCategory.ApprenticeshipService,"http://www.microsoft.com");
+            result.Should().Contain("<a");
+
+        }
+
+        [Test]
+        public void When_GetActionHelperTextWithNoUrl_Then_ReturnNoAnchor()
+        {
+            
+            var result = ActionPlans.Helpers.Utility.GetActionHelperText(SignpostedToCategory.ApprenticeshipService,"Help Text");
+            result.Should().NotContain("<a");
+
+        }
+    }
+
 }

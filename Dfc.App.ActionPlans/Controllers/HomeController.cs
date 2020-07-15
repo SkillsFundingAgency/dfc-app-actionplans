@@ -45,8 +45,10 @@ namespace Dfc.App.ActionPlans.Controllers
                   DateActionPlanAcknowledged = DateTime.UtcNow.AddMinutes(-1)
                 });
             }
+            var customer = await GetCustomerDetails();
+            await  LoadData(customer.CustomerId,viewModel.ActionPlanId,viewModel.InteractionId);
             ViewModel.LatestSession = await GetLatestSession();
-            return RedirectTo($"{CompositeViewModel.PageId.Home.Value}/{viewModel.ActionPlanId}/{viewModel.InteractionId}");
+            return RedirectTo($"{viewModel.ActionPlanId}/{viewModel.InteractionId}");
         }
 
         [Route("/body/{actionPlanId}/{interactionId}")]
