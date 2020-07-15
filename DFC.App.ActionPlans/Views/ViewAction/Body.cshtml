@@ -14,7 +14,7 @@
                     @Model.Action.ActionSummary
                 </p>
                 <govukHeadingH2 text="Links to help you with this action" additional-class="govuk-heading-s"></govukHeadingH2>
-                <p>@(Utility.GetActionHelperText(@Model.Action.SignpostedToCategory,@Model.Action.SignpostedTo))</p>
+                <p>@Html.Raw((Utility.GetActionHelperText(@Model.Action.SignpostedToCategory,@Model.Action.SignpostedTo)))</p>
                 <p class=" govuk-!-margin-top-6"><strong>Last updated: </strong>@Model.Action.LastModifiedDate.ToString("dd MMMM yyyy")</p>
 
                 <section>

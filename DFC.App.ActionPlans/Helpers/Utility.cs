@@ -20,7 +20,8 @@ namespace DFC.App.ActionPlans.Helpers
 
             if (Uri.IsWellFormedUriString(signpostedTo, UriKind.RelativeOrAbsolute))
             {
-                returnValue += $"<govukLink id='helplink' link-href='{signpostedTo}' LinkText='{signpostedTo}'></govukLink>";
+                returnValue += $"<a id='helplink' href='{signpostedTo}' target='_blank'>{signpostedTo}</a>";
+                    
             }
             else
             {
