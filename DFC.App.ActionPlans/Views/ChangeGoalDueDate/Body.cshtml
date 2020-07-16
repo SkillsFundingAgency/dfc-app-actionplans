@@ -23,8 +23,7 @@
                             </span>
 
                             <govukError id="@Model.GetElementId("govukTextInputError", "DateInpuError")" hidden="@ViewData.ModelState.IsValid" text="@(ViewData.ModelState[Constants.DateGoalShouldBeCompletedBy]==null?"":ViewData.ModelState[Constants.DateGoalShouldBeCompletedBy].Errors[0].ErrorMessage)"></govukError>
-                            <div class="govuk-date-input" id="date-goal-should-be-completed-by">
-                                DateGoalShouldBeCompletedBy
+                            <div class="govuk-date-input" id="DateGoalShouldBeCompletedBy">
                                 <partial name="~/ViewComponents/SplitDate/splitdate.cshtml" model="@Model.DateGoalShouldBeCompletedBy??new SplitDate()" />
 
                             </div>
