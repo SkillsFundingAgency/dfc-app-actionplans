@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using DFC.App.ActionPlans.Services.DSS.Enums;
-using DFC.App.ActionPlans.ViewModels;
 using DFC.Personalisation.Common.Extensions;
 
 namespace DFC.App.ActionPlans.Helpers
