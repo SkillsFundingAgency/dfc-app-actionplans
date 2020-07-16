@@ -92,20 +92,19 @@ namespace Dfc.App.ActionPlans
                             }
                             else
                             {
-                                context.Response.Redirect("/auth/signin");
+                                context.Response.Redirect(authSettings.SignInUrl);
                             }
                             return Task.CompletedTask;
                             
                             
                         },
                        OnChallenge = context =>
-                        {
-                            context.Response.Redirect("/auth/signin");
+                       {
+                            var requestingUrl = context.Request.Path.ToString().Replace("/head",appPath);
+                            context.Response.Redirect($"{authSettings.SignInUrl}?redirectUrl={requestingUrl}");
                             context.HandleResponse();
                             return Task.CompletedTask;
                         }
-                        
-
                     };
                 });
 
