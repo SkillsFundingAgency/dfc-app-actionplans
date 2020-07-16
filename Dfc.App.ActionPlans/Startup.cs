@@ -15,10 +15,12 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
@@ -92,20 +94,19 @@ namespace Dfc.App.ActionPlans
                             }
                             else
                             {
-                                context.Response.Redirect("/auth/signin");
+                                context.Response.Redirect(authSettings.SignInUrl);
                             }
                             return Task.CompletedTask;
                             
                             
                         },
                        OnChallenge = context =>
-                        {
-                            context.Response.Redirect("/auth/signin");
+                       {
+                            var requestingUrl = context.Request.Path.ToString().Replace("/head",appPath);
+                            context.Response.Redirect($"{authSettings.SignInUrl}?redirectUrl={requestingUrl}");
                             context.HandleResponse();
                             return Task.CompletedTask;
                         }
-                        
-
                     };
                 });
 
