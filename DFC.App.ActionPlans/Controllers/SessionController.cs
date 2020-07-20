@@ -2,13 +2,11 @@
 using DFC.App.ActionPlans.Cosmos.Interfaces;
 using DFC.App.ActionPlans.Cosmos.Services;
 using DFC.App.ActionPlans.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace DFC.App.ActionPlans.Controllers
 {
-    [Authorize]
     public abstract class SessionController : Controller
     {
         private readonly ICosmosService _cosmosService;

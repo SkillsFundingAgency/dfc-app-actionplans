@@ -20,7 +20,7 @@ namespace DFC.App.ActionPlans.Controllers
     public class UpdateConfirmationController : CompositeSessionController<UpdateGoalConfirmationCompositeViewModel>
     {
         private readonly IDssReader _dssReader;
-        public UpdateConfirmationController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings,
+        public UpdateConfirmationController(ILogger<UpdateConfirmationController> logger, IOptions<CompositeSettings> compositeSettings,
             IDssReader dssReader, ICosmosService cosmosServiceService)
             : base(compositeSettings, dssReader, cosmosServiceService)
         {

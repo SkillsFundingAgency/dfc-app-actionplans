@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using DFC.App.ActionPlans.Controllers;
 using DFC.App.ActionPlans.ViewModels;
@@ -8,6 +6,8 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Logging;
+using NSubstitute;
 using NUnit.Framework;
 
 namespace DFC.App.ActionPlans.UnitTests.Controllers
@@ -15,10 +15,12 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
     class ViewGoalControllerTests : BaseControllerTests
     {
         private ViewGoalController _controller;
-
+        private ILogger<ViewGoalController> _logger;
         [SetUp]
         public void Init()
         {
+            _logger = new Logger<ViewGoalController>(new LoggerFactory());
+            _logger = Substitute.For<ILogger<ViewGoalController>>();
             _controller = new ViewGoalController(_logger, _compositeSettings, _dssReader, _cosmosService);
             _controller.ControllerContext.HttpContext = new DefaultHttpContext(){User = user};
             _controller.ControllerContext.RouteData = new RouteData();

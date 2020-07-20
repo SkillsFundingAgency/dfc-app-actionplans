@@ -22,7 +22,7 @@ namespace DFC.App.ActionPlans.Controllers
         private readonly IDssWriter _dssWriter;
         private readonly IDssReader _dssReader;
 
-        public ChangeGoalDueDateController(ILogger<HomeController> logger,
+        public ChangeGoalDueDateController(ILogger<ChangeGoalDueDateController> logger,
             IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService)
             : base(compositeSettings, dssReader, cosmosServiceService)
         {
@@ -31,7 +31,6 @@ namespace DFC.App.ActionPlans.Controllers
             ViewModel.PageTitle = "Change Goal due date";
         }
 
-        //  [Authorize]
         [Route("/body/change-goal-due-date/{actionPlanId}/{interactionId}/{goalId}")]
         [HttpGet]
         public async Task<IActionResult> Body(Guid actionPlanId, Guid interactionId, Guid goalId)
@@ -43,14 +42,7 @@ namespace DFC.App.ActionPlans.Controllers
             return await base.Body();
         }
 
-        //[Route("/breadcrumb/change-goal-due-date/{actionPlanId}/{interactionId}/{goalId}")]
-
-        /* public  IActionResult Breadcrumb(Guid actionPlanId, Guid interactionId, Guid goalId)
-         {
-             SetBackLink(actionPlanId, interactionId, goalId);
-             return base.Breadcrumb();
-         }*/
-
+    
         [Route("/body/change-goal-due-date/{actionPlanId}/{interactionId}/{goalId}")]
         [HttpPost]
         public async Task<IActionResult> Body(ChangeGoalCompositeViewModel model, IFormCollection formCollection)

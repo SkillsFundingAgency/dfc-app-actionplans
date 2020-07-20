@@ -6,6 +6,8 @@ using DFC.App.ActionPlans.ViewModels;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using NSubstitute;
 using NUnit.Framework;
 
 namespace DFC.App.ActionPlans.UnitTests.Controllers
@@ -13,10 +15,12 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
     class UpdateGoalConfirmationControllerTests : BaseControllerTests
     {
         private UpdateConfirmationController _controller;
-
+        private ILogger<UpdateConfirmationController> _logger;
         [SetUp]
         public void Init()
         {
+            _logger = new Logger<UpdateConfirmationController>(new LoggerFactory());
+            _logger = Substitute.For<ILogger<UpdateConfirmationController>>();
             _controller = new UpdateConfirmationController(_logger, _compositeSettings, _dssReader, _cosmosService);
             _controller.ControllerContext.HttpContext = new DefaultHttpContext(){User = user};
             var vm = new UpdateGoalConfirmationCompositeViewModel
