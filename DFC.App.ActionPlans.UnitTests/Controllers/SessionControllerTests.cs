@@ -13,6 +13,7 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NUnit.Framework;
 
@@ -21,11 +22,14 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
     class SessionControllerTests : BaseControllerTests
     {
         private ChangeActionDueDateController _controller;
-        protected ICosmosService _cosmosService;
+        private ICosmosService _cosmosService;
+        private ILogger<ChangeActionDueDateController> _logger;
 
         [SetUp]
         public void Init()
         {
+            _logger = new Logger<ChangeActionDueDateController>(new LoggerFactory());
+            _logger = Substitute.For<ILogger<ChangeActionDueDateController>>();
             _cosmosService= Substitute.For<ICosmosService>();
             _cosmosService.ReadItemAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CosmosCollection>())
             .Returns(new HttpResponseMessage

@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Dfc.App.ActionPlans.Controllers;
+using DFC.App.ActionPlans.Controllers;
 using DFC.App.ActionPlans.ViewModels;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
+using NSubstitute;
 using NUnit.Framework;
 
 namespace DFC.App.ActionPlans.UnitTests.Controllers
@@ -17,11 +20,12 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
     {
        
         private HomeController _controller;
-
+        private ILogger<HomeController> _logger;
         [SetUp]
         public void Init()
         {
-           
+            _logger = new Logger<HomeController>(new LoggerFactory());
+            _logger = Substitute.For<ILogger<HomeController>>();
             _controller = new HomeController(_logger, _compositeSettings, _dssReader,_dssWriter, _cosmosService);
             _controller.ControllerContext.HttpContext = new DefaultHttpContext(){User = user};
 

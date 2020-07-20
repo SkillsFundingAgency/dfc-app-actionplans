@@ -23,7 +23,7 @@ namespace DFC.App.ActionPlans.Controllers
         private readonly IDssWriter _dssWriter;
         private readonly IDssReader _dssReader;
 
-        public ChangeActionDueDateController(ILogger<HomeController> logger,
+        public ChangeActionDueDateController(ILogger<ChangeActionDueDateController> logger,
             IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService)
             : base(compositeSettings, dssReader, cosmosServiceService)
         {
@@ -32,7 +32,6 @@ namespace DFC.App.ActionPlans.Controllers
             ViewModel.PageTitle = "Change Action due date";
         }
 
-        //  [Authorize]
         [Route("/body/change-action-due-date/{actionPlanId}/{interactionId}/{Id}")]
         [HttpGet]
         public async Task<IActionResult> Body(Guid actionPlanId, Guid interactionId, Guid id)

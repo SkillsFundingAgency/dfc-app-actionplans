@@ -22,7 +22,7 @@ namespace DFC.App.ActionPlans.Controllers
         private readonly IDssWriter _dssWriter;
         private readonly IDssReader _dssReader;
 
-        public ChangeGoalStatusController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings,
+        public ChangeGoalStatusController(ILogger<ChangeGoalStatusController> logger, IOptions<CompositeSettings> compositeSettings,
             IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService)
             : base(compositeSettings, dssReader, cosmosServiceService)
         {
@@ -31,7 +31,6 @@ namespace DFC.App.ActionPlans.Controllers
             ViewModel.PageTitle = "Change Goal Status";
         }
 
-        //  [Authorize]
         [Route("/body/change-goal-status/{actionPlanId}/{interactionId}/{goalId}")]
         [HttpGet]
         public async Task<IActionResult> Body(Guid actionPlanId, Guid interactionId, Guid goalId)

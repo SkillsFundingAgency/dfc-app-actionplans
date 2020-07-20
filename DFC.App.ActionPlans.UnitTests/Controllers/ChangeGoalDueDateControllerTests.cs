@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Dfc.App.ActionPlans.Controllers;
 using DFC.App.ActionPlans.Controllers;
 using DFC.App.ActionPlans.Services.DSS.Models;
 using DFC.App.ActionPlans.ViewModels;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
+using NSubstitute;
 using NUnit.Framework;
 
 namespace DFC.App.ActionPlans.UnitTests.Controllers
@@ -15,11 +18,13 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
     class ChangeGoalDueDateControllerTests : BaseControllerTests
     {
          private ChangeGoalDueDateController _controller;
-
+         private ILogger<ChangeGoalDueDateController> _logger;
         [SetUp]
         public void Init()
         {
-           
+        
+        _logger = new Logger<ChangeGoalDueDateController>(new LoggerFactory());
+        _logger = Substitute.For<ILogger<ChangeGoalDueDateController>>();
             _controller = new ChangeGoalDueDateController(_logger, _compositeSettings, _dssReader,_dssWriter, _cosmosService);
             _controller.ControllerContext.HttpContext = new DefaultHttpContext(){User = user};
            

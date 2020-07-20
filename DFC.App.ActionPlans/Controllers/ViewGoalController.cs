@@ -18,13 +18,12 @@ namespace DFC.App.ActionPlans.Controllers
     {
         private readonly IDssReader _dssReader;
         
-        public ViewGoalController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, ICosmosService cosmosServiceService)
+        public ViewGoalController(ILogger<ViewGoalController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, ICosmosService cosmosServiceService)
             :base(compositeSettings, dssReader, cosmosServiceService)
         {
             _dssReader = dssReader;
         }
         
-        //  [Authorize]
         [Route("/body/view-goal/{actionPlanId}/{interactionId}/{goalId}")]
         [HttpGet]
         public async  Task<IActionResult> Body(Guid actionPlanId, Guid interactionId, Guid goalId)

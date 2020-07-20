@@ -8,6 +8,8 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Logging;
+using NSubstitute;
 using NUnit.Framework;
 
 namespace DFC.App.ActionPlans.UnitTests.Controllers
@@ -15,10 +17,12 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
     class ViewActionControllerTests : BaseControllerTests
     {
         private ViewActionController _controller;
-
+        private ILogger<ViewActionController> _logger;
         [SetUp]
         public void Init()
         {
+            _logger = new Logger<ViewActionController>(new LoggerFactory());
+            _logger = Substitute.For<ILogger<ViewActionController>>();
             _controller = new ViewActionController(_logger, _compositeSettings, _dssReader, _cosmosService);
             _controller.ControllerContext.HttpContext = new DefaultHttpContext(){User = user};
             _controller.ControllerContext.RouteData = new RouteData();

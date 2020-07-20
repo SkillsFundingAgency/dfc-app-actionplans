@@ -18,14 +18,13 @@ namespace DFC.App.ActionPlans.Controllers
     {
         private readonly IDssReader _dssReader;
 
-        public ViewActionController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings,
+        public ViewActionController(ILogger<ViewActionController> logger, IOptions<CompositeSettings> compositeSettings,
             IDssReader dssReader, ICosmosService cosmosServiceService)
             : base(compositeSettings, dssReader, cosmosServiceService)
         {
             _dssReader = dssReader;
         }
 
-        //  [Authorize]
         [Route("/body/view-action/{actionPlanId}/{interactionId}/{actionId}")]
         [HttpGet]
         public async Task<IActionResult> Body(Guid actionPlanId, Guid interactionId, Guid actionId)

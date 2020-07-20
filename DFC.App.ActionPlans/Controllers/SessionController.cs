@@ -8,7 +8,6 @@ using Newtonsoft.Json;
 
 namespace DFC.App.ActionPlans.Controllers
 {
-    [Authorize]
     public abstract class SessionController : Controller
     {
         private readonly ICosmosService _cosmosService;

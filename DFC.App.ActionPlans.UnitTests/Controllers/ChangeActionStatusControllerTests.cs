@@ -8,7 +8,9 @@ using DFC.App.ActionPlans.ViewModels;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
+using NSubstitute;
 using NUnit.Framework;
 using Action = DFC.App.ActionPlans.Services.DSS.Models.Action;
 
@@ -17,10 +19,12 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
     class ChangeActionStatusControllerTests : BaseControllerTests
     {
         private ChangeActionStatusController _controller;
-
+        private ILogger<ChangeActionStatusController> _logger;
         [SetUp]
         public void Init()
         {
+            _logger = new Logger<ChangeActionStatusController>(new LoggerFactory());
+            _logger = Substitute.For<ILogger<ChangeActionStatusController>>();
             _controller = new ChangeActionStatusController(_logger, _compositeSettings, _dssReader,_dssWriter,_cosmosService);
             _controller.ControllerContext.HttpContext = new DefaultHttpContext(){User = user};
         }

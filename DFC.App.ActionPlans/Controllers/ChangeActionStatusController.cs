@@ -23,7 +23,7 @@ namespace DFC.App.ActionPlans.Controllers
         private readonly IDssWriter _dssWriter;
         private readonly IDssReader _dssReader;
 
-        public ChangeActionStatusController(ILogger<HomeController> logger,
+        public ChangeActionStatusController(ILogger<ChangeActionStatusController> logger,
             IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService)
             : base(compositeSettings, dssReader, cosmosServiceService)
         {
@@ -32,7 +32,6 @@ namespace DFC.App.ActionPlans.Controllers
             ViewModel.PageTitle = "Change Action Status";
         }
 
-        //  [Authorize]
         [Route("/body/change-action-status/{actionPlanId}/{interactionId}/{actionId}")]
         [HttpGet]
         public async Task<IActionResult> Body(Guid actionPlanId, Guid interactionId, Guid actionId)
