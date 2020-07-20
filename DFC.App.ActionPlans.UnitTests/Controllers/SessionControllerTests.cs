@@ -18,7 +18,6 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
     class SessionControllerTests : BaseControllerTests
     {
         private ChangeActionDueDateController _controller;
-        private ICosmosService _cosmosService;
         private ILogger<ChangeActionDueDateController> _logger;
 
         [SetUp]

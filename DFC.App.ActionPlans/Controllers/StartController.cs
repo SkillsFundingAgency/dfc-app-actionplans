@@ -24,9 +24,9 @@ namespace DFC.App.ActionPlans.Controllers
 
         [Route("/body/start/")]
         [HttpGet]
-        public async Task<IActionResult> Body(Guid actionPlanId, Guid interactionId, Guid goalId)
+        public IActionResult Body(Guid actionPlanId, Guid interactionId, Guid goalId)
         {
-            //return await base.Body();
+            
             return View();
         }
 
