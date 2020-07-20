@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Dfc.App.ActionPlans.Controllers;
-using DFC.App.ActionPlans.Controllers;
 using DFC.App.ActionPlans.ViewModels;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
