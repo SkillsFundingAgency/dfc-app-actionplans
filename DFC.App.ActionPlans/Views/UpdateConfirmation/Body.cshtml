@@ -1,24 +1,23 @@
 ﻿@model UpdateGoalConfirmationCompositeViewModel
-<div class="govuk-main-wrapper">
-    <div class="govuk-width-container">
-        <div class="govuk-grid-row ">
-            <div class="govuk-grid-column-two-thirds">
-                <div class="govuk-panel govuk-panel--confirmation">
-                    <govukHeadingH1 text="@Model.WhatChanged" additional-class="govuk-panel__title"></govukHeadingH1>
-                    <div class="govuk-panel__body">@Model.Name</div>
-                </div>
-                <p>
-                    @Html.Raw(@Model.UpdateMessage)
-                </p>
-                <p>
-                    We will update your adviser's records with this change.
-                </p>
-                <p>You can <govukLink link-href="@Model.ObjLink" LinkText="@Model.ObjLinkText"></govukLink> or 
-                    <govukLink link-href="@Model.CompositeSettings.Path/@Model.ActionPlanId/@Model.InteractionId" LinkText="return to your action plan"></govukLink>.
-                </p>
 
+<div class="govuk-width-container">
+    <div class="govuk-grid-row ">
+        <div class="govuk-grid-column-two-thirds">
+            <div class="govuk-panel govuk-panel--confirmation">
+                <govukHeadingH1 text="@Model.WhatChanged" additional-class="govuk-panel__title"></govukHeadingH1>
+                <div class="govuk-panel__body">@Model.Name</div>
             </div>
-           
+            <p>
+                @Html.Raw(@Model.UpdateMessage)
+            </p>
+            <p>
+                We will update your adviser's records with this change.
+            </p>
+            <p>You can <govukLink link-href="@Model.ObjLink" LinkText="@Model.ObjLinkText"></govukLink> or 
+                <govukLink link-href="@Model.CompositeSettings.Path/@Model.ActionPlanId/@Model.InteractionId" LinkText="return to your action plan"></govukLink>.
+            </p>
+
         </div>
+       
     </div>
 </div>
