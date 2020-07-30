@@ -4,43 +4,42 @@
 @model DFC.App.ActionPlans.ViewModels.ChangeActionCompositeViewModel
 
 <partial name="~/ViewComponents/ErrorSummary/ErrorSummary.cshtml" />
-<div class="govuk-main-wrapper">
-    <div class="govuk-width-container">
-        <div class="govuk-grid-row ">
-            <div class="govuk-grid-column-two-thirds ">
-                <form id="@Model.GetElementId("form", "Form")" action="@(Urls.GetChangeUrl(@Model.CompositeSettings.Path, @CompositeViewModel.PageId.ChangeActionDueDate,@Model.ActionPlanId, @Model.InteractionId, new Guid(@Model.Action.ActionId)))" class="govuk-form-group" method="post">
-                    @Html.HiddenFor(m => m.ActionPlanId)
-                    @Html.HiddenFor(m => m.InteractionId)
-                    @Html.HiddenFor(m => m.Action.ActionId)
-                    @Html.HiddenFor(m => m.CustomerId)
-                    @Html.HiddenFor(m => m.Action.ActionStatus)
-                    <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")">
-                        <fieldset class="govuk-fieldset" role="group" aria-describedby="date-action-should-be-completed-by-hint">
-                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                                <govukHeadingH1 text="When would you like to complete this action by?" additional-class="govuk-fieldset__heading"></govukHeadingH1>
-                            </legend>
-                            <span id="date-action-should-be-completed-by-hint" class="govuk-hint">
-                                For example, 12 9 2020
-                            </span>
 
-                            <govukError id="@Model.GetElementId("govukTextInputError", "DateInpuError")" hidden="@ViewData.ModelState.IsValid" text="@(ViewData.ModelState[Constants.DateActionShouldBeCompletedBy]==null?"":ViewData.ModelState[Constants.DateActionShouldBeCompletedBy].Errors[0].ErrorMessage)"></govukError>
-                            <div class="govuk-date-input" id="DateActionShouldBeCompletedBy">
-                                
-                                <partial name="~/ViewComponents/SplitDate/splitdate.cshtml" model="@Model.DateActionShouldBeCompletedBy ??new SplitDate()" />
+<div class="govuk-width-container">
+    <div class="govuk-grid-row ">
+        <div class="govuk-grid-column-two-thirds ">
+            <form id="@Model.GetElementId("form", "Form")" action="@(Urls.GetChangeUrl(@Model.CompositeSettings.Path, @CompositeViewModel.PageId.ChangeActionDueDate,@Model.ActionPlanId, @Model.InteractionId, new Guid(@Model.Action.ActionId)))" class="govuk-form-group" method="post">
+                @Html.HiddenFor(m => m.ActionPlanId)
+                @Html.HiddenFor(m => m.InteractionId)
+                @Html.HiddenFor(m => m.Action.ActionId)
+                @Html.HiddenFor(m => m.CustomerId)
+                @Html.HiddenFor(m => m.Action.ActionStatus)
+                <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")">
+                    <fieldset class="govuk-fieldset" role="group" aria-describedby="date-action-should-be-completed-by-hint">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
+                            <govukHeadingH1 text="When would you like to complete this action by?" additional-class="govuk-fieldset__heading"></govukHeadingH1>
+                        </legend>
+                        <span id="date-action-should-be-completed-by-hint" class="govuk-hint">
+                            For example, 12 9 2020
+                        </span>
 
-                            </div>
-                        </fieldset>
-                    </div>
-                    <br />
-                    <p>We will update your adviser's records with this change.</p>
-                    <govukButton id="@Model.GetElementId("govukSecondaryButton", "Continue");" text="Continue"></govukButton>
+                        <govukError id="@Model.GetElementId("govukTextInputError", "DateInpuError")" hidden="@ViewData.ModelState.IsValid" text="@(ViewData.ModelState[Constants.DateActionShouldBeCompletedBy]==null?"":ViewData.ModelState[Constants.DateActionShouldBeCompletedBy].Errors[0].ErrorMessage)"></govukError>
+                        <div class="govuk-date-input" id="DateActionShouldBeCompletedBy">
+                            
+                            <partial name="~/ViewComponents/SplitDate/splitdate.cshtml" model="@Model.DateActionShouldBeCompletedBy ??new SplitDate()" />
 
-                </form>
-            </div>
-            <div class="action-plan-secondary-content govuk-grid-column-one-third  ">
-                <partial name="~/ViewComponents/YourAdviser/youradvisor.cshtml" model="@Model.Adviser"/>
-                <partial name="~/ViewComponents/contact/contact.cshtml" model="@Model.ContactDetails"/>
-            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <br />
+                <p>We will update your adviser's records with this change.</p>
+                <govukButton id="@Model.GetElementId("govukSecondaryButton", "Continue");" text="Continue"></govukButton>
+
+            </form>
+        </div>
+        <div class="action-plan-secondary-content govuk-grid-column-one-third  ">
+            <partial name="~/ViewComponents/YourAdviser/youradvisor.cshtml" model="@Model.Adviser"/>
+            <partial name="~/ViewComponents/contact/contact.cshtml" model="@Model.ContactDetails"/>
         </div>
     </div>
 </div>

@@ -1,58 +1,57 @@
 ﻿@using DFC.Personalisation.Common.Extensions
 @using DFC.App.ActionPlans.Helpers
 @model DFC.App.ActionPlans.ViewModels.ViewGoalCompositeViewModel
-<div class="govuk-main-wrapper">
-    <div class="govuk-width-container">
-        <div class="govuk-grid-row ">
-            <div class="govuk-grid-column-two-thirds ">
-                <span class="govuk-caption-m">Goal</span>
-                <govukHeadingH1 text="View or update goal" additional-class="govuk-heading-xl"></govukHeadingH1>
-                <govukHeadingH2 text="Goal type" additional-class="govuk-heading-s"></govukHeadingH2>
-                <p>@Model.Goal.GoalType.GetDisplayName()</p>
-                <govukHeadingH2  text="Description" additional-class="govuk-heading-s govuk-!-margin-top-3"></govukHeadingH2>
-                <p>
-                    @Model.Goal.GoalSummary
-                </p>
 
-                <section>
-                    <govukHeadingH2 id="updateGoal" text="Update this goal" additional-class="govuk-heading-m govuk-!-margin-top-6"></govukHeadingH2>
-                    <table class="govuk-table" aria-describedby="updateGoal">
 
-                        <thead class="govuk-table__head">
-                        <tr class="govuk-table__row">
-                            <th scope="col" class="govuk-table__header"></th>
-                            <th scope="col" class="govuk-table__header"></th>
-                            <th scope="col" class="govuk-table__header"></th>
-                        </tr>
-                        </thead>
-                        <tbody class="govuk-table__body">
-                        <tr class="govuk-table__row">
-                            <td class="govuk-table__cell"><strong>Due on:</strong></td>
-                            <td class="govuk-table__cell"><span>@Model.Goal.DateGoalShouldBeCompletedBy.ToString("dd MMMM yyyy")</span></td>
-                            <td class="govuk-table__cell">
-                                <govukLink id="@Model.GetElementId("govUkLink", $"change-due-date")" 
-                                           link-href="@(Urls.GetChangeUrl(@Model.CompositeSettings.Path, @CompositeViewModel.PageId.ChangeGoalDueDate, @Model.ActionPlanId, @Model.InteractionId, new Guid(@Model.Goal.GoalId)))" LinkText="Change due date"></govukLink>
-                                
-                                </td>
-                        </tr>
-                        <tr class="govuk-table__row">
-                            <td class="govuk-table__cell"><strong>Status:</strong></td>
-                            <td class="govuk-table__cell"><span>@Model.Goal.GoalStatus.GetDisplayName()</span></td>
+    <div class="govuk-grid-row ">
+        <div class="govuk-grid-column-two-thirds ">
+            <span class="govuk-caption-m">Goal</span>
+            <govukHeadingH1 text="View or update goal" additional-class="govuk-heading-xl"></govukHeadingH1>
+            <govukHeadingH2 text="Goal type" additional-class="govuk-heading-s"></govukHeadingH2>
+            <p>@Model.Goal.GoalType.GetDisplayName()</p>
+            <govukHeadingH2  text="Description" additional-class="govuk-heading-s govuk-!-margin-top-3"></govukHeadingH2>
+            <p>
+                @Model.Goal.GoalSummary
+            </p>
 
-                            <td class="govuk-table__cell">
-                                <govukLink id="@Model.GetElementId("govUkLink", $"change-status")" 
-                                           link-href="@(Urls.GetChangeUrl(@Model.CompositeSettings.Path, @CompositeViewModel.PageId.ChangeGoalStatus, @Model.ActionPlanId, @Model.InteractionId, new Guid(@Model.Goal.GoalId)))" LinkText="Update status"></govukLink>
+            <section>
+                <govukHeadingH2 id="updateGoal" text="Update this goal" additional-class="govuk-heading-m govuk-!-margin-top-6"></govukHeadingH2>
+                <table class="govuk-table" aria-describedby="updateGoal">
 
+                    <thead class="govuk-table__head">
+                    <tr class="govuk-table__row">
+                        <th scope="col" class="govuk-table__header"></th>
+                        <th scope="col" class="govuk-table__header"></th>
+                        <th scope="col" class="govuk-table__header"></th>
+                    </tr>
+                    </thead>
+                    <tbody class="govuk-table__body">
+                    <tr class="govuk-table__row">
+                        <td class="govuk-table__cell"><strong>Due on:</strong></td>
+                        <td class="govuk-table__cell"><span>@Model.Goal.DateGoalShouldBeCompletedBy.ToString("dd MMMM yyyy")</span></td>
+                        <td class="govuk-table__cell">
+                            <govukLink id="@Model.GetElementId("govUkLink", $"change-due-date")" 
+                                       link-href="@(Urls.GetChangeUrl(@Model.CompositeSettings.Path, @CompositeViewModel.PageId.ChangeGoalDueDate, @Model.ActionPlanId, @Model.InteractionId, new Guid(@Model.Goal.GoalId)))" LinkText="Change due date"></govukLink>
+                            
                             </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </section>
-            </div>
-            <div class="action-plan-secondary-content govuk-grid-column-one-third  ">
-                <partial name="~/ViewComponents/YourAdviser/youradvisor.cshtml" model="@Model.Adviser" />
-                <partial name="~/ViewComponents/contact/contact.cshtml" model="@Model.ContactDetails" />
-            </div>
+                    </tr>
+                    <tr class="govuk-table__row">
+                        <td class="govuk-table__cell"><strong>Status:</strong></td>
+                        <td class="govuk-table__cell"><span>@Model.Goal.GoalStatus.GetDisplayName()</span></td>
+
+                        <td class="govuk-table__cell">
+                            <govukLink id="@Model.GetElementId("govUkLink", $"change-status")" 
+                                       link-href="@(Urls.GetChangeUrl(@Model.CompositeSettings.Path, @CompositeViewModel.PageId.ChangeGoalStatus, @Model.ActionPlanId, @Model.InteractionId, new Guid(@Model.Goal.GoalId)))" LinkText="Update status"></govukLink>
+
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+        <div class="action-plan-secondary-content govuk-grid-column-one-third  ">
+            <partial name="~/ViewComponents/YourAdviser/youradvisor.cshtml" model="@Model.Adviser" />
+            <partial name="~/ViewComponents/contact/contact.cshtml" model="@Model.ContactDetails" />
         </div>
     </div>
-</div>
+
