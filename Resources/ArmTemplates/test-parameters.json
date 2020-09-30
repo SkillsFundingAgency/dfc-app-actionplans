@@ -8,6 +8,15 @@
         "appSharedResourceGroup": {
             "value": "dfc-dev-app-sharedresources-rg"
         },
+        "aspSize": {
+            "value": "2"
+        },
+        "aspTier": {
+            "value": "Standard"
+        },
+        "aspInstances": {
+            "value": 2
+        },
         "appSharedStorageAccountName": {
             "value": "dfcdevappsharedstr"
         },
@@ -58,12 +67,6 @@
         },
         "AuthSettingsClientId": {
             "value": "AuthSettingsClientId"
-        },
-        "SharedAppServicePlanName": {
-            "value": "dfc-dev-pers-shared-asp"
-        },
-        "sharedResourceGroup": {
-            "value": "dfc-test-template-rg"
         }
     }
 }

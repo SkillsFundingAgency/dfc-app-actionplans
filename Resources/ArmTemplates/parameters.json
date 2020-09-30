@@ -14,6 +14,21 @@
         "appSharedStorageAccountName": {
             "value": "__appSharedStorageAccountName__"
         },
+        "aseHostingEnvironmentName": {
+            "value": "__AseServiceName__"
+        },
+        "aseResourceGroup": {
+            "value": "__aseResourceGroup__"
+        },
+        "aspInstances": {
+            "value": __aspInstances__
+        },
+        "aspTier": {
+            "value": "__aspTier__"
+        },
+        "aspSize": {
+            "value": "__aspSize__"
+        },
         "apimDSSProxyAddress": {
             "value": "__apimDSSProxyAddress__"
         },
@@ -61,12 +76,6 @@
         },
         "AuthSettingsClientId": {
             "value": "__AuthSettingsClientId__"
-        },
-        "SharedAppServicePlanName": {
-            "value": "__SharedAppServicePlanName__"
-        },
-        "sharedResourceGroup": {
-            "value": "__persSharedResourceGroup__"
         }
     }
 }
