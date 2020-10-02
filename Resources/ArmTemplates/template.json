@@ -240,6 +240,14 @@
                                 "value": "[concat(parameters('apimDSSProxyAddress'), '/adviserdetails/api/AdviserDetails/{adviserDetailId}/')]"
                             },
                             {
+                                "name": "DssSettings__DigitalIdentitiesPatchByCustomerIdApiUrl",
+                                "value": "[concat(parameters('apimDSSProxyAddress'), '/digitalidentities/api/customer/{customerId}')]"
+                            },
+                            {
+                                "name": "DssSettings__DigitalIdentitiesPatchByCustomerIdApiVersion",
+                                "value": "v2"
+                            },
+                            {
                                 "name": "DssSettings__GoalsApiUrl",
                                 "value": "[concat(parameters('apimDSSProxyAddress'), '/goals/api/Customers/{customerId}/Interactions/{interactionId}/ActionPlans/{actionPlanId}/Goals/')]"
                             },
