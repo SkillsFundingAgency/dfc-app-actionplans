@@ -1,0 +1,81 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "environment": {
+            "value": "__ReleaseEnvironmentName__",
+            "metadata": {
+                "comment": "Bug in tokenisation task prevents referencing Release.EnvironmentName directly.  https://github.com/TotalALM/VSTS-Tasks/issues/29"
+            }
+        },
+        "appSharedResourceGroup": {
+            "value": "__appSharedResourceGroup__"
+        },
+        "appSharedStorageAccountName": {
+            "value": "__appSharedStorageAccountName__"
+        },
+        "aseHostingEnvironmentName": {
+            "value": "__AseServiceName__"
+        },
+        "aseResourceGroup": {
+            "value": "__aseResourceGroup__"
+        },
+        "aspInstances": {
+            "value": __aspInstances__
+        },
+        "aspTier": {
+            "value": "__aspTier__"
+        },
+        "aspSize": {
+            "value": "__aspSize__"
+        },
+        "apimDSSProxyAddress": {
+            "value": "__apimDSSProxyAddress__"
+        },
+        "cdnUrl": {
+            "value": "__cdnUrl__"
+        },
+        "apimDSSApiKey": {
+            "value": "__apimDSSApiKey__"
+        },
+        "cosmosDBName": {
+            "value": "__sharedCosmosDbAccount__"
+        },
+        "cosmosDbKey": {
+            "value": "__appSharedCosmosPrimaryKey__"
+        },
+        "cosmosApiKey": {
+            "value": "__cosmosApiKey__"
+        },
+        "UserSessionsCollection": {
+            "value": "__UserSessionsCollection__"
+        },
+        "ContentCollection": {
+            "value": "__ContentCollection__"
+        },
+        "CosmosDbResourceGroup": {
+            "value": "__persSharedResourceGroup__"
+        },
+        "cosmosDbCollectionName": {
+            "value": "__cosmosDbCollectionName__"
+        },
+        "cosmosContentDbCollectionName": {
+            "value": "__cosmosContentDbCollectionName__"
+        },
+        "actionplanAppDatabaseNeedsCreation": {
+            "value": __CosmosDbDatabaseDoesntExist__
+        },
+        "actionplanAppDatabaseThroughput": {
+            "value": __actionplanAppDatabaseThroughput__
+        },
+        "AuthSettingsIssuer": {
+            "value": "__AuthSettingsIssuer__"
+        },
+        "AuthSettingsClientSecret": {
+            "value": "__AuthSettingsClientSecret__"
+        },
+        "AuthSettingsClientId": {
+            "value": "__AuthSettingsClientId__"
+        }
+    }
+}
