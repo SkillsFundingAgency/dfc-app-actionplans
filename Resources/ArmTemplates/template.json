@@ -281,7 +281,7 @@
                             },
                             {
                                 "name": "DssSettings__ActionsApiVersion",
-                                "value": "v3"
+                                "value": "v2"
                             },
                             {
                                 "name": "DssSettings__ActionPlansApiVersion",
