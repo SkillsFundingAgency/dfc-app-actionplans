@@ -265,7 +265,7 @@
                             },
                             {
                                 "name": "DssSettings__CustomerApiVersion",
-                                "value": "v2"
+                                "value": "v3"
                             },
                             {
                                 "name": "DssSettings__SessionApiVersion",
@@ -281,7 +281,7 @@
                             },
                             {
                                 "name": "DssSettings__ActionsApiVersion",
-                                "value": "v3"
+                                "value": "v2"
                             },
                             {
                                 "name": "DssSettings__ActionPlansApiVersion",
