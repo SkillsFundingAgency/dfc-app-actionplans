@@ -81,6 +81,9 @@
         },
         "AuthSettingsClientId": {
             "type": "string"
+        },
+        "AuthSettingsAccountEndpoint": {
+            "type": "string"
         }
     },
     "variables": {
@@ -171,6 +174,9 @@
                         "value": "app"
                     },
                     "deployStagingSlot": {
+                        "value": true
+                    },
+                    "clientAffinity": {
                         "value": true
                     },
                     "appServiceAppSettings": {
@@ -328,8 +334,20 @@
                                 "value": "[concat(parameters('AuthSettingsIssuer'), '/auth/register')]"
                             },
                             {
+                                "name": "AuthSettings__AccountEndpoint",
+                                "value": "[parameters('AuthSettingsAccountEndpoint')]"
+                            },
+                            {
                                 "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
                                 "value": "[reference(variables('webAppInsightsName')).outputs.InstrumentationKey.value]"
+                            },
+                            {
+                                "name": "WEBSITE_RUN_FROM_PACKAGE",
+                                "value": "1"
+                            },
+                            {
+                                "name": "WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG",
+                                "value": "1"
                             }
                         ]
                     }
