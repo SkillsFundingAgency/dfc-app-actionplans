@@ -67,6 +67,9 @@
         },
         "AuthSettingsClientId": {
             "value": "AuthSettingsClientId"
+        },
+        "AuthSettingsAccountEndpoint": {
+            "value": "AuthSettingsAccountEndpoint"
         }
     }
 }

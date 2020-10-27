@@ -76,6 +76,9 @@
         },
         "AuthSettingsClientId": {
             "value": "__AuthSettingsClientId__"
+        },
+        "AuthSettingsAccountEndpoint": {
+            "value": "__AuthSettingsAccountEndpoint__"
         }
     }
 }
