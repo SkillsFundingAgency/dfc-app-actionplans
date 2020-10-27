@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Dfc.App.ActionPlans.Controllers;
+using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.ViewModels;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using NSubstitute;
 using NUnit.Framework;
@@ -24,7 +27,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         {
             _logger = new Logger<HomeController>(new LoggerFactory());
             _logger = Substitute.For<ILogger<HomeController>>();
-            _controller = new HomeController(_logger, _compositeSettings, _dssReader,_dssWriter, _cosmosService);
+            _controller = new HomeController(_logger, _compositeSettings, _dssReader,_dssWriter, _cosmosService, Options.Create(new AuthSettings{AccountEndpoint = "https://www.g.com"}));
             _controller.ControllerContext.HttpContext = new DefaultHttpContext(){User = user};
 
             _controller.ControllerContext.RouteData = new RouteData();
@@ -43,13 +46,28 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         }
 
         [Test]
-        public async Task WhenBodyCalled_ReturnHtml()
+        public async Task WhenBodyCalledAndUserLoggedIn_Redirect()
         {
-            var result = await _controller.Body() as ViewResult;
+            var result = await _controller.Body() as RedirectResult;
+            result.Should().NotBeNull();
+            result.Should().BeOfType<RedirectResult>();
+        }
+
+        [Test]
+        public async Task WhenBodyCalledAndUserNotLoggedIn_ReturnHtml()
+        {
+            var controller = new HomeController(_logger, _compositeSettings, _dssReader, _dssWriter, _cosmosService,
+                Options.Create(new AuthSettings()))
+            {
+                ControllerContext = {HttpContext = new DefaultHttpContext() {User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>()))}}
+            };
+
+            var result = await controller.Body() as ViewResult;
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
-            result.ViewName.Should().BeNull();
+            result.ViewName.Should().NotBeNullOrEmpty();
         }
+
         [Test]
         public async Task WhenBodyCalledWithParameters_ReturnHtml()
         {

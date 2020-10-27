@@ -16,23 +16,27 @@ using Microsoft.Extensions.Options;
 
 namespace Dfc.App.ActionPlans.Controllers
 {
-    [Authorize]
+   
     public class HomeController : CompositeSessionController<HomeCompositeViewModel>
     {
         private readonly IDssReader _dssReader;
         private readonly IDssWriter _dssWriter;
+        private readonly IOptions<AuthSettings> _authSettings;
 
-        public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService)
+        public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService, IOptions<AuthSettings> authSettings)
             :base(compositeSettings, dssReader, cosmosServiceService)
         {
             _dssReader = dssReader;
             _dssWriter = dssWriter;
+            _authSettings = authSettings;
         }
-        
+        [Authorize]
         [Route("/body/home")]
         [HttpPost]
         public async Task<IActionResult> Body(HomeCompositeViewModel viewModel, IFormCollection formCollection)
         {
+            var x = User;
+
             if (formCollection.FirstOrDefault(x =>
                 string.Compare(x.Key, "homeGovukCheckBoxAcceptplan", StringComparison.CurrentCultureIgnoreCase) ==
                 0).Value == "on")
@@ -51,6 +55,19 @@ namespace Dfc.App.ActionPlans.Controllers
             return RedirectTo($"{viewModel.ActionPlanId}/{viewModel.InteractionId}");
         }
 
+        [Route("/body")]
+        [HttpGet]
+        public override async Task<IActionResult> Body()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return Redirect(_authSettings.Value.AccountEndpoint);
+            }
+
+            return await Task.FromResult<IActionResult>(View("BodyUnAuth", ViewModel));
+        }
+
+        [Authorize]
         [Route("/body/{actionPlanId}/{interactionId}")]
         [HttpGet]
         public async Task<IActionResult> Body(Guid actionPlanId, Guid interactionId)
@@ -79,7 +96,7 @@ namespace Dfc.App.ActionPlans.Controllers
             return await base.BodyTop();
         }
         [Route("/breadcrumb/home/{actionPlanId?}/{interactionId?}/{docId?}/{objupdated?}/{itemupdated?}")]
-        [Route("/breadcrumb/{id}/{actionPlanId?}/{interactionId?}/{docId?}/{objupdated?}/{itemupdated?}")]
+        [Route("/breadcrumb/{id?}/{actionPlanId?}/{interactionId?}/{docId?}/{objupdated?}/{itemupdated?}")]
         public override IActionResult Breadcrumb(Guid actionPlanId, Guid interactionId, Guid objectId)
         {
             return base.Breadcrumb(actionPlanId, interactionId, objectId);

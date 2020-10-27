@@ -6,8 +6,7 @@
         public string Issuer { get; set; }
         public string ClientId { get; set; }
         public string SignInUrl { get; set; }
-        public string SignOutUrl { get; set; }
-        public string RegisterUrl { get; set; }
-        public string ResetPasswordUrl { get; set; }
+        public string AccountEndpoint { get; set; }
+
     }
 }

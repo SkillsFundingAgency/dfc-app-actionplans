@@ -51,7 +51,6 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             _cosmosService= Substitute.For<ICosmosService>();
             _authSettings = Options.Create(new AuthSettings
             {
-                RegisterUrl = "reg", SignInUrl = "signin", SignOutUrl = "signout"
             });
 
             var customer = new Customer
