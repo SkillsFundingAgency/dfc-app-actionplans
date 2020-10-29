@@ -106,15 +106,6 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         }
 
         [Test]
-        public void WhenErrorCalled_ReturnHtml()
-        {
-            var result = _controller.Error() as ViewResult;
-            result.Should().NotBeNull();
-            result.Should().BeOfType<ViewResult>();
-            result.ViewName.Should().BeNull();
-        }
-
-        [Test]
         public async Task WhenBodyCalledWithFormDataAndActionPlanUpdated_ThenRedirectToBody()
         {
             var result = await _controller.Body(GetViewModel(), new FormCollection(new Dictionary<string, StringValues>

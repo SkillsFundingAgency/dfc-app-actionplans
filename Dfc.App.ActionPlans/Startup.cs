@@ -119,7 +119,7 @@ namespace Dfc.App.ActionPlans
         }
 
         // This method gets called by the run-time. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,  ILogger<Startup> logger)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,  ILoggerFactory logger)
         {
             if (env.IsDevelopment())
             {
