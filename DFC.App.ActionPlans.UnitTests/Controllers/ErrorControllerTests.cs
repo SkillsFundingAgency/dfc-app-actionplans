@@ -19,6 +19,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         private ILogger<ErrorController> _logger;
         protected readonly IDssReader _dssReader;
         protected readonly ICosmosService _cosmosService;
+        private IOptions<CompositeSettings> _options;
 
 
         [SetUp]
@@ -27,13 +28,13 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             _logger = Substitute.For<ILogger<ErrorController>>();
             _compositeSettings = Options.Create(new CompositeSettings());
             _logger = new Logger<ErrorController>(new LoggerFactory());
-            
+            _options = Options.Create(new CompositeSettings());
         }
 
         [Test]
         public async Task WhenBodyCalled_ReturnHtml()
         {
-            var controller = new ErrorController(_logger, _compositeSettings, _dssReader, _cosmosService);
+            var controller = new ErrorController(_logger, _compositeSettings, _dssReader, _cosmosService, _options);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()

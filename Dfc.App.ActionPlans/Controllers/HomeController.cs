@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using DFC.App.ActionPlans.Cosmos.Interfaces;
+﻿using DFC.App.ActionPlans.Cosmos.Interfaces;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Services.DSS.Models;
@@ -13,15 +8,21 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Dfc.App.ActionPlans.Controllers
 {
-   
+
     public class HomeController : CompositeSessionController<HomeCompositeViewModel>
     {
         private readonly IDssReader _dssReader;
         private readonly IDssWriter _dssWriter;
         private readonly IOptions<AuthSettings> _authSettings;
+        private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService, IOptions<AuthSettings> authSettings)
             :base(compositeSettings, dssReader, cosmosServiceService)
@@ -29,14 +30,13 @@ namespace Dfc.App.ActionPlans.Controllers
             _dssReader = dssReader;
             _dssWriter = dssWriter;
             _authSettings = authSettings;
+            _logger = logger;
         }
         [Authorize]
         [Route("/body/home")]
         [HttpPost]
         public async Task<IActionResult> Body(HomeCompositeViewModel viewModel, IFormCollection formCollection)
         {
-            var x = User;
-
             if (formCollection.FirstOrDefault(x =>
                 string.Compare(x.Key, "homeGovukCheckBoxAcceptplan", StringComparison.CurrentCultureIgnoreCase) ==
                 0).Value == "on")
@@ -61,9 +61,10 @@ namespace Dfc.App.ActionPlans.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
+                _logger.LogInformation("Request for Homepage by authed user");
                 return Redirect(_authSettings.Value.AccountEndpoint);
             }
-
+            _logger.LogInformation("Request for Homepage by unauthed user");
             return await Task.FromResult<IActionResult>(View("BodyUnAuth", ViewModel));
         }
 
@@ -72,12 +73,17 @@ namespace Dfc.App.ActionPlans.Controllers
         [HttpGet]
         public async Task<IActionResult> Body(Guid actionPlanId, Guid interactionId)
         {
+            _logger.LogInformation("Request for Home/body");
+            var timer = new Stopwatch();
+            timer.Start();
             var customer = await GetCustomerDetails();
             await  LoadData(customer.CustomerId,actionPlanId,interactionId);
             ViewModel.Goals = await _dssReader.GetGoals(ViewModel.CustomerId.ToString(), ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString());
             ViewModel.Actions = await _dssReader.GetActions(ViewModel.CustomerId.ToString(), ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString());
             ViewModel.ActionPlan = await _dssReader.GetActionPlanDetails(ViewModel.CustomerId.ToString(), ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString());
             ViewModel.LatestSession = await GetLatestSession();
+            timer.Stop();
+            _logger.LogInformation($"Body request took {timer.Elapsed}");
             return await base.Body();
         }
 
@@ -110,15 +116,10 @@ namespace Dfc.App.ActionPlans.Controllers
             return base.BodyFooter();
         }
         #endregion Default Routes
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
+        
         private async Task<Session> GetLatestSession()
         {
+            _logger.LogInformation("Getting Users Session");
             List<Session> sessions = await _dssReader.GetSessions(ViewModel.CustomerId.ToString(), ViewModel.InteractionId.ToString());
             return sessions.OrderByDescending(s => s.DateandTimeOfSession).First();
         }

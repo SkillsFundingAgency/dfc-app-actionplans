@@ -9,8 +9,9 @@ namespace DFC.App.ActionPlans.Services
     [ExcludeFromCodeCoverage]
     public class ErrorService
     {
-        public static async Task LogException(HttpContext context, ILogger logger)
+        public static async Task LogException(HttpContext context, ILoggerFactory loggerFactory)
         {
+            var logger = loggerFactory.CreateLogger<ErrorService>();
             var exception =
                 context.Features.Get<IExceptionHandlerPathFeature>();
 
