@@ -231,7 +231,7 @@
                             },
                             {
                                 "name": "Logging__ApplicationInsights__LogLevel__Default",
-                                "value": "Warning"
+                                "value": "Information"
                             },
                             {
                                 "name": "DssSettings__CustomerApiUrl",
