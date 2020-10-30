@@ -275,7 +275,7 @@
                             },
                             {
                                 "name": "DssSettings__SessionApiVersion",
-                                "value": "v3"
+                                "value": "v2"
                             },
                             {
                                 "name": "DssSettings__AdviserDetailsApiVersion",
