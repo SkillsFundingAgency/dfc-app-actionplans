@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Dfc.ProviderPortal.Packages;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace DFC.App.ActionPlans.Cosmos.Services
@@ -21,11 +22,13 @@ namespace DFC.App.ActionPlans.Cosmos.Services
     {
         private readonly CosmosSettings _settings;
         private readonly CosmosClient _client;
-        public CosmosService(IOptions<CosmosSettings> settings, CosmosClient client)
+        private readonly ILogger<CosmosService> _logger;
+        public CosmosService(IOptions<CosmosSettings> settings, CosmosClient client, ILogger<CosmosService> logger)
         {
             
             _settings = settings.Value;
             _client = client;
+            _logger = logger;
         }
         public async Task<HttpResponseMessage> CreateItemAsync(object item, CosmosCollection collection)
         {
@@ -65,6 +68,7 @@ namespace DFC.App.ActionPlans.Cosmos.Services
             }
             catch (Exception e)
             {
+                _logger.LogError($"Unable to find item with id: {id}, Error message: {e.Message}, Inner Error: {e.InnerException?.Message}");
                 return new HttpResponseMessage(HttpStatusCode.NotFound);
             }
 
@@ -78,15 +82,12 @@ namespace DFC.App.ActionPlans.Cosmos.Services
             Throw.IfNull(container, nameof(container));
 
             var result = await container.UpsertItemAsync(item);
-            if (result.StatusCode == HttpStatusCode.OK)
+            return result.StatusCode switch
             {
-                return new HttpResponseMessage(HttpStatusCode.OK);
-            }
-            if (result.StatusCode == HttpStatusCode.Created)
-            {
-                return new HttpResponseMessage(HttpStatusCode.Created);
-            }
-            return new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                HttpStatusCode.OK => new HttpResponseMessage(HttpStatusCode.OK),
+                HttpStatusCode.Created => new HttpResponseMessage(HttpStatusCode.Created),
+                _ => new HttpResponseMessage(HttpStatusCode.InternalServerError)
+            };
         }
 
         internal string GetContainerName(CosmosCollection collection)
