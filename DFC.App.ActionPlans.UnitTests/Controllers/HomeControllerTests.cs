@@ -37,20 +37,12 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         [Test]
         public void WhenHeadCalled_ReturnHtml()
         {
-            var result = _controller.Head(default, default, default, default, default) as ViewResult;
+            var result = _controller.Head() as ViewResult;
             var vm = new HeadViewModel {PageTitle = "Page Title",};
             var pageTitle = vm.PageTitle;
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
             result.ViewName.Should().BeNull();
-        }
-
-        [Test]
-        public async Task WhenBodyCalledAndUserLoggedIn_Redirect()
-        {
-            var result = await _controller.Body() as RedirectResult;
-            result.Should().NotBeNull();
-            result.Should().BeOfType<RedirectResult>();
         }
 
         [Test]
@@ -71,10 +63,10 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         [Test]
         public async Task WhenBodyCalledWithParameters_ReturnHtml()
         {
-            var result = await _controller.Body(new Guid(), new Guid()) as ViewResult;
+            var result = await _controller.Body() as ViewResult;
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
-            result.ViewName.Should().BeNull();
+            result.ViewName.Should().Be("BodyUnAuth");
         }
 
         [Test]

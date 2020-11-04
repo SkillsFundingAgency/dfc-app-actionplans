@@ -64,7 +64,7 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
                 request.Headers.Add(VersionHeader, _dssSettings.Value.CustomerApiVersion);
                 var result = await _restClient.GetAsync<Customer>($"{_dssSettings.Value.CustomerApiUrl}{customerId}",
                     request);
-                if (_restClient.LastResponse.StatusCode == HttpStatusCode.NoContent)
+                if (_restClient.LastResponse.StatusCode == HttpStatusCode.NoContent || result.CustomerId == Guid.Empty)
                 {
                     var errorMessage = "Customer not found";
                     _logger.LogError(errorMessage);

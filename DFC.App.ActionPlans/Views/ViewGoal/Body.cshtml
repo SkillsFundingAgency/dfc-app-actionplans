@@ -31,7 +31,7 @@
                         <td class="govuk-table__cell"><span>@Model.Goal.DateGoalShouldBeCompletedBy.ToString("dd MMMM yyyy")</span></td>
                         <td class="govuk-table__cell">
                             <govukLink id="@Model.GetElementId("govUkLink", $"change-due-date")" 
-                                       link-href="@(Urls.GetChangeUrl(@Model.CompositeSettings.Path, @CompositeViewModel.PageId.ChangeGoalDueDate, @Model.ActionPlanId, @Model.InteractionId, new Guid(@Model.Goal.GoalId)))" LinkText="Change due date"></govukLink>
+                                       link-href="@(Urls.GetChangeUrl(@Model.CompositeSettings.Path, @CompositeViewModel.PageId.ChangeGoalDueDate, new Guid(@Model.Goal.GoalId), "goalId"))" LinkText="Change due date"></govukLink>
                             
                             </td>
                     </tr>
@@ -41,7 +41,7 @@
 
                         <td class="govuk-table__cell">
                             <govukLink id="@Model.GetElementId("govUkLink", $"change-status")" 
-                                       link-href="@(Urls.GetChangeUrl(@Model.CompositeSettings.Path, @CompositeViewModel.PageId.ChangeGoalStatus, @Model.ActionPlanId, @Model.InteractionId, new Guid(@Model.Goal.GoalId)))" LinkText="Update status"></govukLink>
+                                       link-href="@(Urls.GetChangeUrl(@Model.CompositeSettings.Path, @CompositeViewModel.PageId.ChangeGoalStatus, new Guid(@Model.Goal.GoalId), "goalId"))" LinkText="Update status"></govukLink>
 
                         </td>
                     </tr>

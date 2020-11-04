@@ -25,12 +25,13 @@ namespace DFC.App.ActionPlans.Controllers
             _dssReader = dssReader;
         }
 
-        [Route("/body/view-action/{actionPlanId}/{interactionId}/{actionId}")]
+        [Route("/body/view-action")]
         [HttpGet]
-        public async Task<IActionResult> Body(Guid actionPlanId, Guid interactionId, Guid actionId)
+        public async Task<IActionResult> Body(Guid actionId)
         {
+            var session = await GetUserSession();
             var customer = await GetCustomerDetails();
-            await LoadData(customer.CustomerId, actionPlanId, interactionId);
+            await ManageSession(customer.CustomerId, session.ActionPlanId, session.InteractionId);
             ViewModel.Action = await _dssReader.GetActionDetails(ViewModel.CustomerId.ToString(),
                 ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString(), actionId.ToString());
             SetBackLink();
@@ -39,7 +40,7 @@ namespace DFC.App.ActionPlans.Controllers
 
         private void  SetBackLink()
         {
-            ViewModel.BackLink = Urls.GetViewActionPlanUrl(ViewModel.CompositeSettings.Path, ViewModel.ActionPlanId, ViewModel.InteractionId);
+            ViewModel.BackLink = Urls.GetViewActionPlanUrl(ViewModel.CompositeSettings.Path);
         }
     }
 }

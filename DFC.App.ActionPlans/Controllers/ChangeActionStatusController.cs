@@ -32,11 +32,12 @@ namespace DFC.App.ActionPlans.Controllers
             ViewModel.PageTitle = "Change Action Status";
         }
 
-        [Route("/body/change-action-status/{actionPlanId}/{interactionId}/{actionId}")]
+        [Route("/body/change-action-status")]
         [HttpGet]
-        public async Task<IActionResult> Body(Guid actionPlanId, Guid interactionId, Guid actionId)
+        public async Task<IActionResult> Body( Guid actionId)
         {
-            await LoadViewData(actionPlanId, interactionId);
+            var session = await GetUserSession();
+            await LoadViewData(session.ActionPlanId, session.InteractionId);
 
             ViewModel.Action = await _dssReader.GetActionDetails(ViewModel.CustomerId.ToString(),
                 ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString(), actionId.ToString());
@@ -44,7 +45,7 @@ namespace DFC.App.ActionPlans.Controllers
             return await base.Body();
         }
 
-        [Route("/body/change-action-status/{actionPlanId}/{interactionId}/{actionId}")]
+        [Route("/body/change-action-status")]
         [HttpPost]
         public async Task<IActionResult> Body(ChangeActionCompositeViewModel model, IFormCollection formCollection)
         {
@@ -62,8 +63,7 @@ namespace DFC.App.ActionPlans.Controllers
                 };
 
                 await UpdateAction();
-                return RedirectTo(Urls.GetUpdateConfirmationUrl(ViewModel.ActionPlanId,
-                    ViewModel.InteractionId, new Guid(ViewModel.Action.ActionId), Constants.Constants.Action,
+                return RedirectTo(Urls.GetUpdateConfirmationUrl( new Guid(ViewModel.Action.ActionId), Constants.Constants.Action,
                     Constants.Constants.Status));
             }
             else
@@ -75,14 +75,14 @@ namespace DFC.App.ActionPlans.Controllers
             ModelState.AddModelError(Constants.Constants.ActionStatus, model.ErrorMessage);
 
             var customer = await GetCustomerDetails();
-            await LoadData(customer.CustomerId, model.ActionPlanId, model.InteractionId);
+            await ManageSession(customer.CustomerId, model.ActionPlanId, model.InteractionId);
             return await base.Body();
         }
 
         private async Task LoadViewData(Guid actionPlanId, Guid interactionId)
         {
             var customer = await GetCustomerDetails();
-            await LoadData(customer.CustomerId, actionPlanId, interactionId);
+            await ManageSession(customer.CustomerId, actionPlanId, interactionId);
         }
 
         private void InitVM(ChangeActionCompositeViewModel model)

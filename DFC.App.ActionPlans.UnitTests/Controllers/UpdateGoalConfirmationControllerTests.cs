@@ -75,7 +75,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             var ObjLink = vm.ObjLink;
             var ObjLinkText = vm.ObjLinkText;
             var WhatChanged = vm.WhatChanged;
-            var result = await _controller.Body(new Guid(), new Guid(),new Guid(),objectUpdated,propertyUpdated) as ViewResult;
+            var result = await _controller.Body(new Guid(),objectUpdated,propertyUpdated) as ViewResult;
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
             result.ViewName.Should().BeNull();
@@ -85,7 +85,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         public void WhenBodyCalledWithInvalidObjectUpdated_ExceptoinThrown()
         {
             
-              _controller.Invoking(async sut => await sut.Body(new Guid(), new Guid(),new Guid(),0,Constants.Constants.Date))
+              _controller.Invoking(async sut => await sut.Body(new Guid(),0,Constants.Constants.Date))
                 .Should().Throw<ObjectUpdatedNotSetException>();
         }
 
@@ -93,7 +93,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         public void WhenBodyCalledWithInvalidPropertyUpdated_ExceptoinThrown()
         {
             
-            _controller.Invoking(async sut => await sut.Body(new Guid(), new Guid(),new Guid(),Constants.Constants.Goal,0))
+            _controller.Invoking(async sut => await sut.Body(new Guid(),Constants.Constants.Goal,0))
                 .Should().Throw<PropertyUpdatedNotSetException>();
         }
     }
