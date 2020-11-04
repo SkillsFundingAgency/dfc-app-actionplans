@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using Dfc.App.ActionPlans.Controllers;
 using DFC.App.ActionPlans.Cosmos.Interfaces;
@@ -44,8 +45,11 @@ namespace DFC.App.ActionPlans.Controllers
         [HttpGet]
         public override IActionResult Head()
         {
-            var objectUpdated = Request.Query["objectUpdated"];
-            ViewModel.PageTitle = int.Parse(objectUpdated) switch
+            var queryobjectUpdated = string.IsNullOrEmpty(Request.Query["objectUpdated"]) ? "0"
+                : Request.Query["objectUpdated"].ToString();
+            int.TryParse(queryobjectUpdated, out var objectUpdated);
+
+            ViewModel.PageTitle = objectUpdated switch
             {
                 Constants.Constants.Goal => "Goal Updated",
                 Constants.Constants.Action => "Action Updated",

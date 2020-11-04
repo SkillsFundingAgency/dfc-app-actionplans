@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Threading.Tasks;
 using DFC.App.ActionPlans.Controllers;
 using DFC.App.ActionPlans.Exceptions;
@@ -7,6 +9,7 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Primitives;
 using NSubstitute;
 using NUnit.Framework;
 
@@ -22,7 +25,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             _logger = new Logger<UpdateConfirmationController>(new LoggerFactory());
             _logger = Substitute.For<ILogger<UpdateConfirmationController>>();
             _controller = new UpdateConfirmationController(_logger, _compositeSettings, _dssReader, _cosmosService);
-            _controller.ControllerContext.HttpContext = new DefaultHttpContext(){User = user};
+            _controller.ControllerContext.HttpContext = new DefaultHttpContext() { User = user };
             var vm = new UpdateGoalConfirmationCompositeViewModel
             {
                 PageTitle = null,
@@ -40,14 +43,14 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
                 PropertyUpdated = 0
             };
             var objUpdated = vm.ObjectUpdated;
-           
+
         }
 
         [Test]
-        [TestCase(Constants.Constants.Goal,Constants.Constants.Date)]
-        [TestCase(Constants.Constants.Goal,Constants.Constants.Status)]
-        [TestCase(Constants.Constants.Action,Constants.Constants.Date)]
-        [TestCase(Constants.Constants.Action,Constants.Constants.Status)]
+        [TestCase(Constants.Constants.Goal, Constants.Constants.Date)]
+        [TestCase(Constants.Constants.Goal, Constants.Constants.Status)]
+        [TestCase(Constants.Constants.Action, Constants.Constants.Date)]
+        [TestCase(Constants.Constants.Action, Constants.Constants.Status)]
         public async Task WhenBodyCalledWithParameters_ReturnHtml(int objectUpdated, int propertyUpdated)
         {
             var vm = new UpdateGoalConfirmationCompositeViewModel
@@ -75,26 +78,61 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             var ObjLink = vm.ObjLink;
             var ObjLinkText = vm.ObjLinkText;
             var WhatChanged = vm.WhatChanged;
-            var result = await _controller.Body(new Guid(),objectUpdated,propertyUpdated) as ViewResult;
+            var result = await _controller.Body(new Guid(), objectUpdated, propertyUpdated) as ViewResult;
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
             result.ViewName.Should().BeNull();
         }
 
         [Test]
-        public void WhenBodyCalledWithInvalidObjectUpdated_ExceptoinThrown()
+        public void WhenBodyCalledWithInvalidObjectUpdated_ExceptionThrown()
         {
-            
-              _controller.Invoking(async sut => await sut.Body(new Guid(),0,Constants.Constants.Date))
+
+            _controller.Invoking(async sut => await sut.Body(new Guid(), 0, Constants.Constants.Date))
+              .Should().Throw<ObjectUpdatedNotSetException>();
+        }
+
+        [Test]
+        public void WhenBodyCalledWithInvalidPropertyUpdated_ExceptionThrown()
+        {
+
+            _controller.Invoking(async sut => await sut.Body(new Guid(), Constants.Constants.Goal, 0))
+                .Should().Throw<PropertyUpdatedNotSetException>();
+        }
+
+        [Test]
+        public void WhenHeadCalledWithInvalidObjectUpdated_ExceptionThrown()
+        {
+            _controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext()
+            };
+            _controller.HttpContext.Request.Query = new QueryCollection(new Dictionary<string, StringValues>()
+            {
+                {"objectUpdated", "ggg"}
+            });
+
+            _controller.Invoking(sut => sut.Head())
                 .Should().Throw<ObjectUpdatedNotSetException>();
         }
 
         [Test]
-        public void WhenBodyCalledWithInvalidPropertyUpdated_ExceptoinThrown()
+        public void WhenHeadCalledWithvalidObjectUpdated_ReturnView()
         {
-            
-            _controller.Invoking(async sut => await sut.Body(new Guid(),Constants.Constants.Goal,0))
-                .Should().Throw<PropertyUpdatedNotSetException>();
+            _controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext()
+            };
+            _controller.HttpContext.Request.Query = new QueryCollection(new Dictionary<string, StringValues>()
+            {
+                {"objectUpdated", "1"}
+            });
+
+            var result = _controller.Head() as ViewResult;
+
+            result.Should().NotBeNull();
+            result.Should().BeOfType<ViewResult>();
+            result.ViewName.Should().BeNull();
         }
     }
 }
