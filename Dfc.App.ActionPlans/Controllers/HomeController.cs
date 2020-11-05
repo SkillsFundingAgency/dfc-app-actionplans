@@ -11,12 +11,13 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Dfc.App.ActionPlans.Controllers
 {
-
+    [ExcludeFromCodeCoverage]
     public class HomeController : CompositeSessionController<HomeCompositeViewModel>
     {
         private readonly IDssReader _dssReader;
