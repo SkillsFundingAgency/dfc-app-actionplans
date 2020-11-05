@@ -11,12 +11,13 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Dfc.App.ActionPlans.Controllers
 {
-
+    [ExcludeFromCodeCoverage]
     public class HomeController : CompositeSessionController<HomeCompositeViewModel>
     {
         private readonly IDssReader _dssReader;
@@ -37,22 +38,22 @@ namespace Dfc.App.ActionPlans.Controllers
         [HttpPost]
         public async Task<IActionResult> Body(HomeCompositeViewModel viewModel, IFormCollection formCollection)
         {
+            var session = await GetUserSession();
             if (formCollection.FirstOrDefault(x =>
                 string.Compare(x.Key, "homeGovukCheckBoxAcceptplan", StringComparison.CurrentCultureIgnoreCase) ==
                 0).Value == "on")
             {
                 await _dssWriter.UpdateActionPlan(new UpdateActionPlan()
                 {
-                  CustomerId  = viewModel.CustomerId,
-                  InteractionId = viewModel.InteractionId,
-                  ActionPlanId = viewModel.ActionPlanId,
+                  CustomerId  = session.CustomerId,
+                  InteractionId = session.InteractionId,
+                  ActionPlanId = session.ActionPlanId,
                   DateActionPlanAcknowledged = DateTime.UtcNow.AddMinutes(-1)
                 });
             }
-            var customer = await GetCustomerDetails();
-            await  ManageSession(customer.CustomerId,viewModel.ActionPlanId,viewModel.InteractionId);
-            ViewModel.LatestSession = await GetLatestSession();
-            return RedirectTo($"{viewModel.ActionPlanId}/{viewModel.InteractionId}");
+
+            await  ManageSession(session.CustomerId, session.ActionPlanId, session.InteractionId);
+            return RedirectTo("/home");
         }
 
         [Route("/body")]

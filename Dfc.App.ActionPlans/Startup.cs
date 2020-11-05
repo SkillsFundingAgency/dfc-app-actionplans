@@ -130,12 +130,12 @@ namespace Dfc.App.ActionPlans
             app.UseStaticFiles();
             app.UseHttpsRedirection();
 
-            app.UseExceptionHandler(errorApp =>
-                errorApp.Run(async context =>
-                {
-                    await ErrorService.LogException(context, logger);
-                    context.Response.Redirect(appPath + "/Error");
-                }));
+            //app.UseExceptionHandler(errorApp =>
+            //    errorApp.Run(async context =>
+            //    {
+            //        await ErrorService.LogException(context, logger);
+            //        context.Response.Redirect(appPath + "/Error");
+            //    }));
 
 
 
