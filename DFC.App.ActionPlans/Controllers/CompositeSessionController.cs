@@ -102,7 +102,7 @@ namespace Dfc.App.ActionPlans.Controllers
         protected async Task ManageSession(Guid customerId, Guid actionPlanId, Guid interactionId, UserSession session = null)
         {
             session ??= await GetUserSession();
-
+            
             if (session == null)
             {
                 var interaction =
@@ -118,22 +118,31 @@ namespace Dfc.App.ActionPlans.Controllers
                     Adviser = adviser
                 };
                 await CreateUserSession(session);
+
+                ViewModel.CustomerId = customerId;
+                ViewModel.InteractionId = interactionId;
+                ViewModel.ActionPlanId = actionPlanId;
+                ViewModel.Interaction = session.Interaction;
+                ViewModel.Adviser = session.Adviser;
             }
             else
             {
+                interactionId = interactionId == Guid.Empty ? session.InteractionId : interactionId;
+                var interaction =
+                    await _dssReader.GetInteractionDetails(session.CustomerId.ToString(), interactionId.ToString());
                 if (actionPlanId != Guid.Empty && interactionId != Guid.Empty)
                 {
                     session.ActionPlanId = actionPlanId;
                     session.InteractionId = interactionId;
+                    session.Interaction = interaction;
                 }
                 await UpdateSession(session);
+                ViewModel.CustomerId = session.CustomerId;
+                ViewModel.InteractionId = session.InteractionId;
+                ViewModel.ActionPlanId = session.ActionPlanId;
+                ViewModel.Interaction = session.Interaction;
+                ViewModel.Adviser = session.Adviser;
             }
-
-            ViewModel.CustomerId = customerId;
-            ViewModel.InteractionId = interactionId;
-            ViewModel.ActionPlanId = actionPlanId;
-            ViewModel.Interaction = session.Interaction;
-            ViewModel.Adviser = session.Adviser;
         }
 
 
