@@ -50,7 +50,7 @@ namespace Dfc.App.ActionPlans.Controllers
                 });
             }
             var customer = await GetCustomerDetails();
-            await  LoadData(customer.CustomerId,viewModel.ActionPlanId,viewModel.InteractionId);
+            await  ManageSession(customer.CustomerId,viewModel.ActionPlanId,viewModel.InteractionId);
             ViewModel.LatestSession = await GetLatestSession();
             return RedirectTo($"{viewModel.ActionPlanId}/{viewModel.InteractionId}");
         }
@@ -59,25 +59,27 @@ namespace Dfc.App.ActionPlans.Controllers
         [HttpGet]
         public override async Task<IActionResult> Body()
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                _logger.LogInformation("Request for Homepage by authed user");
-                return Redirect(_authSettings.Value.AccountEndpoint);
-            }
             _logger.LogInformation("Request for Homepage by unauthed user");
             return await Task.FromResult<IActionResult>(View("BodyUnAuth", ViewModel));
         }
 
         [Authorize]
-        [Route("/body/{actionPlanId}/{interactionId}")]
+        [Route("/body/home")]
         [HttpGet]
         public async Task<IActionResult> Body(Guid actionPlanId, Guid interactionId)
         {
+            var session = await GetUserSession();
+            
+            if (session == null && actionPlanId == Guid.Empty && interactionId == Guid.Empty)
+            {
+                return await Task.FromResult<IActionResult>(View("BodyUnAuth", ViewModel));
+            }
+
             _logger.LogInformation("Request for Home/body");
             var timer = new Stopwatch();
             timer.Start();
             var customer = await GetCustomerDetails();
-            await  LoadData(customer.CustomerId,actionPlanId,interactionId);
+            await ManageSession(customer.CustomerId, actionPlanId, interactionId, session);
             ViewModel.Goals = await _dssReader.GetGoals(ViewModel.CustomerId.ToString(), ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString());
             ViewModel.Actions = await _dssReader.GetActions(ViewModel.CustomerId.ToString(), ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString());
             ViewModel.ActionPlan = await _dssReader.GetActionPlanDetails(ViewModel.CustomerId.ToString(), ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString());
@@ -89,28 +91,28 @@ namespace Dfc.App.ActionPlans.Controllers
 
         #region Default Routes
         // The home page uses MVC default routes, so we need non "/[controller]" attribute routed versions of the endpoints just for here
-        [Route("/head/home/{actionPlanId?}/{interactionId?}/{objId?}/{objupdated?}/{propertyUpdated?}")]
-        [Route("/head/{actionPlanId?}/{interactionId?}/{objId?}/{objupdated?}/{propertyUpdated?}")]
-        public override IActionResult Head(Guid actionPlanId, Guid interactionId, Guid objId, int objectUpdated, int propertyUpdated)
+        [Route("/head/home")]
+        [Route("/head")]
+        public override IActionResult Head()
         {
-            return base.Head(actionPlanId, interactionId, objId, objectUpdated, propertyUpdated);
+            return base.Head();
         }
-        [Route("/bodytop/home/{actionPlanId?}/{interactionId?}/{docId?}/{objupdated?}/{itemupdated?}")]
-        [Route("/bodytop/{actionPlanId?}/{interactionId?}/{docId?}/{objupdated?}/{itemupdated?}")]
+        [Route("/bodytop/home")]
+        [Route("/bodytop")]
         public override async Task<IActionResult> BodyTop()
         {
             return await base.BodyTop();
         }
-        [Route("/breadcrumb/home/{actionPlanId?}/{interactionId?}/{docId?}/{objupdated?}/{itemupdated?}")]
-        [Route("/breadcrumb/{id?}/{actionPlanId?}/{interactionId?}/{docId?}/{objupdated?}/{itemupdated?}")]
+        [Route("/breadcrumb/home")]
+        [Route("/breadcrumb")]
         public override IActionResult Breadcrumb(Guid actionPlanId, Guid interactionId, Guid objectId)
         {
             return base.Breadcrumb(actionPlanId, interactionId, objectId);
         }
       
 
-        [Route("/bodyfooter/home/{actionPlanId?}/{interactionId?}/{docId?}/{objupdated?}/{itemupdated?}")]
-        [Route("/bodyfooter/{actionPlanId?}/{interactionId?}/{docId?}/{objupdated?}/{itemupdated?}")]
+        [Route("/bodyfooter/home")]
+        [Route("/bodyfooter")]
         public override IActionResult BodyFooter()
         {
             return base.BodyFooter();

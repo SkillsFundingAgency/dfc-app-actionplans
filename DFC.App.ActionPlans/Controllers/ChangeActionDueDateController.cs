@@ -32,18 +32,19 @@ namespace DFC.App.ActionPlans.Controllers
             ViewModel.PageTitle = "Change Action due date";
         }
 
-        [Route("/body/change-action-due-date/{actionPlanId}/{interactionId}/{Id}")]
+        [Route("/body/change-action-due-date")]
         [HttpGet]
-        public async Task<IActionResult> Body(Guid actionPlanId, Guid interactionId, Guid id)
+        public async Task<IActionResult> Body(Guid actionId)
         {
+            var session = await GetUserSession();
             var customer = await GetCustomerDetails();
-            await LoadData(customer.CustomerId, actionPlanId, interactionId);
+            await ManageSession(customer.CustomerId, session.ActionPlanId, session.InteractionId);
             ViewModel.Action = await _dssReader.GetActionDetails(ViewModel.CustomerId.ToString(),
-                interactionId.ToString(), actionPlanId.ToString(), id.ToString());
+                session.InteractionId.ToString(), session.ActionPlanId.ToString(), actionId.ToString());
             return await base.Body();
         }
 
-        [Route("/body/change-action-due-date/{actionPlanId}/{interactionId}/{Id}")]
+        [Route("/body/change-action-due-date")]
         [HttpPost]
         public async Task<IActionResult> Body(ChangeActionCompositeViewModel model, IFormCollection formCollection)
         {
@@ -64,8 +65,7 @@ namespace DFC.App.ActionPlans.Controllers
                     if (Validate.CheckValidDueDate(ViewModel.DateActionShouldBeCompletedBy, out dateValue))
                     {
                         await UpdateAction(dateValue);
-                        return RedirectTo(Urls.GetUpdateConfirmationUrl(ViewModel.ActionPlanId,
-                            ViewModel.InteractionId, new Guid(ViewModel.Action.ActionId), Constants.Constants.Action,
+                        return RedirectTo(Urls.GetUpdateConfirmationUrl(new Guid(ViewModel.Action.ActionId), Constants.Constants.Action,
                             Constants.Constants.Date));
                     }
 
@@ -85,7 +85,7 @@ namespace DFC.App.ActionPlans.Controllers
             ModelState.AddModelError(Constants.Constants.DateActionShouldBeCompletedBy, model.ErrorMessage);
 
             var customer = await GetCustomerDetails();
-            await LoadData(customer.CustomerId, model.ActionPlanId, model.InteractionId);
+            await ManageSession(customer.CustomerId, model.ActionPlanId, model.InteractionId);
             return await base.Body();
         }
 

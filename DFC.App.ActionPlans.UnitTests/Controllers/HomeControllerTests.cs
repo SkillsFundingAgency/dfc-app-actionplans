@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Dfc.App.ActionPlans.Controllers;
+using DFC.App.ActionPlans.Cosmos.Services;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.ViewModels;
 using FluentAssertions;
@@ -13,6 +16,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using NSubstitute;
+using NSubstitute.ReturnsExtensions;
 using NUnit.Framework;
 
 namespace DFC.App.ActionPlans.UnitTests.Controllers
@@ -37,20 +41,12 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         [Test]
         public void WhenHeadCalled_ReturnHtml()
         {
-            var result = _controller.Head(default, default, default, default, default) as ViewResult;
+            var result = _controller.Head() as ViewResult;
             var vm = new HeadViewModel {PageTitle = "Page Title",};
             var pageTitle = vm.PageTitle;
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
             result.ViewName.Should().BeNull();
-        }
-
-        [Test]
-        public async Task WhenBodyCalledAndUserLoggedIn_Redirect()
-        {
-            var result = await _controller.Body() as RedirectResult;
-            result.Should().NotBeNull();
-            result.Should().BeOfType<RedirectResult>();
         }
 
         [Test]
@@ -71,10 +67,21 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         [Test]
         public async Task WhenBodyCalledWithParameters_ReturnHtml()
         {
-            var result = await _controller.Body(new Guid(), new Guid()) as ViewResult;
+            var result = await _controller.Body() as ViewResult;
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
-            result.ViewName.Should().BeNull();
+            result.ViewName.Should().Be("BodyUnAuth");
+        }
+
+        [Test]
+        public async Task WhenBodyCalled_ReturnHtml()
+        {
+            _cosmosService.ReadItemAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CosmosCollection>())
+                .ReturnsForAnyArgs(new HttpResponseMessage(HttpStatusCode.FailedDependency));
+               var result = await _controller.Body(Guid.Empty, Guid.Empty) as ViewResult;
+            result.Should().NotBeNull();
+            result.Should().BeOfType<ViewResult>();
+            result.ViewName.Should().Be("BodyUnAuth");
         }
 
         [Test]
