@@ -106,9 +106,9 @@ namespace Dfc.App.ActionPlans.Controllers
         }
         [Route("/breadcrumb/home")]
         [Route("/breadcrumb")]
-        public override IActionResult Breadcrumb(Guid actionPlanId, Guid interactionId, Guid objectId)
+        public override IActionResult Breadcrumb(Guid objectId)
         {
-            return base.Breadcrumb(actionPlanId, interactionId, objectId);
+            return base.Breadcrumb(objectId);
         }
       
 
@@ -122,8 +122,9 @@ namespace Dfc.App.ActionPlans.Controllers
         
         private async Task<Session> GetLatestSession()
         {
-            _logger.LogInformation("Getting Users Session");
+            _logger.LogInformation("Getting sessions from DSS");
             List<Session> sessions = await _dssReader.GetSessions(ViewModel.CustomerId.ToString(), ViewModel.InteractionId.ToString());
+            _logger.LogInformation("retrieved sessions from DSS");
             return sessions.OrderByDescending(s => s.DateandTimeOfSession).First();
         }
     }
