@@ -53,10 +53,10 @@ namespace Dfc.App.ActionPlans.Controllers
 
         [HttpGet]
         [Route("/breadcrumb/[controller]")]
-        public virtual IActionResult Breadcrumb(Guid actionPlanId, Guid interactionId, Guid objectId)
+        public virtual IActionResult Breadcrumb(Guid objectId)
         {
             string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
-            ViewModel.BackLink = GetBackLink(controllerName,actionPlanId, interactionId, objectId);
+            ViewModel.BackLink = GetBackLink(controllerName, objectId);
             return View(ViewModel);
         }
 
@@ -146,7 +146,7 @@ namespace Dfc.App.ActionPlans.Controllers
         }
 
 
-        private string GetBackLink(string controllerName, Guid actionPlanId, Guid interactionId, Guid objectId)
+        private string GetBackLink(string controllerName, Guid objectId)
         {
             switch (controllerName)
             {
