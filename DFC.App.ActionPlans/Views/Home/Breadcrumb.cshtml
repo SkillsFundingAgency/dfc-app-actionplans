@@ -1,1 +1,14 @@
-﻿
+﻿@model DFC.App.ActionPlans.ViewModels.CompositeViewModel
+
+@if (!User.Identity.IsAuthenticated)
+{
+    <div class="govuk-width-container">
+        <div class="govuk-phase-banner">
+            <div class="govuk-header__navigation--end">
+                <div>
+                    <a class="account-link" href="/your-account/home" id="signin-link">Sign in</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
