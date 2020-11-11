@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentAssertions;
 
 namespace Dfc.App.ActionPlans.Controllers
 {
@@ -102,6 +103,10 @@ namespace Dfc.App.ActionPlans.Controllers
         [Route("/bodytop")]
         public override async Task<IActionResult> BodyTop()
         {
+            if (Request.Query.ContainsKey("actionplanID") || (User.Identity.IsAuthenticated && await GetUserSession() != null))
+            {
+                ViewModel.HideHeroBanner = true;
+            }
             return await base.BodyTop();
         }
         [Route("/breadcrumb/home")]
