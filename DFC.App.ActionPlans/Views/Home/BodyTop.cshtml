@@ -1,7 +1,7 @@
-﻿@model DFC.App.ActionPlans.ViewModels.CompositeViewModel
+﻿@model DFC.App.ActionPlans.ViewModels.HomeCompositeViewModel
 
 <partial name="~/Views/Shared/BodyTop.cshtml" />
-@if (!User.Identity.IsAuthenticated)
+@if (!Model.HideHeroBanner)
 {
     <div class="primary-hero">
         <govukPrimaryHeroBanner headerText="@CompositeViewModel.AppTitle"></govukPrimaryHeroBanner>
