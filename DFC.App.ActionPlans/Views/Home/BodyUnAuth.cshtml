@@ -9,9 +9,13 @@
             
 
             <div class="govuk-grid-column-two-thirds">
-                
+
                 <govukHeadingH3 text="Action Plans"></govukHeadingH3>
-                <govukButtonLink  id="@Model.GetElementId("govukButtonLink ", "GoToActionPlans")" LinkText="Go to your action plans" LinkHref="@AuthSettings.Value.AccountEndpoint"></govukButtonLink>
+                <p>You need to log in to view and update your action plan set by you and your career adviser during your career’s advice appointment.</p>
+                <govukButtonLink id="@Model.GetElementId("govukButtonLink ", "GoToActionPlans")" LinkText="Go to your action plans" LinkHref="@AuthSettings.Value.AccountEndpoint"></govukButtonLink>
+                <govukHeadingH3 text="Do not have an action plan?"></govukHeadingH3>
+                <p>If you have not had a careers advice appointment and do not have an action plan you can see our <govukLink id="CareersAdviceLink" link-href="/careers-advice" link-text="careers advice articles" ></govukLink> to help you at any stage of your career.</p>
+
             </div>
 
             <div class="govuk-grid-column-one-third">
@@ -19,7 +23,8 @@
                 <div class="app-sidebar app-advisor-panel">
                     <h3 class="govuk-heading-m">Want to speak to an adviser?</h3>
                     <p class="govuk-body"><strong>Call</strong> 0800 100 900 or <a href="https://nationalcareers.service.gov.uk/webchat/chat/" class="govuk-link govuk-link--no-visited-state">use webchat</a></p>
-                    <p class="govuk-caption-m app-advisor-hours">8am to 10pm, 7 days a week</p>
+                    <p class="govuk-caption-m app-advisor-hours">8am to 8pm, Monday-Friday</p>
+                    <p class="govuk-caption-m app-advisor-hours">10am to 5pm Saturday</p>
                 </div>
             </div>
         </div>
