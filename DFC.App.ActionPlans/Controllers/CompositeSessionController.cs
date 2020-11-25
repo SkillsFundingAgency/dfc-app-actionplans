@@ -96,14 +96,23 @@ namespace Dfc.App.ActionPlans.Controllers
 
         protected async Task<UserSession> GetUserSession()
         {
-            return await GetUserSession(Request.CompositeSessionId().ToString());
+
+            var sessionId = User.Claims.FirstOrDefault(x => x.Type == "UserSession")?.Value;
+
+            if (string.IsNullOrEmpty(sessionId))
+            {
+                return await GetUserSession(Request.CompositeSessionId().ToString());
+            }
+
+            return await GetUserSession(sessionId);
+
         }
 
         protected async Task ManageSession(Guid customerId, Guid actionPlanId, Guid interactionId, UserSession session = null)
         {
             session ??= await GetUserSession();
             
-            if (session == null || session.CustomerId != customerId)
+            if (session == null)
             {
                 var interaction =
                     await _dssReader.GetInteractionDetails(customerId.ToString(), interactionId.ToString());
