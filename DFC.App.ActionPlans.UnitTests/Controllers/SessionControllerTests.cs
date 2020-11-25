@@ -55,7 +55,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         }
 
         [Test]
-        public async Task When_SessionExist_Then_UpdateSession()
+        public async Task When_HomeCalledWithDifferentCustomerId_Then_NewSessionCreated()
         {
             var actionId = Guid.NewGuid();
             var interactionId = Guid.NewGuid();
@@ -69,6 +69,34 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
                         InteractionId = Guid.NewGuid(),
                         ActionPlanId = Guid.NewGuid(),
                         CustomerId = Guid.NewGuid(),
+                        Adviser = new Adviser(),
+                        Id = "",
+                        Interaction = null
+                    }))
+
+                });
+            var result = await _controller.Body(actionId, interactionId) as ViewResult;
+            result.Should().NotBeNull();
+            result.Should().BeOfType<ViewResult>();
+            result.ViewName.Should().BeNull();
+            await _cosmosService.Received().CreateItemAsync(Arg.Any<UserSession>(), Arg.Any<CosmosCollection>());
+        }
+
+        [Test]
+        public async Task When_SessionExist_Then_UpdateSession()
+        {
+            var actionId = Guid.NewGuid();
+            var interactionId = Guid.NewGuid();
+
+            _cosmosService.ReadItemAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CosmosCollection>())
+                .ReturnsForAnyArgs(new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Content = new StringContent(JsonConvert.SerializeObject(new UserSession
+                    {
+                        InteractionId = Guid.NewGuid(),
+                        ActionPlanId = Guid.NewGuid(),
+                        CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c"),
                         Adviser = new Adviser(),
                         Id = "",
                         Interaction = null
