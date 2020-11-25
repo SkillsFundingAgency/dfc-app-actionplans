@@ -103,7 +103,7 @@ namespace Dfc.App.ActionPlans.Controllers
         {
             session ??= await GetUserSession();
             
-            if (session == null)
+            if (session == null || session.CustomerId != customerId)
             {
                 var interaction =
                     await _dssReader.GetInteractionDetails(customerId.ToString(), interactionId.ToString());
