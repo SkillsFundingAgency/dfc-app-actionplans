@@ -83,7 +83,11 @@ namespace Dfc.App.ActionPlans.Controllers
         }
         protected async Task<Customer> GetCustomerDetails()
         {
-            
+            return await _dssReader.GetCustomerDetails(GetLoggedInUserId());
+        }
+
+        protected string GetLoggedInUserId()
+        {
             var userId = User.Claims.FirstOrDefault(x => x.Type == "CustomerId")?.Value;
 
             if (userId == null)
@@ -91,21 +95,19 @@ namespace Dfc.App.ActionPlans.Controllers
                 throw new NoUserIdInClaimException("Unable to locate userID");
             }
 
-            return await _dssReader.GetCustomerDetails(userId);
+            return userId;
+        }
+
+        protected string GetSessionId()
+        {
+            return $"{Request.CompositeSessionId()}|{GetLoggedInUserId()}";
         }
 
         protected async Task<UserSession> GetUserSession()
         {
-
-            var sessionId = User.Claims.FirstOrDefault(x => x.Type == "UserSession")?.Value;
-
-            if (string.IsNullOrEmpty(sessionId))
-            {
-                return await GetUserSession(Request.CompositeSessionId().ToString());
-            }
-
-            return await GetUserSession(sessionId);
-
+            
+                return await GetUserSession(GetSessionId());
+            
         }
 
         protected async Task ManageSession(Guid customerId, Guid actionPlanId, Guid interactionId, UserSession session = null)
@@ -119,7 +121,7 @@ namespace Dfc.App.ActionPlans.Controllers
                 var adviser = await _dssReader.GetAdviserDetails(interaction.AdviserDetailsId);
                 session = new UserSession()
                 {
-                    Id = Request.CompositeSessionId().ToString(),
+                    Id = GetSessionId(),
                     ActionPlanId = actionPlanId,
                     InteractionId = interactionId,
                     CustomerId = customerId,
