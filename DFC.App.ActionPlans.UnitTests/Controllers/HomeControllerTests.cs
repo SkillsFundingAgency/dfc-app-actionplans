@@ -6,12 +6,15 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Dfc.App.ActionPlans.Controllers;
 using DFC.App.ActionPlans.Cosmos.Services;
+using DFC.APP.ActionPlans.Data.Models;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.ViewModels;
+using DFC.Compui.Cosmos.Contracts;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
@@ -26,16 +29,26 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
        
         private HomeController _controller;
         private ILogger<HomeController> _logger;
+        private IDocumentService<CmsApiSharedContentModel> _documentService;
+        private IConfiguration _config;
         [SetUp]
         public void Init()
         {
             _logger = new Logger<HomeController>(new LoggerFactory());
             _logger = Substitute.For<ILogger<HomeController>>();
-            _controller = new HomeController(_logger, _compositeSettings, _dssReader,_dssWriter, _cosmosService, Options.Create(new AuthSettings{AccountEndpoint = "https://www.g.com"}));
+            var inMemorySettings = new Dictionary<string, string> {
+                {DFC.APP.ActionPlans.Data.Common.Constants.SharedContentGuidConfig, Guid.NewGuid().ToString()}
+            };
+            _config = new ConfigurationBuilder()
+                .AddInMemoryCollection(inMemorySettings)
+                .Build();
+            _controller = new HomeController(_logger, _compositeSettings, _dssReader,_dssWriter, _cosmosService, Options.Create(new AuthSettings{AccountEndpoint = "https://www.g.com"}), _documentService, _config);
             _controller.ControllerContext.HttpContext = new DefaultHttpContext(){User = user};
-
             _controller.ControllerContext.RouteData = new RouteData();
             _controller.ControllerContext.RouteData.Values.Add("controller", Constants.Constants.ChangeGoalDueDateController);
+            _documentService = Substitute.For<IDocumentService<CmsApiSharedContentModel>>();
+            
+            
         }
 
         [Test]
@@ -47,13 +60,15 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
             result.ViewName.Should().BeNull();
+
+
         }
 
         [Test]
         public async Task WhenBodyCalledAndUserNotLoggedIn_ReturnHtml()
         {
             var controller = new HomeController(_logger, _compositeSettings, _dssReader, _dssWriter, _cosmosService,
-                Options.Create(new AuthSettings()))
+                Options.Create(new AuthSettings()), _documentService, _config)
             {
                 ControllerContext = {HttpContext = new DefaultHttpContext() {User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>()))}}
             };
