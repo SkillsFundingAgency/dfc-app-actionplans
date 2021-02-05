@@ -1,6 +1,7 @@
 ﻿@using Microsoft.Extensions.Options
 @using DFC.App.ActionPlans.Models
 @inject IOptions<AuthSettings> AuthSettings;
+@model HomeCompositeViewModel
 
 <div class="govuk-main-wrapper ">
 
@@ -10,7 +11,7 @@
 
             <div class="govuk-grid-column-two-thirds">
 
-                <govukHeadingH3 text="Action Plans"></govukHeadingH3>
+                <govukHeadingH3 text="Your action plan"></govukHeadingH3>
                 <p>You need to log in to view and update your action plan set by you and your career adviser during your career’s advice appointment.</p>
                 <govukButtonLink id="@Model.GetElementId("govukButtonLink ", "GoToActionPlans")" LinkText="Go to your action plans" LinkHref="@AuthSettings.Value.AccountEndpoint"></govukButtonLink>
                 <govukHeadingH3 text="Do not have an action plan?"></govukHeadingH3>
@@ -21,10 +22,7 @@
             <div class="govuk-grid-column-one-third">
 
                 <div class="app-sidebar app-advisor-panel">
-                    <h3 class="govuk-heading-m">Want to speak to an adviser?</h3>
-                    <p class="govuk-body"><strong>Call</strong> 0800 100 900 or <a href="https://nationalcareers.service.gov.uk/webchat/chat/" class="govuk-link govuk-link--no-visited-state">use webchat</a></p>
-                    <p class="govuk-caption-m app-advisor-hours">8am - 8pm Monday - Friday</p>
-                    <p class="govuk-caption-m app-advisor-hours">10am - 5pm Saturday</p>
+                    @Html.Raw(Model.SharedContent)
                 </div>
             </div>
         </div>

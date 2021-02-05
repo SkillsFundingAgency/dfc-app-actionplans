@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -6,11 +7,14 @@ using Dfc.App.ActionPlans.Controllers;
 using DFC.App.ActionPlans.Controllers;
 using DFC.App.ActionPlans.Cosmos.Interfaces;
 using DFC.App.ActionPlans.Cosmos.Services;
+using DFC.APP.ActionPlans.Data.Models;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Models;
+using DFC.Compui.Cosmos.Contracts;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -23,6 +27,8 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
     {
         private HomeController _controller;
         private ILogger<HomeController> _logger;
+        private IDocumentService<CmsApiSharedContentModel> _documentService;
+        private IConfiguration _config;
 
         [SetUp]
         public void Init()
@@ -30,15 +36,24 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             _logger = new Logger<HomeController>(new LoggerFactory());
             _logger = Substitute.For<ILogger<HomeController>>();
             _cosmosService= Substitute.For<ICosmosService>();
+            var inMemorySettings = new Dictionary<string, string> {
+                {DFC.APP.ActionPlans.Data.Common.Constants.SharedContentGuidConfig, Guid.NewGuid().ToString()}
+            };
+
+            _config = new ConfigurationBuilder()
+                .AddInMemoryCollection(inMemorySettings)
+                .Build();
             _cosmosService.ReadItemAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CosmosCollection>())
-            .Returns(new HttpResponseMessage
+                .Returns(new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.NotFound,
                 Content = null
             });
-            _controller = new HomeController(_logger, _compositeSettings, _dssReader, _dssWriter, _cosmosService, Options.Create(new AuthSettings { AccountEndpoint = "https://www.g.com" }));
+            _controller = new HomeController(_logger, _compositeSettings, _dssReader, _dssWriter, _cosmosService, Options.Create(new AuthSettings { AccountEndpoint = "https://www.g.com" }), _documentService, _config);
             _controller.ControllerContext.HttpContext = new DefaultHttpContext(){User = user};
+            _documentService = Substitute.For<IDocumentService<CmsApiSharedContentModel>>();
            
+
         }
 
         [Test]
