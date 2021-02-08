@@ -39,7 +39,7 @@
             "value": "__apimDSSApiKey__"
         },
         "cosmosDBName": {
-            "value": "__sharedCosmosDbAccount__"
+            "value": "__appSharedCosmosDBName__"
         },
         "cosmosDbKey": {
             "value": "__appSharedCosmosPrimaryKey__"
@@ -54,7 +54,7 @@
             "value": "__ContentCollection__"
         },
         "CosmosDbResourceGroup": {
-            "value": "__persSharedResourceGroup__"
+            "value": "__appSharedResourceGroup__"
         },
         "cosmosDbCollectionName": {
             "value": "__cosmosDbCollectionName__"
