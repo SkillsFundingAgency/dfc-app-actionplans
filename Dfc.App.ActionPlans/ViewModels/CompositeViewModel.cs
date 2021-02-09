@@ -57,7 +57,11 @@ namespace DFC.App.ActionPlans.ViewModels
         {
             Id = pageId;
             PageHeading = pageHeading;
-            
+            GeneratePageTitle(pageHeading);
+        }
+
+        public void GeneratePageTitle(string pageHeading)
+        {
             PageTitle = string.IsNullOrWhiteSpace(pageHeading) ? $"{AppTitle} | {NcsBranding}" : $"{pageHeading} | {AppTitle} | {NcsBranding}";
         }
 

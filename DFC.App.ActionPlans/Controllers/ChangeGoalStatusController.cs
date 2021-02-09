@@ -28,7 +28,7 @@ namespace DFC.App.ActionPlans.Controllers
         {
             _dssWriter = dssWriter;
             _dssReader = dssReader;
-            ViewModel.PageTitle = "Change Goal Status";
+            ViewModel.GeneratePageTitle("Change Goal Status");
         }
 
         [Route("/body/change-goal-status")]
