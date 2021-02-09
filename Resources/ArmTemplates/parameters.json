@@ -44,9 +44,6 @@
         "cosmosDbKey": {
             "value": "__appSharedCosmosPrimaryKey__"
         },
-        "cosmosApiKey": {
-            "value": "__cosmosApiKey__"
-        },
         "UserSessionsCollection": {
             "value": "__UserSessionsCollection__"
         },

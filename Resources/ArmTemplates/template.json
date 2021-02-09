@@ -46,9 +46,6 @@
         "cosmosDbKey": {
             "type": "securestring"
         },
-        "cosmosApiKey": {
-            "type": "securestring"
-        },
         "UserSessionsCollection": {
             "type": "string"
         },
@@ -205,6 +202,10 @@
                                 "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('appSharedStorageAccountName'),';AccountKey=',listKeys(resourceId(parameters('appSharedResourceGroup'), 'Microsoft.Storage/storageAccounts', parameters('appSharedStorageAccountName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value, ';EndpointSuffix=core.windows.net')]"
                             },
                             {
+                                "name": "Configuration__ApplicationName",
+                                "value": "DFC-App-ActionPlans"
+                            },
+                            {
                                 "name": "Configuration__CosmosDbConnections__Actionplans__AccessKey",
                                 "value": "[parameters('cosmosDbKey')]"
                             },
@@ -218,7 +219,7 @@
                             },
                             {
                                 "name": "Configuration__CosmosDbConnections__Actionplans__CollectionId",
-                                "value": "[parameters('cosmosDbCollectionName')]"
+                                "value": "[parameters('cosmosContentDbCollectionName')]"
                             },
                             {
                                 "name": "Configuration__CosmosDbConnections__Actionplans__PartitionKey",
@@ -230,7 +231,7 @@
                             },
                             {
                                 "name": "CosmosSettings__Apikey",
-                                "value": "[parameters('CosmosApikey')]"
+                                "value": "[parameters('cosmosDbKey')]"
                             },
                             {
                                 "name": "CosmosSettings__DatabaseName",
@@ -407,10 +408,6 @@
                             {
                                 "name": "Configuration__NotifyOptions__Policies__HttpCircuitBreaker__ExceptionsAllowedBeforeBreaking",
                                 "value": 3
-                            },
-                            {
-                                "name": "Configuration__CosmosDbConnections__Account__CollectionId",
-                                "value": "sharedcontent"
                             },
                             {
                                 "name": "CmsApiClientOptions__Timeout",
