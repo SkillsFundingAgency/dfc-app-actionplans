@@ -1,6 +1,8 @@
 [
     {
         "Path": "action-plans",      
+	"TopNavigationText": "Action plans",
+	"TopNavigationOrder": 800,
         "Layout": "FullWidth",
         "OfflineHtml": "<H2>Action Plans Service Unavailable</H2>",
         "IsOnline": true,
