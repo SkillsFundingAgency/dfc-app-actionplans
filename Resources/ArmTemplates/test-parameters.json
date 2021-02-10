@@ -35,9 +35,6 @@
         "cosmosDbKey": {
             "value": "not-a-real-key"
         },
-        "cosmosApiKey": {
-            "value": "not-a-real-key"
-        },
         "UserSessionsCollection": {
             "value": "a-test-collection"
         },
@@ -62,6 +59,9 @@
         "AuthSettingsIssuer": {
             "value": "IAmAnIssuer"
         },
+        "AuthSettingsIssuerRedirect": {
+            "value": "AuthSettingsIssuerRedirect"
+        },
         "AuthSettingsClientSecret": {
             "value": "ThisIsAClientSecret"
         },
@@ -73,9 +73,6 @@
         },
         "SubscriptionSettingsEndpoint": {
             "value": "SubscriptionSettingsEndpoint"
-        },
-        "apimCompositeApiKey": {
-            "value": "apimCompositeKey"
         },
         "SummaryEndpoint": {
             "value": "SummaryEndpoint"

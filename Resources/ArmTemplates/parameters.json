@@ -39,13 +39,10 @@
             "value": "__apimDSSApiKey__"
         },
         "cosmosDBName": {
-            "value": "__sharedCosmosDbAccount__"
+            "value": "__appSharedCosmosDBName__"
         },
         "cosmosDbKey": {
             "value": "__appSharedCosmosPrimaryKey__"
-        },
-        "cosmosApiKey": {
-            "value": "__cosmosApiKey__"
         },
         "UserSessionsCollection": {
             "value": "__UserSessionsCollection__"
@@ -54,7 +51,7 @@
             "value": "__ContentCollection__"
         },
         "CosmosDbResourceGroup": {
-            "value": "__persSharedResourceGroup__"
+            "value": "__appSharedResourceGroup__"
         },
         "cosmosDbCollectionName": {
             "value": "__cosmosDbCollectionName__"
@@ -71,6 +68,9 @@
         "AuthSettingsIssuer": {
             "value": "__AuthSettingsIssuer__"
         },
+        "AuthSettingsIssuerRedirect": {
+            "value": "__AuthSettingsIssuerRedirect__"
+        },
         "AuthSettingsClientSecret": {
             "value": "__AuthSettingsClientSecret__"
         },
@@ -82,9 +82,6 @@
         },
         "SubscriptionSettingsEndpoint": {
             "value": "__SubscriptionSettingsEndpoint__"
-        },
-        "apimCompositeApiKey": {
-            "value": "__apimCompositeKey__"
         },
         "SummaryEndpoint": {
             "value": "__SummaryEndpoint__"
