@@ -49,12 +49,13 @@ namespace DFC.App.ActionPlans.Controllers
                 : Request.Query["objectUpdated"].ToString();
             int.TryParse(queryobjectUpdated, out var objectUpdated);
 
-            ViewModel.PageTitle = objectUpdated switch
+           var title = objectUpdated switch
             {
                 Constants.Constants.Goal => "Goal Updated",
                 Constants.Constants.Action => "Action Updated",
                 _ => throw new ObjectUpdatedNotSetException($"Object updated has not been provided or is incorrect.")
             };
+           ViewModel.GeneratePageTitle(title);
             return  base.Head();
         }
 

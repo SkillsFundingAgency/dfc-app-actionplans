@@ -29,7 +29,7 @@ namespace DFC.App.ActionPlans.Controllers
         {
             _dssWriter = dssWriter;
             _dssReader = dssReader;
-            ViewModel.PageTitle = "Change Action due date";
+            ViewModel.GeneratePageTitle("Change Action due date");
         }
 
         [Route("/body/change-action-due-date")]
