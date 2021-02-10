@@ -59,6 +59,9 @@
         "AuthSettingsIssuer": {
             "value": "IAmAnIssuer"
         },
+        "AuthSettingsIssuerRedirect": {
+            "value": "AuthSettingsIssuerRedirect"
+        },
         "AuthSettingsClientSecret": {
             "value": "ThisIsAClientSecret"
         },
