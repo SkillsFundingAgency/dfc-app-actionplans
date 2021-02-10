@@ -74,9 +74,6 @@
         "SubscriptionSettingsEndpoint": {
             "value": "SubscriptionSettingsEndpoint"
         },
-        "apimCompositeApiKey": {
-            "value": "apimCompositeKey"
-        },
         "SummaryEndpoint": {
             "value": "SummaryEndpoint"
         },
