@@ -73,9 +73,6 @@
         "AuthSettingsIssuer": {
             "type": "string"
         },
-        "AuthSettingsIssuerRedirect": {
-            "type": "string"
-        },
         "AuthSettingsClientSecret": {
             "type": "string"
         },
@@ -339,7 +336,7 @@
                             },
                             {
                                 "name": "AuthSettings__SignInUrl",
-                                "value": "[concat(parameters('AuthSettingsIssuer'), '/auth/SignIn', parameters('AuthSettingsIssuerRedirect'))]"
+                                "value": "[concat(parameters('AuthSettingsIssuer'), '/auth/SignIn?redirectUrl=/your-account')]"
                             },
                             {
                                 "name": "AuthSettings__SignOutUrl",
