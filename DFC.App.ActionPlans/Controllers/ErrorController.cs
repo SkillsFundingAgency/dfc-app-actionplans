@@ -8,6 +8,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using DFC.APP.ActionPlans.Data.Models;
+using DFC.Compui.Cosmos.Contracts;
 using Microsoft.Extensions.Configuration;
 
 namespace DFC.App.ActionPlans.Controllers
@@ -16,8 +18,9 @@ namespace DFC.App.ActionPlans.Controllers
     {
         private readonly CompositeSettings _configuration;
         public ErrorController(ILogger<ErrorController> logger, IOptions<CompositeSettings> compositeSettings,
-            IDssReader _dssReader, ICosmosService cosmosServiceService, IOptions<CompositeSettings> configuration)
-            : base(compositeSettings, _dssReader, cosmosServiceService)
+            IDssReader _dssReader, ICosmosService cosmosServiceService, IOptions<CompositeSettings> configuration,
+            IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
+            : base(compositeSettings, _dssReader, cosmosServiceService, documentService, config)
         {
             _configuration = configuration.Value;
         }

@@ -34,7 +34,7 @@ namespace Dfc.App.ActionPlans.Controllers
 
         public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService, IOptions<AuthSettings> authSettings,
             IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
-            :base(compositeSettings, dssReader, cosmosServiceService)
+            :base(compositeSettings, dssReader, cosmosServiceService, documentService, config)
         {
             _dssReader = dssReader;
             _dssWriter = dssWriter;

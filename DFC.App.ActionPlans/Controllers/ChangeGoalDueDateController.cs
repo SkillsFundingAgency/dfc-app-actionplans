@@ -2,15 +2,18 @@
 using System.Threading.Tasks;
 using Dfc.App.ActionPlans.Controllers;
 using DFC.App.ActionPlans.Cosmos.Interfaces;
+using DFC.APP.ActionPlans.Data.Models;
 using DFC.App.ActionPlans.Extensions;
 using DFC.App.ActionPlans.Helpers;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Services.DSS.Models;
 using DFC.App.ActionPlans.ViewModels;
+using DFC.Compui.Cosmos.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -23,12 +26,13 @@ namespace DFC.App.ActionPlans.Controllers
         private readonly IDssReader _dssReader;
 
         public ChangeGoalDueDateController(ILogger<ChangeGoalDueDateController> logger,
-            IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService)
-            : base(compositeSettings, dssReader, cosmosServiceService)
+            IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService,
+            IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
+            : base(compositeSettings, dssReader, cosmosServiceService, documentService, config)
         {
             _dssWriter = dssWriter;
             _dssReader = dssReader;
-            ViewModel.GeneratePageTitle("Change Goal due date");
+            ViewModel.GeneratePageTitle("Change goal due date");
         }
 
         [Route("/body/change-goal-due-date")]

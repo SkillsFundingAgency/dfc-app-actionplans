@@ -2,12 +2,15 @@
 using System.Threading.Tasks;
 using Dfc.App.ActionPlans.Controllers;
 using DFC.App.ActionPlans.Cosmos.Interfaces;
+using DFC.APP.ActionPlans.Data.Models;
 using DFC.App.ActionPlans.Helpers;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.ViewModels;
+using DFC.Compui.Cosmos.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -19,8 +22,8 @@ namespace DFC.App.ActionPlans.Controllers
         private readonly IDssReader _dssReader;
 
         public ViewActionController(ILogger<ViewActionController> logger, IOptions<CompositeSettings> compositeSettings,
-            IDssReader dssReader, ICosmosService cosmosServiceService)
-            : base(compositeSettings, dssReader, cosmosServiceService)
+            IDssReader dssReader, ICosmosService cosmosServiceService, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
+            : base(compositeSettings, dssReader, cosmosServiceService, documentService, config)
         {
             _dssReader = dssReader;
         }

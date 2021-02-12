@@ -42,11 +42,12 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             _config = new ConfigurationBuilder()
                 .AddInMemoryCollection(inMemorySettings)
                 .Build();
+            _documentService = Substitute.For<IDocumentService<CmsApiSharedContentModel>>();
             _controller = new HomeController(_logger, _compositeSettings, _dssReader,_dssWriter, _cosmosService, Options.Create(new AuthSettings{AccountEndpoint = "https://www.g.com"}), _documentService, _config);
             _controller.ControllerContext.HttpContext = new DefaultHttpContext(){User = user};
             _controller.ControllerContext.RouteData = new RouteData();
             _controller.ControllerContext.RouteData.Values.Add("controller", Constants.Constants.ChangeGoalDueDateController);
-            _documentService = Substitute.For<IDocumentService<CmsApiSharedContentModel>>();
+            
             
             
         }
