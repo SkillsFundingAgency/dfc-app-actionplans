@@ -18,12 +18,9 @@
                 <p>If you have not had a careers advice appointment and do not have an action plan you can see our <govukLink id="CareersAdviceLink" link-href="/careers-advice" link-text="careers advice articles" ></govukLink> to help you at any stage of your career.</p>
 
             </div>
-
-            <div class="govuk-grid-column-one-third">
-
-                <div class="app-sidebar app-advisor-panel">
-                    @Html.Raw(Model.SharedContent)
-                </div>
+            
+            <div class="action-plan-secondary-content govuk-grid-column-one-third  ">
+                <partial name="~/ViewComponents/contact/contact.cshtml" model="@Model"/>
             </div>
         </div>
     </div>

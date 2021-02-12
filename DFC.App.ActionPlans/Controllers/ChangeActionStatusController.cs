@@ -2,15 +2,18 @@
 using System.Threading.Tasks;
 using Dfc.App.ActionPlans.Controllers;
 using DFC.App.ActionPlans.Cosmos.Interfaces;
+using DFC.APP.ActionPlans.Data.Models;
 using DFC.App.ActionPlans.Helpers;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Enums;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Services.DSS.Models;
 using DFC.App.ActionPlans.ViewModels;
+using DFC.Compui.Cosmos.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Action = DFC.App.ActionPlans.Services.DSS.Models.Action;
@@ -24,12 +27,13 @@ namespace DFC.App.ActionPlans.Controllers
         private readonly IDssReader _dssReader;
 
         public ChangeActionStatusController(ILogger<ChangeActionStatusController> logger,
-            IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService)
-            : base(compositeSettings, dssReader, cosmosServiceService)
+            IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService,
+            IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
+            : base(compositeSettings, dssReader, cosmosServiceService, documentService, config)
         {
             _dssWriter = dssWriter;
             _dssReader = dssReader;
-            ViewModel.GeneratePageTitle("Change Action Status");
+            ViewModel.GeneratePageTitle("Change action status");
         }
 
         [Route("/body/change-action-status")]

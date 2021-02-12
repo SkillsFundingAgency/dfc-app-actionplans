@@ -8,11 +8,14 @@ using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using DFC.App.ActionPlans.Controllers;
 using DFC.App.ActionPlans.Cosmos.Interfaces;
+using DFC.APP.ActionPlans.Data.Models;
 using DFC.App.ActionPlans.Exceptions;
 using DFC.App.ActionPlans.Helpers;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Services.DSS.Models;
+using DFC.Compui.Cosmos.Contracts;
 using DFC.Compui.Sessionstate;
+using Microsoft.Extensions.Configuration;
 using Constants = DFC.App.ActionPlans.Constants.Constants;
 
 namespace Dfc.App.ActionPlans.Controllers
@@ -27,7 +30,9 @@ namespace Dfc.App.ActionPlans.Controllers
     {
         private readonly IDssReader _dssReader;
         protected TViewModel ViewModel { get; }
-        protected CompositeSessionController(IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, ICosmosService cosmosServiceService)
+        private readonly IDocumentService<CmsApiSharedContentModel> _documentService;
+        private readonly Guid _sharedContent;
+        protected CompositeSessionController(IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, ICosmosService cosmosServiceService, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
             : base(cosmosServiceService)        
         {
             ViewModel = new TViewModel()
@@ -35,6 +40,8 @@ namespace Dfc.App.ActionPlans.Controllers
                 CompositeSettings = compositeSettings.Value,
             };  
             _dssReader = dssReader;
+            _documentService = documentService;
+            _sharedContent = config.GetValue<Guid>(DFC.APP.ActionPlans.Data.Common.Constants.SharedContentGuidConfig);
         }
 
         [HttpGet]
@@ -62,10 +69,11 @@ namespace Dfc.App.ActionPlans.Controllers
 
         [HttpGet]
         [Route("/body/[controller]/{id?}")]
-        public virtual Task<IActionResult> Body()
+        public virtual async Task<IActionResult> Body()
         {
-
-            return Task.FromResult<IActionResult>(View(ViewModel));
+            var sharedContent = await _documentService.GetByIdAsync(_sharedContent, "account").ConfigureAwait(false);
+            ViewModel.SharedContent = sharedContent?.Content;
+            return await Task.FromResult<IActionResult>(View(ViewModel));
         }
 
         [HttpGet]
