@@ -78,7 +78,9 @@ namespace DFC.App.ActionPlans.ViewModels
         public Interaction Interaction { get; set;}
         public Adviser Adviser { get; set;}
         public ContactDetails ContactDetails { get; set; } = new ContactDetails();
-        
+        public string SharedContent { get; set; }
+
+
         public string GetElementId(string elementName, string instanceName)
         {
             Throw.IfNullOrWhiteSpace(elementName, nameof(elementName));

@@ -49,9 +49,10 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
                 StatusCode = HttpStatusCode.NotFound,
                 Content = null
             });
+            _documentService = Substitute.For<IDocumentService<CmsApiSharedContentModel>>();
             _controller = new HomeController(_logger, _compositeSettings, _dssReader, _dssWriter, _cosmosService, Options.Create(new AuthSettings { AccountEndpoint = "https://www.g.com" }), _documentService, _config);
             _controller.ControllerContext.HttpContext = new DefaultHttpContext(){User = user};
-            _documentService = Substitute.For<IDocumentService<CmsApiSharedContentModel>>();
+            
            
 
         }
