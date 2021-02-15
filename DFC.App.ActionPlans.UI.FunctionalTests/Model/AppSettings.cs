@@ -6,7 +6,7 @@
 using DFC.TestAutomation.UI.Settings;
 using System;
 
-namespace DFC.App.Accounts.Model
+namespace DFC.App.ActionPlans.Model
 {
     internal class AppSettings : IAppSettings
     {
