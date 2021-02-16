@@ -7,7 +7,7 @@
 <div class="govuk-width-container">
     <div class="govuk-grid-row ">
         <div class="govuk-grid-column-two-thirds ">
-            <form id="@Model.GetElementId("form", "Form")" action="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.ChangeGoalDueDate/@Model.ActionPlanId/@Model.InteractionId/@Model.Goal.GoalId/" class="govuk-form-group" method="post">
+            <form id="@Model.GetElementId("form", "Form")" action="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.ChangeGoalDueDate" class="govuk-form-group" method="post">
                 @Html.HiddenFor(m => m.ActionPlanId)
                 @Html.HiddenFor(m => m.InteractionId)
                 @Html.HiddenFor(m => m.Goal.GoalId)
@@ -36,7 +36,7 @@
         </div>
         <div class="action-plan-secondary-content govuk-grid-column-one-third  ">
             <partial name="~/ViewComponents/YourAdviser/youradvisor.cshtml" model="@Model.Adviser"/>
-            <partial name="~/ViewComponents/contact/contact.cshtml" model="@Model.ContactDetails"/>
+            <partial name="~/ViewComponents/contact/contact.cshtml" model="@Model"/>
         </div>
     </div>
 </div>

@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using System;
 
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Net.Http;
 using System.Net.Mime;
@@ -19,13 +20,14 @@ using Interaction = DFC.App.ActionPlans.Services.DSS.Models.Interaction;
 
 namespace DFC.App.ActionPlans.Services.DSS.Services
 {
+    [ExcludeFromCodeCoverage]
     public class DssService : IDssReader, IDssWriter
     {
         const string VersionHeader = "version";
         const string CustomerIdTag = "{customerId}";
         const string InteractionIdTag = "{interactionId}";
         const string ActionPlanIdTag = "{actionPlanId}";
-            
+
         private readonly IRestClient _restClient;
         private readonly IOptions<DssSettings> _dssSettings;
         private readonly ILogger<DssService> _logger;
@@ -62,24 +64,30 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             try
             {
                 request.Headers.Add(VersionHeader, _dssSettings.Value.CustomerApiVersion);
-                var result =  await _restClient.GetAsync<Customer>($"{_dssSettings.Value.CustomerApiUrl}{customerId}",
+                var result = await _restClient.GetAsync<Customer>($"{_dssSettings.Value.CustomerApiUrl}{customerId}",
                     request);
-                if (_restClient.LastResponse.StatusCode==HttpStatusCode.NoContent)
+                if (_restClient.LastResponse.StatusCode == HttpStatusCode.NoContent || result.CustomerId == Guid.Empty)
+                {
+                    var errorMessage = "Customer not found";
+                    _logger.LogError(errorMessage);
                     throw new DssException("Customer not found");
-                
+                }
+
                 return result;
             }
             catch (Exception e)
             {
-                throw new DssException($"Failure Get Customer Details, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
+                var errorMessage = $"Failure Get Customer Details, Code:{_restClient.LastResponse?.StatusCode} {Environment.NewLine}  CustomerId:{customerId} {Environment.NewLine} {e.InnerException}";
+                _logger.LogError(errorMessage);
+                throw new DssException(errorMessage);
             }
-            
+
         }
 
         public async Task<List<Session>> GetSessions(string customerId, string interactionId)
         {
             var request = CreateRequestMessage();
-            
+
             try
             {
                 request.Headers.Add(VersionHeader, _dssSettings.Value.SessionApiVersion);
@@ -88,17 +96,19 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
                         .Replace(CustomerIdTag, customerId)
                         .Replace(InteractionIdTag, interactionId),
                     request);
-                
-                if (_restClient.LastResponse.StatusCode==HttpStatusCode.NoContent)
+
+                if (_restClient.LastResponse.StatusCode == HttpStatusCode.NoContent)
                     throw new DssException("No sessions found");
-                
+
                 return result;
-            }   
-            catch  (Exception e)
-            {
-                throw new DssException($"Failure GetSessions, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
             }
-            
+            catch (Exception e)
+            {
+                var errorMessage = $"Failure GetSessions, Code:{_restClient.LastResponse?.StatusCode} {Environment.NewLine} CustomerId:{customerId} InteractionId:{interactionId} {Environment.NewLine} {e.InnerException}";
+                _logger.LogError(errorMessage);
+                throw new DssException(errorMessage);
+            }
+
         }
 
         public async Task<Interaction> GetInteractionDetails(string customerId, string interactionId)
@@ -112,17 +122,23 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
                         .Replace(CustomerIdTag, customerId)
                         .Replace(InteractionIdTag, interactionId),
                     request);
-                
-                if (_restClient.LastResponse.StatusCode==HttpStatusCode.NoContent)
-                    throw new DssException("Interaction not found");
-                
+
+                if (_restClient.LastResponse.StatusCode == HttpStatusCode.NoContent)
+                {
+                    var errorMessage = $"Interaction not found  CustomerId:{customerId} InteractionId:{interactionId} ";
+                    _logger.LogError(errorMessage);
+                    throw new DssException(errorMessage);
+                }
+
                 return result;
-            }   
-            catch  (Exception e)
-            {
-                throw new DssException($"Failure InteractionDetails, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
             }
-            
+            catch (Exception e)
+            {
+                var errorMessage = $"Failure InteractionDetails, CustomerId:{customerId} InteractionId:{interactionId} {Environment.NewLine} {e.InnerException}";
+                _logger.LogError(errorMessage);
+                throw new DssException(errorMessage);
+            }
+
         }
 
         public async Task<List<Models.Action>> GetActions(string customerId, string interactionId, string actionPlanId)
@@ -143,9 +159,11 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             }
             catch (Exception e)
             {
-                throw new DssException($"Failure Get Actions, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
+                var errorMessage = $"Failure Get Actions, CustomerId:{customerId} InteractionId:{interactionId} ActionPlanId{actionPlanId} {Environment.NewLine} {e.InnerException}";
+                _logger.LogError(errorMessage);
+                throw new DssException(errorMessage);
             }
-            
+
         }
 
         public async Task<List<Goal>> GetGoals(string customerId, string interactionId, string actionPlanId)
@@ -166,9 +184,11 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             }
             catch (Exception e)
             {
-                throw new DssException($"Failure Get Goals, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
+                var errorMessage = $"Failure Get Goals, CustomerId:{customerId} InteractionId:{interactionId} ActionPlanId{actionPlanId} {Environment.NewLine} {e.InnerException}";
+                _logger.LogError(errorMessage);
+                throw new DssException(errorMessage);
             }
-            
+
         }
 
         public async Task<Adviser> GetAdviserDetails(string adviserId)
@@ -180,99 +200,119 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
                 var result = await _restClient.GetAsync<Adviser>(
                     _dssSettings.Value.AdviserDetailsApiUrl
                         .Replace("{adviserDetailId}", adviserId), request);
-                if (_restClient.LastResponse.StatusCode==HttpStatusCode.NoContent)
-                    throw new DssException("Adviser Not found");
-                
+                if (_restClient.LastResponse.StatusCode == HttpStatusCode.NoContent)
+                {
+                    var errorMessage = "Adviser Not found";
+                    _logger.LogError(errorMessage);
+                    throw new DssException(errorMessage);
+                }
+
                 return result;
             }
             catch (Exception e)
             {
-                throw new DssException($"Failure Get Adviser Details, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
+                var errorMessage = $"Failure Get Adviser Details, AdviserId{adviserId} {Environment.NewLine}  {e.InnerException}";
+                _logger.LogError(errorMessage);
+                throw new DssException(errorMessage);
             }
-            
+
         }
 
         public async Task<ActionPlan> GetActionPlanDetails(string customerId, string interactionId, string actionPlanId)
         {
-            
+
             var request = CreateRequestMessage();
             try
             {
                 request.Headers.Add(VersionHeader, _dssSettings.Value.ActionPlansApiVersion);
                 var result = await _restClient.GetAsync<ActionPlan>(_dssSettings.Value.ActionPlansApiUrl
-                        .Replace(CustomerIdTag,customerId)
-                        .Replace(InteractionIdTag,interactionId)
-                        .Replace(ActionPlanIdTag,actionPlanId)
+                        .Replace(CustomerIdTag, customerId)
+                        .Replace(InteractionIdTag, interactionId)
+                        .Replace(ActionPlanIdTag, actionPlanId)
                     , request);
-                
-                if (_restClient.LastResponse.StatusCode==HttpStatusCode.NoContent)
+
+                if (_restClient.LastResponse.StatusCode == HttpStatusCode.NoContent)
                     throw new DssException("Action Plan Not found");
-                
+
                 return result;
             }
             catch (Exception e)
             {
-                throw new DssException($"Failure Get Action Plan, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
+                var errorMessage = $"Failure Get Action Plan, CustomerId:{customerId} InteractionId:{interactionId} ActionPlanId{actionPlanId} {Environment.NewLine}  {e.InnerException}";
+                _logger.LogError(errorMessage);
+                throw new DssException(errorMessage);
             }
-                
-            
+
+
         }
 
         public async Task<Goal> GetGoalDetails(string customerId, string interactionId, string actionPlanId, string goalId)
         {
-            
+
             var request = CreateRequestMessage();
             try
             {
                 request.Headers.Add(VersionHeader, _dssSettings.Value.GoalsApiVersion);
                 var result = await _restClient.GetAsync<Goal>(_dssSettings.Value.GoalsApiUrl
-                        .Replace(CustomerIdTag,customerId)
-                        .Replace(InteractionIdTag,interactionId)
-                        .Replace(ActionPlanIdTag,actionPlanId) + "/" + goalId
+                        .Replace(CustomerIdTag, customerId)
+                        .Replace(InteractionIdTag, interactionId)
+                        .Replace(ActionPlanIdTag, actionPlanId) + "/" + goalId
                     , request);
-                
-                if (_restClient.LastResponse.StatusCode==HttpStatusCode.NoContent)
+
+                if (_restClient.LastResponse.StatusCode == HttpStatusCode.NoContent)
                     throw new DssException("Goal not found");
-                
+
                 return result;
             }
             catch (Exception e)
             {
-                throw new DssException($"Failure Get Goal Details, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
+                var errorMessage = $"Failure Get Goal Details, {Environment.NewLine} CustomerId:{customerId} InteractionId:{interactionId} ActionPlanId{actionPlanId} GoalId{goalId} {Environment.NewLine}  {e.InnerException}";
+                _logger.LogError(errorMessage);
+                throw new DssException(errorMessage);
             }
-                
-            
+
+
         }
 
         public async Task<Action> GetActionDetails(string customerId, string interactionId, string actionPlanId, string goalId)
         {
-            
+
             var request = CreateRequestMessage();
             try
             {
                 request.Headers.Add(VersionHeader, _dssSettings.Value.ActionsApiVersion);
                 var result = await _restClient.GetAsync<Action>(_dssSettings.Value.ActionsApiUrl
-                        .Replace(CustomerIdTag,customerId)
-                        .Replace(InteractionIdTag,interactionId)
-                        .Replace(ActionPlanIdTag,actionPlanId) + "/" + goalId
+                        .Replace(CustomerIdTag, customerId)
+                        .Replace(InteractionIdTag, interactionId)
+                        .Replace(ActionPlanIdTag, actionPlanId) + "/" + goalId
                     , request);
-                
-                if (_restClient.LastResponse.StatusCode==HttpStatusCode.NoContent)
-                    throw new DssException("Action not found");
-                
+
+                if (_restClient.LastResponse.StatusCode == HttpStatusCode.NoContent)
+                {
+                    var errorMessage = "Action not found";
+                    _logger.LogError(errorMessage);
+                    throw new DssException(errorMessage);
+                }
+
                 return result;
             }
             catch (Exception e)
             {
-                throw new DssException($"Failure Get Action Details, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
+                var errorMessage = $"Failure Get Action Details, CustomerId:{customerId} InteractionId:{interactionId} ActionPlanId{actionPlanId} GoalId{goalId} {Environment.NewLine}  {e.InnerException}";
+                _logger.LogError(errorMessage);
+                throw new DssException(errorMessage);
             }
         }
 
         public async Task UpdateActionPlan(UpdateActionPlan updateActionPlan)
         {
-            
+
             if (updateActionPlan == null)
-                throw new DssException($"Failure Update Action Plan, No data provided");
+            {
+                var errorMessage = $"Failure Update Action Plan, No data provided";
+                _logger.LogError(errorMessage);
+                throw new DssException(errorMessage);
+            }
 
             try
             {
@@ -287,31 +327,39 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
                     request.Headers.Add(VersionHeader, _dssSettings.Value.ActionPlansApiVersion);
 
                     await _restClient.PatchAsync<ActionPlan>(_dssSettings.Value.ActionPlansApiUrl
-                            .Replace(CustomerIdTag,updateActionPlan.CustomerId.ToString())
-                            .Replace(InteractionIdTag,updateActionPlan.InteractionId.ToString())
-                            .Replace(ActionPlanIdTag,updateActionPlan.ActionPlanId.ToString())
+                            .Replace(CustomerIdTag, updateActionPlan.CustomerId.ToString())
+                            .Replace(InteractionIdTag, updateActionPlan.InteractionId.ToString())
+                            .Replace(ActionPlanIdTag, updateActionPlan.ActionPlanId.ToString())
                         , request);
                 }
 
                 if (!_restClient.LastResponse.IsSuccess)
                 {
-                    throw new DssException($"Failure Update Action Plan - Response {_restClient.LastResponse.Content} ");
+                    var errorMessage = $"Failure Update Action Plan - Response {_restClient.LastResponse.Content} ";
+                    _logger.LogError(errorMessage);
+                    throw new DssException(errorMessage);
                 }
 
-                
+
             }
             catch (Exception e)
             {
-                throw new DssException($"Failure Update Action Plan, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
+                var errorMessage = $"Failure Update Action Plan, {e.InnerException}";
+                _logger.LogError(errorMessage);
+                throw new DssException(errorMessage);
             }
-            
+
         }
 
         public async Task UpdateGoal(UpdateGoal updateGoal)
         {
-            
+
             if (updateGoal == null)
-                throw new DssException($"Failure Update Goal, No data provided");
+            {
+                var errorMessage = $"Failure Update Goal, No data provided";
+                _logger.LogError(errorMessage);
+                throw new DssException(errorMessage);
+            }
 
             try
             {
@@ -326,31 +374,39 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
                     request.Headers.Add(VersionHeader, _dssSettings.Value.GoalsApiVersion);
 
                     await _restClient.PatchAsync<Goal>(_dssSettings.Value.GoalsApiUrl
-                            .Replace(CustomerIdTag,updateGoal.CustomerId.ToString())
-                            .Replace(InteractionIdTag,updateGoal.InteractionId.ToString())
-                            .Replace(ActionPlanIdTag,updateGoal.ActionPlanId.ToString()) + "/" + updateGoal.GoalId
+                            .Replace(CustomerIdTag, updateGoal.CustomerId.ToString())
+                            .Replace(InteractionIdTag, updateGoal.InteractionId.ToString())
+                            .Replace(ActionPlanIdTag, updateGoal.ActionPlanId.ToString()) + "/" + updateGoal.GoalId
                         , request);
                 }
 
-                if (_restClient.LastResponse.StatusCode==HttpStatusCode.NoContent)
+                if (_restClient.LastResponse.StatusCode == HttpStatusCode.NoContent)
                 {
-                    throw new DssException($"Failure Update Goal - Response {_restClient.LastResponse.Content} ");
+                    var errorMessage = $"Failure Update Goal - Response {_restClient.LastResponse.Content} ";
+                    _logger.LogError(errorMessage);
+                    throw new DssException(errorMessage);
                 }
 
-                
+
             }
             catch (Exception e)
             {
-                throw new DssException($"Failure Update Goal, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
+                var errorMessage = $"Failure Update Goal,  {e.InnerException}";
+                _logger.LogError(errorMessage);
+                throw new DssException(errorMessage);
             }
-            
+
         }
-        
+
         public async Task UpdateAction(UpdateAction updateAction)
         {
-            
+
             if (updateAction == null)
-                throw new DssException($"Failure Update Action, No data provided");
+            {
+                var errorMessage = $"Failure Update Action, No data provided";
+                _logger.LogError(errorMessage);
+                throw new DssException(errorMessage);
+            }
 
             try
             {
@@ -365,24 +421,28 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
                     request.Headers.Add(VersionHeader, _dssSettings.Value.ActionsApiVersion);
 
                     await _restClient.PatchAsync<Goal>(_dssSettings.Value.ActionsApiUrl
-                            .Replace(CustomerIdTag,updateAction.CustomerId.ToString())
-                            .Replace(InteractionIdTag,updateAction.InteractionId.ToString())
-                            .Replace(ActionPlanIdTag,updateAction.ActionPlanId.ToString()) + "/" + updateAction.ActionId
+                            .Replace(CustomerIdTag, updateAction.CustomerId.ToString())
+                            .Replace(InteractionIdTag, updateAction.InteractionId.ToString())
+                            .Replace(ActionPlanIdTag, updateAction.ActionPlanId.ToString()) + "/" + updateAction.ActionId
                         , request);
                 }
 
-                if (_restClient.LastResponse.StatusCode==HttpStatusCode.NoContent)
+                if (_restClient.LastResponse.StatusCode == HttpStatusCode.NoContent)
                 {
-                    throw new DssException($"Failure Update Action - Response {_restClient.LastResponse.Content} ");
+                    var errorMessage = $"Failure Update Action - Response {_restClient.LastResponse.Content} ";
+                    _logger.LogError(errorMessage);
+                    throw new DssException(errorMessage);
                 }
 
-                
+
             }
             catch (Exception e)
             {
-                throw new DssException($"Failure Update Action, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
+                var errorMessage = $"Failure Update Action, {e.InnerException}";
+                _logger.LogError(errorMessage);
+                throw new DssException(errorMessage);
             }
-            
+
         }
         private HttpRequestMessage CreateRequestMessage()
         {

@@ -21,8 +21,12 @@ namespace DFC.App.ActionPlans.Controllers
             await _cosmosService.CreateItemAsync(userSession, CosmosCollection.Session);
         }
 
+        protected async Task UpdateSession(UserSession session)
+        {
+            await _cosmosService.UpsertItemAsync(session, CosmosCollection.Session);
+        }
 
-        protected async Task<UserSession> GetUserSession(string Id, string partitionKey)
+        protected async Task<UserSession> GetUserSession(string Id, string partitionKey = "")
         {
             var result = await _cosmosService.ReadItemAsync(Id, partitionKey, CosmosCollection.Session);
             return result.IsSuccessStatusCode

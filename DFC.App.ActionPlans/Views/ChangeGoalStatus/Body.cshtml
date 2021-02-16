@@ -11,7 +11,7 @@
 <div class="govuk-width-container">
     <div class="govuk-grid-row ">
         <div class="govuk-grid-column-two-thirds ">
-            <form id="@Model.GetElementId("form", "Form")" action="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.ChangeGoalStatus/@Model.ActionPlanId/@Model.InteractionId/@Model.Goal.GoalId/" class="govuk-form-group" method="post">
+            <form id="@Model.GetElementId("form", "Form")" action="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.ChangeGoalStatus" class="govuk-form-group" method="post">
                 @Html.HiddenFor(m => m.ActionPlanId)
                 @Html.HiddenFor(m => m.InteractionId)
                 @Html.HiddenFor(m => m.Goal.GoalId)
@@ -49,13 +49,13 @@
                 <br />
 
                 <govukButton id="@Model.GetElementId("govukSecondaryButton", "Continue");" text="Update status"></govukButton>
-                <govukButtonLink additional-class="govuk-button--secondary" id="@Model.GetElementId("govukButtonLink", "Cancel")" LinkTitle="Cancel" LinkText="Cancel" LinkHref="@(Urls.GetViewGoalUrl(Model.CompositeSettings.Path,Model.ActionPlanId, @Model.InteractionId, new Guid(Model.Goal.GoalId)))"></govukButtonLink>
+                <govukButtonLink additional-class="govuk-button--secondary" id="@Model.GetElementId("govukButtonLink", "Cancel")" LinkTitle="Cancel" LinkText="Cancel" LinkHref="@(Urls.GetViewGoalUrl(Model.CompositeSettings.Path, new Guid(Model.Goal.GoalId)))"></govukButtonLink>
 
             </form>
         </div>
         <div class="action-plan-secondary-content govuk-grid-column-one-third  ">
             <partial name="~/ViewComponents/YourAdviser/youradvisor.cshtml" model="@Model.Adviser"/>
-            <partial name="~/ViewComponents/contact/contact.cshtml" model="@Model.ContactDetails"/>
+            <partial name="~/ViewComponents/contact/contact.cshtml" model="@Model"/>
         </div>
     </div>
 </div>

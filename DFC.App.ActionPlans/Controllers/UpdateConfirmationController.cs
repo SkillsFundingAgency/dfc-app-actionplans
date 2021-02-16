@@ -1,16 +1,21 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using Dfc.App.ActionPlans.Controllers;
 using DFC.App.ActionPlans.Cosmos.Interfaces;
+using DFC.APP.ActionPlans.Data.Models;
 using DFC.App.ActionPlans.Exceptions;
 using DFC.App.ActionPlans.Extensions;
+using DFC.App.ActionPlans.Helpers;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Services.DSS.Models;
 using DFC.App.ActionPlans.ViewModels;
+using DFC.Compui.Cosmos.Contracts;
 using DFC.Personalisation.Common.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -21,34 +26,40 @@ namespace DFC.App.ActionPlans.Controllers
     {
         private readonly IDssReader _dssReader;
         public UpdateConfirmationController(ILogger<UpdateConfirmationController> logger, IOptions<CompositeSettings> compositeSettings,
-            IDssReader dssReader, ICosmosService cosmosServiceService)
-            : base(compositeSettings, dssReader, cosmosServiceService)
+            IDssReader dssReader, ICosmosService cosmosServiceService, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
+            : base(compositeSettings, dssReader, cosmosServiceService, documentService, config)
         {
             _dssReader = dssReader;
         }
 
         
-        [Route("/body/update-confirmation/{actionPlanId}/{interactionId}/{objId}/{objectupdated}/{propertyupdated}")]
+        [Route("/body/update-confirmation")]
         [HttpGet]
-        public async  Task<IActionResult> Body(Guid actionPlanId, Guid interactionId, Guid objId, int objectUpdated, int propertyUpdated)
+        public async  Task<IActionResult> Body(Guid objectId, int objectUpdated, int propertyUpdated)
         {
             var customer = await GetCustomerDetails();
-            await LoadData(customer.CustomerId, actionPlanId, interactionId);
-            await SetUpdateMessages(objId,objectUpdated, propertyUpdated);
+            var session = await base.GetUserSession();
+            await ManageSession(customer.CustomerId, session.ActionPlanId, session.InteractionId);
+            await SetUpdateMessages(objectId, objectUpdated, propertyUpdated);
             return await base.Body();
         }
         
-        [Route("/head/update-confirmation/{actionPlanId}/{interactionId}/{objId}/{objectupdated}/{propertyupdated}")]
+        [Route("/head/update-confirmation")]
         [HttpGet]
-        public override IActionResult Head(Guid actionPlanId, Guid interactionId, Guid objId, int objectUpdated, int propertyUpdated)
+        public override IActionResult Head()
         {
-            ViewModel.PageTitle = objectUpdated switch
+            var queryobjectUpdated = string.IsNullOrEmpty(Request.Query["objectUpdated"]) ? "0"
+                : Request.Query["objectUpdated"].ToString();
+            int.TryParse(queryobjectUpdated, out var objectUpdated);
+
+           var title = objectUpdated switch
             {
-                Constants.Constants.Goal => "Goal Updated",
-                Constants.Constants.Action => "Action Updated",
+                Constants.Constants.Goal => "Goal updated",
+                Constants.Constants.Action => "Action updated",
                 _ => throw new ObjectUpdatedNotSetException($"Object updated has not been provided or is incorrect.")
             };
-            return base.Head(actionPlanId, interactionId, objId, objectUpdated, propertyUpdated);
+           ViewModel.GeneratePageTitle(title);
+            return  base.Head();
         }
 
         private async Task SetUpdateMessages(Guid objId, int objectUpdated, int propertyUpdated)
@@ -77,7 +88,7 @@ namespace DFC.App.ActionPlans.Controllers
                 ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString(), goalId.ToString());
             
             ViewModel.Name = $"{goal.GoalSummary} - {goal.GoalType.GetDisplayName()}";
-            ViewModel.ObjLink = $"{ViewModel.CompositeSettings.Path}/{CompositeViewModel.PageId.ViewGoal}/{ViewModel.ActionPlanId}/{ViewModel.InteractionId}/{goalId}";
+            ViewModel.ObjLink =  Urls.GetViewGoalUrl(ViewModel.CompositeSettings.Path, goalId);
             ViewModel.ObjLinkText = "view or update this goal";
             SetGoalMessagesForProperty(propertyUpdated, goal);
         }
@@ -114,7 +125,7 @@ namespace DFC.App.ActionPlans.Controllers
             var action = await _dssReader.GetActionDetails(ViewModel.CustomerId.ToString(),
                 ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString(), actionId.ToString());
             ViewModel.Name = $"{action.ActionSummary} - {action.ActionType.GetDisplayName()}";
-            ViewModel.ObjLink = $"{ViewModel.CompositeSettings.Path}/{CompositeViewModel.PageId.ViewAction}/{ViewModel.ActionPlanId}/{ViewModel.InteractionId}/{actionId}";
+            ViewModel.ObjLink = Urls.GetViewActionUrl(ViewModel.CompositeSettings.Path, actionId);
             ViewModel.ObjLinkText = "view or update this action";
             SetActionStatusMessages(propertyUpdated, action);
 

@@ -1,3 +1,24 @@
-﻿@model DFC.App.ActionPlans.ViewModels.CompositeViewModel
+﻿@model DFC.App.ActionPlans.ViewModels.HomeCompositeViewModel
 
 <partial name="~/Views/Shared/BodyTop.cshtml" />
+@if (!Model.HideHeroBanner)
+{
+    <div class="primary-hero">
+        <govukPrimaryHeroBanner headerText="@CompositeViewModel.AppTitle"></govukPrimaryHeroBanner>
+
+        <div class="govuk-width-container">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <p>Keep track of the goals and actions you and your adviser set during your careers advice appointment. </p>
+                    <div class="govuk-warning-text">
+                        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+                        <strong class="govuk-warning-text__text">
+                            <span class="govuk-warning-text__assistive">Warning</span>
+                            Action plans can only be set up by your career adviser at a careers advice appointment. If you would like advice from a career adviser you can <govukLink id="ContactUS" link-href="/contact-us" link-text="contact us" additional-class="govuk-link--light"></govukLink>
+                        </strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

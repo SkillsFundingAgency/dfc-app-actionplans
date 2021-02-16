@@ -57,7 +57,11 @@ namespace DFC.App.ActionPlans.ViewModels
         {
             Id = pageId;
             PageHeading = pageHeading;
-            
+            GeneratePageTitle(pageHeading);
+        }
+
+        public void GeneratePageTitle(string pageHeading)
+        {
             PageTitle = string.IsNullOrWhiteSpace(pageHeading) ? $"{AppTitle} | {NcsBranding}" : $"{pageHeading} | {AppTitle} | {NcsBranding}";
         }
 
@@ -74,7 +78,9 @@ namespace DFC.App.ActionPlans.ViewModels
         public Interaction Interaction { get; set;}
         public Adviser Adviser { get; set;}
         public ContactDetails ContactDetails { get; set; } = new ContactDetails();
-        
+        public string SharedContent { get; set; }
+
+
         public string GetElementId(string elementName, string instanceName)
         {
             Throw.IfNullOrWhiteSpace(elementName, nameof(elementName));

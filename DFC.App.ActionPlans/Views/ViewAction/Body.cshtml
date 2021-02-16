@@ -38,7 +38,7 @@
                             </td>
                             <td class="govuk-table__cell">
                                 <govukLink id="@Model.GetElementId("govUkLink", $"change-due-date")" 
-                                           link-href="@(Urls.GetChangeUrl(@Model.CompositeSettings.Path, @CompositeViewModel.PageId.ChangeActionDueDate,@Model.ActionPlanId, @Model.InteractionId, new Guid(@Model.Action.ActionId)))" LinkText="Change due date"></govukLink>
+                                           link-href="@(Urls.GetChangeUrl(@Model.CompositeSettings.Path, @CompositeViewModel.PageId.ChangeActionDueDate,new Guid(@Model.Action.ActionId), "ActionId"))" LinkText="Change due date"></govukLink>
                             </td>
                         </tr>
                         <tr class="govuk-table__row">
@@ -49,7 +49,7 @@
                                 <span class="">@Model.Action.ActionStatus.GetDisplayName()</span>
                             </td>
                             <td class="govuk-table__cell">
-                                <a class="" href="@(Urls.GetChangeUrl(@Model.CompositeSettings.Path, @CompositeViewModel.PageId.ChangeActionStatus,@Model.ActionPlanId, @Model.InteractionId, new Guid(@Model.Action.ActionId)))">Update status</a>
+                                <a class="" href="@(Urls.GetChangeUrl(@Model.CompositeSettings.Path, @CompositeViewModel.PageId.ChangeActionStatus,new Guid(@Model.Action.ActionId), "ActionId"))">Update status</a>
                             </td>
                         </tr>
                     </tbody>
@@ -58,7 +58,7 @@
         </div>
         <div class="action-plan-secondary-content govuk-grid-column-one-third  ">
             <partial name="~/ViewComponents/YourAdviser/youradvisor.cshtml" model="@Model.Adviser"/>
-            <partial name="~/ViewComponents/contact/contact.cshtml" model="@Model.ContactDetails"/>
+            <partial name="~/ViewComponents/contact/contact.cshtml" model="@Model"/>
         </div>
     </div>
 </div>

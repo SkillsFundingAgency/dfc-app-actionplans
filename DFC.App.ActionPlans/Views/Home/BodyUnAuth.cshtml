@@ -1,0 +1,28 @@
+﻿@using Microsoft.Extensions.Options
+@using DFC.App.ActionPlans.Models
+@inject IOptions<AuthSettings> AuthSettings;
+@model HomeCompositeViewModel
+
+<div class="govuk-main-wrapper ">
+
+    <div class="govuk-width-container">
+        <div class="govuk-grid-row">
+            
+
+            <div class="govuk-grid-column-two-thirds">
+
+                <govukHeadingH2 text="Your action plan"></govukHeadingH2>
+                <p>You need to log in to view and update your action plan set by you and your career adviser during your career’s advice appointment.</p>
+                <govukButtonLink id="@Model.GetElementId("govukButtonLink ", "GoToActionPlans")" LinkText="Go to your action plans" LinkHref="@AuthSettings.Value.AccountEndpoint"></govukButtonLink>
+                <govukHeadingH2 text="Do not have an action plan?"></govukHeadingH2>
+                <p>If you have not had a careers advice appointment and do not have an action plan you can see our <govukLink id="CareersAdviceLink" link-href="/careers-advice" link-text="careers advice articles" ></govukLink> to help you at any stage of your career.</p>
+
+            </div>
+            
+            <div class="action-plan-secondary-content govuk-grid-column-one-third  ">
+                <partial name="~/ViewComponents/contact/contact.cshtml" model="@Model"/>
+            </div>
+        </div>
+    </div>
+
+</div>

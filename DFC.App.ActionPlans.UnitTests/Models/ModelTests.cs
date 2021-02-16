@@ -54,10 +54,7 @@ namespace DFC.App.ActionPlans.UnitTests
                     ClientId = "id",
                     ClientSecret = "secret",
                     Issuer = "isuser",
-                    RegisterUrl = "url",
-                    ResetPasswordUrl = "url",
                     SignInUrl = "url",
-                    SignOutUrl = "url"
                 };
 
             }

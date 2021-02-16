@@ -2,15 +2,18 @@
 using System.Threading.Tasks;
 using Dfc.App.ActionPlans.Controllers;
 using DFC.App.ActionPlans.Cosmos.Interfaces;
+using DFC.APP.ActionPlans.Data.Models;
 using DFC.App.ActionPlans.Helpers;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Enums;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Services.DSS.Models;
 using DFC.App.ActionPlans.ViewModels;
+using DFC.Compui.Cosmos.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -23,19 +26,20 @@ namespace DFC.App.ActionPlans.Controllers
         private readonly IDssReader _dssReader;
 
         public ChangeGoalStatusController(ILogger<ChangeGoalStatusController> logger, IOptions<CompositeSettings> compositeSettings,
-            IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService)
-            : base(compositeSettings, dssReader, cosmosServiceService)
+            IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
+            : base(compositeSettings, dssReader, cosmosServiceService, documentService, config)
         {
             _dssWriter = dssWriter;
             _dssReader = dssReader;
-            ViewModel.PageTitle = "Change Goal Status";
+            ViewModel.GeneratePageTitle("Change goal status");
         }
 
-        [Route("/body/change-goal-status/{actionPlanId}/{interactionId}/{goalId}")]
+        [Route("/body/change-goal-status")]
         [HttpGet]
-        public async Task<IActionResult> Body(Guid actionPlanId, Guid interactionId, Guid goalId)
+        public async Task<IActionResult> Body( Guid goalId)
         {
-            await LoadViewData(actionPlanId, interactionId);
+            var session = await GetUserSession();
+            await LoadViewData(session.ActionPlanId, session.InteractionId);
 
             ViewModel.Goal = await _dssReader.GetGoalDetails(ViewModel.CustomerId.ToString(),
                 ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString(), goalId.ToString());
@@ -44,7 +48,7 @@ namespace DFC.App.ActionPlans.Controllers
         }
 
 
-        [Route("/body/change-goal-status/{actionPlanId}/{interactionId}/{goalId}")]
+        [Route("/body/change-goal-status")]
         [HttpPost]
         public async Task<IActionResult> Body(ChangeGoalCompositeViewModel model, IFormCollection formCollection)
         {
@@ -62,8 +66,7 @@ namespace DFC.App.ActionPlans.Controllers
                 };
 
                 await UpdateGoal();
-                return RedirectTo(Urls.GetUpdateConfirmationUrl(ViewModel.ActionPlanId, ViewModel.InteractionId,
-                    new Guid(ViewModel.Goal.GoalId), Constants.Constants.Goal, Constants.Constants.Status));
+                return RedirectTo(Urls.GetUpdateConfirmationUrl(new Guid(ViewModel.Goal.GoalId), Constants.Constants.Goal, Constants.Constants.Status));
             }
             else
             {
@@ -74,14 +77,14 @@ namespace DFC.App.ActionPlans.Controllers
             ModelState.AddModelError(Constants.Constants.GoalStatus, model.ErrorMessage);
 
             var customer = await GetCustomerDetails();
-            await LoadData(customer.CustomerId, model.ActionPlanId, model.InteractionId);
+            await ManageSession(customer.CustomerId, model.ActionPlanId, model.InteractionId);
             return await base.Body();
         }
 
         private async Task LoadViewData(Guid actionPlanId, Guid interactionId)
         {
             var customer = await GetCustomerDetails();
-            await LoadData(customer.CustomerId, actionPlanId, interactionId);
+            await ManageSession(customer.CustomerId, actionPlanId, interactionId);
         }
 
         private void InitVM(ChangeGoalCompositeViewModel model)

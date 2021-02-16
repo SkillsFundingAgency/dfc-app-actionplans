@@ -5,32 +5,32 @@ namespace DFC.App.ActionPlans.Helpers
 {
     public static class Urls
     {
-        public static string GetUpdateConfirmationUrl(Guid ActionPlanId, Guid InteractionId, Guid ObjectId, int ObjectUpdated, int PropertyUpdated)
+        public static string GetUpdateConfirmationUrl(Guid ObjectId, int ObjectUpdated, int PropertyUpdated)
         {
-            var url = $"{CompositeViewModel.PageId.UpdateConfirmation}/{ActionPlanId}/{InteractionId}/{ObjectId}/{ObjectUpdated}/{PropertyUpdated}";
+            var url = $"{CompositeViewModel.PageId.UpdateConfirmation}?objectId={ObjectId}&objectUpdated={ObjectUpdated}&propertyUpdated={PropertyUpdated}";
             return url;
         }
 
-        public static string GetViewGoalUrl(String CompositePath, Guid ActionPlanId, Guid InteractionId, Guid GoalId)
+        public static string GetViewGoalUrl(String CompositePath, Guid GoalId)
         {
-            var url = $"{CompositePath}/{CompositeViewModel.PageId.ViewGoal}/{ActionPlanId}/{InteractionId}/{GoalId}";
+            var url = $"{CompositePath}/{CompositeViewModel.PageId.ViewGoal}?goalId={GoalId}";
             return url;
         }
-        public static string GetViewActionUrl(String CompositePath, Guid ActionPlanId, Guid InteractionId, Guid ActionId)
+        public static string GetViewActionUrl(String CompositePath, Guid ActionId)
         {
-            var url = $"{CompositePath}/{CompositeViewModel.PageId.ViewAction}/{ActionPlanId}/{InteractionId}/{ActionId}";
-            return url;
-        }
-
-        public static string GetViewActionPlanUrl(String CompositePath, Guid ActionPlanId, Guid InteractionId)
-        {
-            var url = $"{CompositePath}/{ActionPlanId}/{InteractionId}";
+            var url = $"{CompositePath}/{CompositeViewModel.PageId.ViewAction}?actionId={ActionId}";
             return url;
         }
 
-        public static string GetChangeUrl(String CompositePath, CompositeViewModel.PageId pageId, Guid ActionPlanId, Guid InteractionId, Guid ObjectId)
+        public static string GetChangeUrl(String CompositePath, CompositeViewModel.PageId pageId, Guid ObjectId, string paramName)
         {
-            var url = $"{CompositePath}/{pageId}/{ActionPlanId}/{InteractionId}/{ObjectId}";
+            var url = $"{CompositePath}/{pageId}?{paramName}={ObjectId}";
+            return url;
+        }
+
+        public static string GetViewActionPlanUrl(string CompositePath)
+        {
+            var url = $"{CompositePath}/home";
             return url;
         }
     }

@@ -46,9 +46,6 @@
         "cosmosDbKey": {
             "type": "securestring"
         },
-        "cosmosApiKey": {
-            "type": "securestring"
-        },
         "UserSessionsCollection": {
             "type": "string"
         },
@@ -80,6 +77,21 @@
             "type": "string"
         },
         "AuthSettingsClientId": {
+            "type": "string"
+        },
+        "AuthSettingsAccountEndpoint": {
+            "type": "string"
+        },
+        "subscriptionUrl": {
+            "type": "string"
+        },
+        "SubscriptionSettingsEndpoint": {
+            "type": "string"
+        },
+        "contentUrl": {
+            "type": "string"
+        },
+        "SummaryEndpoint": {
             "type": "string"
         }
     },
@@ -173,6 +185,9 @@
                     "deployStagingSlot": {
                         "value": true
                     },
+                    "clientAffinity": {
+                        "value": true
+                    },
                     "appServiceAppSettings": {
                         "value": [
                             {
@@ -182,6 +197,10 @@
                             {
                                 "name": "AzureWebJobsStorage",
                                 "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('appSharedStorageAccountName'),';AccountKey=',listKeys(resourceId(parameters('appSharedResourceGroup'), 'Microsoft.Storage/storageAccounts', parameters('appSharedStorageAccountName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value, ';EndpointSuffix=core.windows.net')]"
+                            },
+                            {
+                                "name": "Configuration__ApplicationName",
+                                "value": "DFC-App-ActionPlans"
                             },
                             {
                                 "name": "Configuration__CosmosDbConnections__Actionplans__AccessKey",
@@ -197,7 +216,7 @@
                             },
                             {
                                 "name": "Configuration__CosmosDbConnections__Actionplans__CollectionId",
-                                "value": "[parameters('cosmosDbCollectionName')]"
+                                "value": "[parameters('cosmosContentDbCollectionName')]"
                             },
                             {
                                 "name": "Configuration__CosmosDbConnections__Actionplans__PartitionKey",
@@ -209,7 +228,7 @@
                             },
                             {
                                 "name": "CosmosSettings__Apikey",
-                                "value": "[parameters('CosmosApikey')]"
+                                "value": "[parameters('cosmosDbKey')]"
                             },
                             {
                                 "name": "CosmosSettings__DatabaseName",
@@ -225,7 +244,7 @@
                             },
                             {
                                 "name": "Logging__ApplicationInsights__LogLevel__Default",
-                                "value": "Warning"
+                                "value": "Information"
                             },
                             {
                                 "name": "DssSettings__CustomerApiUrl",
@@ -269,7 +288,7 @@
                             },
                             {
                                 "name": "DssSettings__SessionApiVersion",
-                                "value": "v3"
+                                "value": "v2"
                             },
                             {
                                 "name": "DssSettings__AdviserDetailsApiVersion",
@@ -317,7 +336,7 @@
                             },
                             {
                                 "name": "AuthSettings__SignInUrl",
-                                "value": "[concat(parameters('AuthSettingsIssuer'), '/auth/SignIn')]"
+                                "value": "[concat(parameters('AuthSettingsIssuer'), '/auth/SignIn?redirectUrl=/your-account')]"
                             },
                             {
                                 "name": "AuthSettings__SignOutUrl",
@@ -328,8 +347,80 @@
                                 "value": "[concat(parameters('AuthSettingsIssuer'), '/auth/register')]"
                             },
                             {
+                                "name": "AuthSettings__AccountEndpoint",
+                                "value": "[parameters('AuthSettingsAccountEndpoint')]"
+                            },
+                            {
                                 "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
                                 "value": "[reference(variables('webAppInsightsName')).outputs.InstrumentationKey.value]"
+                            },
+                            {
+                                "name": "WEBSITE_RUN_FROM_PACKAGE",
+                                "value": "1"
+                            },
+                            {
+                                "name": "WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG",
+                                "value": "1"
+                            },
+                            {
+                                "name": "SubscriptionSettings__Endpoint",
+                                "value": "[concat(parameters('SubscriptionSettingsEndpoint'),'/api/webhook/ReceiveEvents')]"
+                            },
+                            {
+                                "name": "SubscriptionSettings__SubscriptionRegistrationDelay",
+                                "value": "00:02:00"
+                            },
+                            {
+                                "name": "SubscriptionSettings__SubscriptionServiceEndpoint",
+                                "value": "[concat(parameters('subscriptionUrl'),'/api/Execute')]"
+                            },
+                            {
+                                "name": "SubscriptionSettings__Filter__IncludeEventTypes__0",
+                                "value": "published"
+                            },
+                            {
+                                "name": "SubscriptionSettings__Filter__IncludeEventTypes__1",
+                                "value": "unpublished"
+                            },
+                            {
+                                "name": "SubscriptionSettings__Filter__IncludeEventTypes__2",
+                                "value": "deleted"
+                            },
+                            {
+                                "name": "SubscriptionSettings__Filter__PropertyContainsFilters__0__Key",
+                                "value": "subject"
+                            },
+                            {
+                                "name": "SubscriptionSettings__Filter__PropertyContainsFilters__0__Values__0",
+                                "value": "/content/sharedcontent/"
+                            },
+                            {
+                                "name": "SharedContentGuid",
+                                "value": "2c9da1b3-3529-4834-afc9-9cd741e59788"
+                            },
+                            {
+                                "name": "Configuration__NotifyOptions__Policies__HttpCircuitBreaker__DurationOfBreak",
+                                "value": "00:00:30"
+                            },
+                            {
+                                "name": "Configuration__NotifyOptions__Policies__HttpCircuitBreaker__ExceptionsAllowedBeforeBreaking",
+                                "value": 3
+                            },
+                            {
+                                "name": "CmsApiClientOptions__Timeout",
+                                "value": "00:00:30"
+                            },
+                            {
+                                "name": "CmsApiClientOptions__ApiKey",
+                                "value": "05914c51af7c462ebe504287a5271e43"
+                            },
+                            {
+                                "name": "CmsApiClientOptions__BaseAddress",
+                                "value": "[parameters('contentUrl')]"
+                            },
+                            {
+                                "name": "CmsApiClientOptions__SummaryEndpoint",
+                                "value": "[parameters('SummaryEndpoint')]"
                             }
                         ]
                     }

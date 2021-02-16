@@ -16,7 +16,8 @@ namespace DFC.App.ActionPlans.ViewModels
         public List<Action> Actions { get; set;}
         public Session LatestSession { get; set;}
         public ActionPlan ActionPlan { get; set;}
-       
+        public bool HideHeroBanner { get; set; }
         
+
     }
 }
