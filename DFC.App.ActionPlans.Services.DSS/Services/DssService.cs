@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using System;
 
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Net.Http;
 using System.Net.Mime;
@@ -19,6 +20,7 @@ using Interaction = DFC.App.ActionPlans.Services.DSS.Models.Interaction;
 
 namespace DFC.App.ActionPlans.Services.DSS.Services
 {
+    [ExcludeFromCodeCoverage]
     public class DssService : IDssReader, IDssWriter
     {
         const string VersionHeader = "version";
@@ -75,7 +77,7 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             }
             catch (Exception e)
             {
-                var errorMessage = $"Failure Get Customer Details, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  CustomerId:{customerId} {Environment.NewLine} {e.InnerException}";
+                var errorMessage = $"Failure Get Customer Details, Code:{_restClient.LastResponse?.StatusCode} {Environment.NewLine}  CustomerId:{customerId} {Environment.NewLine} {e.InnerException}";
                 _logger.LogError(errorMessage);
                 throw new DssException(errorMessage);
             }
@@ -102,7 +104,7 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             }
             catch (Exception e)
             {
-                var errorMessage = $"Failure GetSessions, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine} CustomerId:{customerId} InteractionId:{interactionId} {Environment.NewLine} {e.InnerException}";
+                var errorMessage = $"Failure GetSessions, Code:{_restClient.LastResponse?.StatusCode} {Environment.NewLine} CustomerId:{customerId} InteractionId:{interactionId} {Environment.NewLine} {e.InnerException}";
                 _logger.LogError(errorMessage);
                 throw new DssException(errorMessage);
             }
@@ -132,7 +134,7 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             }
             catch (Exception e)
             {
-                var errorMessage = $"Failure InteractionDetails, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  CustomerId:{customerId} InteractionId:{interactionId} {Environment.NewLine} {e.InnerException}";
+                var errorMessage = $"Failure InteractionDetails, CustomerId:{customerId} InteractionId:{interactionId} {Environment.NewLine} {e.InnerException}";
                 _logger.LogError(errorMessage);
                 throw new DssException(errorMessage);
             }
@@ -157,7 +159,7 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             }
             catch (Exception e)
             {
-                var errorMessage = $"Failure Get Actions, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine} CustomerId:{customerId} InteractionId:{interactionId} ActionPlanId{actionPlanId} {Environment.NewLine} {e.InnerException}";
+                var errorMessage = $"Failure Get Actions, CustomerId:{customerId} InteractionId:{interactionId} ActionPlanId{actionPlanId} {Environment.NewLine} {e.InnerException}";
                 _logger.LogError(errorMessage);
                 throw new DssException(errorMessage);
             }
@@ -182,7 +184,7 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             }
             catch (Exception e)
             {
-                var errorMessage = $"Failure Get Goals, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  CustomerId:{customerId} InteractionId:{interactionId} ActionPlanId{actionPlanId} {Environment.NewLine} {e.InnerException}";
+                var errorMessage = $"Failure Get Goals, CustomerId:{customerId} InteractionId:{interactionId} ActionPlanId{actionPlanId} {Environment.NewLine} {e.InnerException}";
                 _logger.LogError(errorMessage);
                 throw new DssException(errorMessage);
             }
@@ -209,7 +211,7 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             }
             catch (Exception e)
             {
-                var errorMessage = $"Failure Get Adviser Details, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine} AdviserId{adviserId} {Environment.NewLine}  {e.InnerException}";
+                var errorMessage = $"Failure Get Adviser Details, AdviserId{adviserId} {Environment.NewLine}  {e.InnerException}";
                 _logger.LogError(errorMessage);
                 throw new DssException(errorMessage);
             }
@@ -236,7 +238,7 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             }
             catch (Exception e)
             {
-                var errorMessage = $"Failure Get Action Plan, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine} CustomerId:{customerId} InteractionId:{interactionId} ActionPlanId{actionPlanId} {Environment.NewLine}  {e.InnerException}";
+                var errorMessage = $"Failure Get Action Plan, CustomerId:{customerId} InteractionId:{interactionId} ActionPlanId{actionPlanId} {Environment.NewLine}  {e.InnerException}";
                 _logger.LogError(errorMessage);
                 throw new DssException(errorMessage);
             }
@@ -264,7 +266,7 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             }
             catch (Exception e)
             {
-                var errorMessage = $"Failure Get Goal Details, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine} CustomerId:{customerId} InteractionId:{interactionId} ActionPlanId{actionPlanId} GoalId{goalId} {Environment.NewLine}  {e.InnerException}";
+                var errorMessage = $"Failure Get Goal Details, {Environment.NewLine} CustomerId:{customerId} InteractionId:{interactionId} ActionPlanId{actionPlanId} GoalId{goalId} {Environment.NewLine}  {e.InnerException}";
                 _logger.LogError(errorMessage);
                 throw new DssException(errorMessage);
             }
@@ -296,7 +298,7 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             }
             catch (Exception e)
             {
-                var errorMessage = $"Failure Get Action Details, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine} CustomerId:{customerId} InteractionId:{interactionId} ActionPlanId{actionPlanId} GoalId{goalId} {Environment.NewLine}  {e.InnerException}";
+                var errorMessage = $"Failure Get Action Details, CustomerId:{customerId} InteractionId:{interactionId} ActionPlanId{actionPlanId} GoalId{goalId} {Environment.NewLine}  {e.InnerException}";
                 _logger.LogError(errorMessage);
                 throw new DssException(errorMessage);
             }
@@ -342,7 +344,7 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             }
             catch (Exception e)
             {
-                var errorMessage = $"Failure Update Action Plan, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}";
+                var errorMessage = $"Failure Update Action Plan, {e.InnerException}";
                 _logger.LogError(errorMessage);
                 throw new DssException(errorMessage);
             }
@@ -389,7 +391,7 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             }
             catch (Exception e)
             {
-                var errorMessage = $"Failure Update Goal, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}";
+                var errorMessage = $"Failure Update Goal,  {e.InnerException}";
                 _logger.LogError(errorMessage);
                 throw new DssException(errorMessage);
             }
@@ -436,7 +438,7 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
             }
             catch (Exception e)
             {
-                var errorMessage = $"Failure Update Action, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}";
+                var errorMessage = $"Failure Update Action, {e.InnerException}";
                 _logger.LogError(errorMessage);
                 throw new DssException(errorMessage);
             }

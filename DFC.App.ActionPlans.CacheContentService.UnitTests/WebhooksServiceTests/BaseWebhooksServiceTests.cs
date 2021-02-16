@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using DFC.APP.Account.CacheContentService;
+﻿using DFC.APP.ActionPlans.CacheContentService;
 using DFC.APP.ActionPlans.Data.Common;
 using DFC.APP.ActionPlans.Data.Contracts;
-using DFC.Content.Pkg.Netcore.Data.Contracts;
 using FakeItEasy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
 
 namespace DFC.App.ActionPlans.CacheContentService.UnitTests.WebhooksServiceTests
 {
@@ -22,7 +21,6 @@ namespace DFC.App.ActionPlans.CacheContentService.UnitTests.WebhooksServiceTests
         protected BaseWebhooksServiceTests()
         {
             Logger = A.Fake<ILogger<WebhooksService>>();
-            FakeContentCacheService = A.Fake<IContentCacheService>();
             FakeWebhookContentProcessor = A.Fake<IWebhookContentProcessor>();
             var inMemorySettings = new Dictionary<string, string> {
                 {Constants.SharedContentGuidConfig,  SharedId.ToString()}
@@ -35,16 +33,14 @@ namespace DFC.App.ActionPlans.CacheContentService.UnitTests.WebhooksServiceTests
         }
 
         protected ILogger<WebhooksService> Logger { get; }
-
-        protected IContentCacheService FakeContentCacheService { get; }
-
+        
         protected IWebhookContentProcessor FakeWebhookContentProcessor { get; }
 
         protected IConfiguration Config { get; }
 
         protected WebhooksService BuildWebhooksService()
         {
-            var service = new WebhooksService(Logger, FakeContentCacheService, FakeWebhookContentProcessor, Config);
+            var service = new WebhooksService(Logger, FakeWebhookContentProcessor, Config);
 
             return service;
         }

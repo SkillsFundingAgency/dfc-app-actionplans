@@ -1,5 +1,8 @@
-﻿namespace DFC.App.ActionPlans.ViewModels
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace DFC.App.ActionPlans.ViewModels
 {
+    [ExcludeFromCodeCoverage]
     public class ErrorCompositeViewModel : CompositeViewModel
     {
         public ErrorCompositeViewModel() : base(PageId.Error, "Service Error")

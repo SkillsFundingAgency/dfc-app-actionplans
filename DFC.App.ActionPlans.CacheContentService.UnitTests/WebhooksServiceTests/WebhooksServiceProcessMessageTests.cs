@@ -42,13 +42,32 @@ namespace DFC.App.ActionPlans.CacheContentService.UnitTests.WebhooksServiceTests
             var url = "/somewhere.com";
             var service = BuildWebhooksService();
 
-            A.CallTo(() => FakeContentCacheService.CheckIsContentItem(A<Guid>.Ignored)).Returns(isContentItem);
 
             // Act
             Assert.ThrowsAsync<InvalidDataException>(() =>  service.ProcessMessageAsync(WebhookCacheOperation.CreateOrUpdate, Guid.NewGuid(), SharedId, url));
             // Assert
             A.CallTo(() => FakeWebhookContentProcessor.DeleteContentAsync(A<Guid>.Ignored)).MustNotHaveHappened();
             A.CallTo(() => FakeWebhookContentProcessor.ProcessContentAsync(A<Uri>.Ignored, A<Guid>.Ignored)).MustNotHaveHappened();
+        }
+
+        [Fact]
+        public async Task WebhooksServiceProcessMessageAsyncContentIgnored()
+        {
+            // Arrange
+            const HttpStatusCode expectedResponse = HttpStatusCode.OK;
+            var url = "https://somewhere.com";
+            var service = BuildWebhooksService();
+
+            A.CallTo(() => FakeWebhookContentProcessor.ProcessContentAsync(A<Uri>.Ignored, A<Guid>.Ignored)).Returns(expectedResponse);
+
+            // Act
+            var result = await service.ProcessMessageAsync(WebhookCacheOperation.CreateOrUpdate, Guid.NewGuid(), Guid.NewGuid(), url).ConfigureAwait(false);
+
+            // Assert
+            A.CallTo(() => FakeWebhookContentProcessor.DeleteContentAsync(A<Guid>.Ignored)).MustNotHaveHappened();
+            A.CallTo(() => FakeWebhookContentProcessor.ProcessContentAsync(A<Uri>.Ignored, A<Guid>.Ignored)).MustNotHaveHappened();
+
+            Assert.AreEqual(expectedResponse, result);
         }
 
         [Fact]
@@ -60,7 +79,6 @@ namespace DFC.App.ActionPlans.CacheContentService.UnitTests.WebhooksServiceTests
             var url = "https://somewhere.com";
             var service = BuildWebhooksService();
 
-            A.CallTo(() => FakeContentCacheService.CheckIsContentItem(A<Guid>.Ignored)).Returns(isContentItem);
             A.CallTo(() => FakeWebhookContentProcessor.ProcessContentAsync(A<Uri>.Ignored, A<Guid>.Ignored)).Returns(expectedResponse);
 
             // Act
