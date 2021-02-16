@@ -1,5 +1,8 @@
-﻿namespace DFC.App.ActionPlans.ViewModels
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace DFC.App.ActionPlans.ViewModels
 {
+    [ExcludeFromCodeCoverage]
     public class ErrorViewModel
     {
         public bool ShowEnhancedLog { get; set; }

@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -8,13 +10,15 @@ using DFC.App.ActionPlans.Services.DSS.Models;
 using DFC.App.ActionPlans.Services.DSS.Services;
 using DFC.App.ActionPlans.Services.DSS.UnitTest.Helpers;
 using DFC.Personalisation.Common.Net.RestClient;
+using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 using NUnit.Framework;
-using FluentAssertions;
+using Action = DFC.App.ActionPlans.Services.DSS.Models.Action;
 
-namespace DFC.App.ActionPlans.Services.DSS.UnitTest
+namespace DFC.App.ActionPlans.Services.DSS.UnitTest.UnitTests
 {
     public abstract class DssTests
     {
@@ -75,6 +79,17 @@ namespace DFC.App.ActionPlans.Services.DSS.UnitTest
                 DssService.Invoking(sut => sut.GetSessions("993cfb94-12b7-41c4-b32d-7be9331174f1", "saddasdsadsa"))
                     .Should().Throw<DssException>();
             }
+
+            [Test]
+            public async Task When_GetSessionErrors_Return_Exception()
+            {
+                var restClient = Substitute.For<IRestClient>();
+                restClient.GetAsync<List<Session>>(Arg.Any<string>(), Arg.Any<HttpRequestMessage>()).ThrowsForAnyArgs(new Exception("error"));
+                DssService = new DssService(restClient, DssSettings, Logger);
+                DssService.Invoking(sut => sut.GetSessions("993cfb94-12b7-41c4-b32d-7be9331174f1", "saddasdsadsa"))
+                    .Should().Throw<DssException>();
+                Logger.ReceivedCalls().Count().Equals(1);
+            }
         }
         public class GetGoalsTests : DssTests
         {
@@ -100,6 +115,21 @@ namespace DFC.App.ActionPlans.Services.DSS.UnitTest
                 result.Count.Should().Be(0);
                 
             }
+
+            [Test]
+            public async Task When_GetGoalsDataWithNoContent_Return_Exception()
+            {
+                var restClient = Substitute.For<IRestClient>();
+                restClient.LastResponse = new RestClient.APIResponse(new HttpResponseMessage(HttpStatusCode.NoContent));
+                DssService = new DssService(restClient, DssSettings, Logger);
+
+                restClient.GetAsync<List<Goal>>(Arg.Any<string>(), Arg.Any<HttpRequestMessage>()).ThrowsForAnyArgs(new Exception("error"));
+
+                DssService.Invoking(sut => sut.GetGoals("customer", "interactionid", "actionplanid"))
+                    .Should().Throw<DssException>();
+                Logger.ReceivedCalls().Count().Equals(1);
+            }
+
         }
         public class GetActionsTests : DssTests
         {
@@ -125,6 +155,20 @@ namespace DFC.App.ActionPlans.Services.DSS.UnitTest
                 result.Count.Should().Be(0);
                 
             }
+
+            [Test]
+            public async Task When_GetActionsErrors_Return_Exception()
+            {
+                var restClient = Substitute.For<IRestClient>();
+                restClient.LastResponse = new RestClient.APIResponse(new HttpResponseMessage(HttpStatusCode.NoContent));
+                DssService = new DssService(restClient, DssSettings, Logger);
+                restClient.GetAsync<List<Action>>(Arg.Any<string>(), Arg.Any<HttpRequestMessage>()).ThrowsForAnyArgs(new Exception("error"));
+
+                DssService.Invoking(sut => sut.GetActions("customer", "interactionid", "actionplanid"))
+                    .Should().Throw<DssException>();
+                Logger.ReceivedCalls().Count().Equals(1);
+
+            }
         }
         public class GetInteractionsTests : DssTests
         {
@@ -139,16 +183,29 @@ namespace DFC.App.ActionPlans.Services.DSS.UnitTest
                 var result = await DssService.GetInteractionDetails("customer", "interactionid");
                 result.Should().NotBe(null);
             }
+
             [Test]
             public async Task When_GetInteractionDetailsWithNoContent_Return_EmptyList()
             {
                 var restClient = Substitute.For<IRestClient>();
                 restClient.LastResponse = new RestClient.APIResponse(new HttpResponseMessage(HttpStatusCode.NoContent));
                 DssService = new DssService(restClient, DssSettings, Logger);
-
+                
                 DssService.Invoking(sut => sut.GetInteractionDetails("993cfb94-12b7-41c4-b32d-7be9331174f1", "saddasdsadsa"))
                     .Should().Throw<DssException>();
 
+            }
+
+            [Test]
+            public async Task When_GetInteractionDetailsErrors_Return_EmptyList()
+            {
+                var restClient = Substitute.For<IRestClient>();
+                restClient.LastResponse = new RestClient.APIResponse(new HttpResponseMessage(HttpStatusCode.NoContent));
+                DssService = new DssService(restClient, DssSettings, Logger);
+                restClient.GetAsync<Interaction>(Arg.Any<string>(), Arg.Any<HttpRequestMessage>()).ThrowsForAnyArgs(new Exception("error"));
+                DssService.Invoking(sut => sut.GetInteractionDetails("993cfb94-12b7-41c4-b32d-7be9331174f1", "saddasdsadsa"))
+                    .Should().Throw<DssException>();
+                Logger.ReceivedCalls().Count().Equals(1);
             }
         }
         public class GetAdviserDetails: DssTests
@@ -175,6 +232,20 @@ namespace DFC.App.ActionPlans.Services.DSS.UnitTest
                     .Should().Throw<DssException>();
 
             }
+
+            [Test]
+            public async Task When_GoalDetailsErrors_Throw_Exception()
+            {
+                var restClient = Substitute.For<IRestClient>();
+                restClient.LastResponse = new RestClient.APIResponse(new HttpResponseMessage(HttpStatusCode.NoContent));
+                DssService = new DssService(restClient, DssSettings, Logger);
+                restClient.GetAsync<Adviser>(Arg.Any<string>(), Arg.Any<HttpRequestMessage>()).ThrowsForAnyArgs(new Exception("error"));
+
+                DssService.Invoking(sut => sut.GetAdviserDetails("993cfb94-12b7-41c4-b32d-7be9331174f1"))
+                    .Should().Throw<DssException>();
+                Logger.ReceivedCalls().Count().Equals(1);
+
+            }
         }
     
         public class GetActionDetails: DssTests
@@ -199,6 +270,19 @@ namespace DFC.App.ActionPlans.Services.DSS.UnitTest
                 DssService.Invoking(sut => sut.GetActionDetails("customerId", "interactionId2","actionPlanId","actionId"))
                     .Should().Throw<DssException>();
             }
+
+            [Test]
+            public async Task When_ActionDetailsErrors_Throw_Exception()
+            {
+                var restClient = Substitute.For<IRestClient>();
+                restClient.LastResponse = new RestClient.APIResponse(new HttpResponseMessage(HttpStatusCode.NoContent));
+                DssService = new DssService(restClient, DssSettings, Logger);
+                restClient.GetAsync<Action>(Arg.Any<string>(), Arg.Any<HttpRequestMessage>()).ThrowsForAnyArgs(new Exception("error"));
+
+                DssService.Invoking(sut => sut.GetActionDetails("customerId", "interactionId2", "actionPlanId", "actionId"))
+                    .Should().Throw<DssException>();
+                Logger.ReceivedCalls().Count().Equals(1);
+            }
         }
         public class GetGoalDetails: DssTests
         {
@@ -221,6 +305,18 @@ namespace DFC.App.ActionPlans.Services.DSS.UnitTest
                 DssService = new DssService(restClient, DssSettings, Logger);
                 DssService.Invoking(sut => sut.GetGoalDetails("customerId", "interactionId2","actionPlanId","goalId"))
                     .Should().Throw<DssException>();
+            }
+
+            [Test]
+            public async Task When_AdviserDetailsErrors_Throw_Exception()
+            {
+                var restClient = Substitute.For<IRestClient>();
+                restClient.LastResponse = new RestClient.APIResponse(new HttpResponseMessage(HttpStatusCode.NoContent));
+                DssService = new DssService(restClient, DssSettings, Logger);
+                restClient.GetAsync<Goal>(Arg.Any<string>(), Arg.Any<HttpRequestMessage>()).ThrowsForAnyArgs(new Exception("error"));
+                DssService.Invoking(sut => sut.GetGoalDetails("customerId", "interactionId2", "actionPlanId", "goalId"))
+                    .Should().Throw<DssException>();
+                Logger.ReceivedCalls().Count().Equals(1);
             }
         }
         public class UpdateActionPlan: DssTests
@@ -284,6 +380,25 @@ namespace DFC.App.ActionPlans.Services.DSS.UnitTest
                 _dssWriter.Invoking(sut => sut.UpdateActionPlan(updateActionPlan))
                     .Should().Throw<DssException>();
 
+            }
+
+
+            [Test]
+            public async Task When_UpdateActionErrors_Throw_Exception()
+            {
+                var restClient = Substitute.For<IRestClient>();
+                restClient.LastResponse = new RestClient.APIResponse(new HttpResponseMessage(HttpStatusCode.NoContent))
+                {
+                    IsSuccess = false
+                };
+                _dssWriter = new DssService(restClient, DssSettings, Logger);
+
+                restClient.PatchAsync<ActionPlan>(Arg.Any<string>(), Arg.Any<HttpRequestMessage>())
+                    .ThrowsForAnyArgs<Exception>();
+
+                _dssWriter.Invoking(sut => sut.UpdateActionPlan(updateActionPlan))
+                    .Should().Throw<DssException>();
+                Logger.ReceivedCalls().Count().Equals(1);
             }
 
         }
@@ -352,6 +467,24 @@ namespace DFC.App.ActionPlans.Services.DSS.UnitTest
                     .Should().Throw<DssException>();
             }
 
+            [Test]
+            public async Task When_UpdateGoalErrors_Throw_Exception()
+            {
+                var restClient = Substitute.For<IRestClient>();
+                restClient.LastResponse = new RestClient.APIResponse(new HttpResponseMessage(HttpStatusCode.NoContent))
+                {
+                    IsSuccess = false
+                };
+                _dssWriter = new DssService(restClient, DssSettings, Logger);
+
+                restClient.PatchAsync<Goal>(Arg.Any<string>(), Arg.Any<HttpRequestMessage>())
+                    .ThrowsForAnyArgs<Exception>();
+
+                _dssWriter.Invoking(sut => sut.UpdateGoal(updateGoal))
+                    .Should().Throw<DssException>();
+                Logger.ReceivedCalls().Count().Equals(1);
+            }
+
         }
 
         public class UpdateAction: DssTests
@@ -416,6 +549,24 @@ namespace DFC.App.ActionPlans.Services.DSS.UnitTest
 
                 _dssWriter.Invoking(sut => sut.UpdateAction(updateAction))
                     .Should().Throw<DssException>();
+            }
+
+            [Test]
+            public async Task When_UpdateGoalErrors_Throw_Exception()
+            {
+                var restClient = Substitute.For<IRestClient>();
+                restClient.LastResponse = new RestClient.APIResponse(new HttpResponseMessage(HttpStatusCode.NoContent))
+                {
+                    IsSuccess = false
+                };
+                _dssWriter = new DssService(restClient, DssSettings, Logger);
+
+                restClient.PatchAsync<Goal>(Arg.Any<string>(), Arg.Any<HttpRequestMessage>())
+                    .ThrowsForAnyArgs<Exception>();
+
+                _dssWriter.Invoking(sut => sut.UpdateAction(updateAction))
+                    .Should().Throw<DssException>();
+                Logger.ReceivedCalls().Count().Equals(1);
             }
 
         }

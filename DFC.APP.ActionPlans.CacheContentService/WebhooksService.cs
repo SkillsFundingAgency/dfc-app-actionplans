@@ -1,31 +1,27 @@
-﻿using DFC.APP.ActionPlans.Data;
-using DFC.APP.ActionPlans.Data.Common;
-using DFC.APP.ActionPlans.Data.Contracts;
-using DFC.Content.Pkg.Netcore.Data.Contracts;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using DFC.APP.ActionPlans.Data;
+using DFC.APP.ActionPlans.Data.Common;
+using DFC.APP.ActionPlans.Data.Contracts;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
-namespace DFC.APP.Account.CacheContentService
+namespace DFC.APP.ActionPlans.CacheContentService
 {
     public class WebhooksService : IWebhooksService
     {
         private readonly ILogger<WebhooksService> logger;
-        private readonly IContentCacheService contentCacheService;
         private readonly IWebhookContentProcessor webhookContentProcessor;
         private readonly Guid _sharedContentId;
 
         public WebhooksService(
             ILogger<WebhooksService> logger,
-            IContentCacheService contentCacheService,
             IWebhookContentProcessor webhookContentProcessor,
             IConfiguration config)
         {
             this.logger = logger;
-            this.contentCacheService = contentCacheService;
             this.webhookContentProcessor = webhookContentProcessor;
             _sharedContentId = config.GetValue<Guid>(Constants.SharedContentGuidConfig);
         }
