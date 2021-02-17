@@ -9,6 +9,7 @@ using DFC.Compui.Cosmos.Contracts;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
@@ -38,9 +39,23 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             _logger = Substitute.For<ILogger<ChangeActionStatusController>>();
             _controller = new ChangeActionStatusController(_logger, _compositeSettings, _dssReader,_dssWriter,_cosmosService, _documentService, _config);
             _controller.ControllerContext.HttpContext = new DefaultHttpContext(){User = user};
+            var routeData = new RouteData();
+            routeData.Values.Add("controller", Constants.Constants.ChangeActionStatusController);
+            _controller.ControllerContext.RouteData = routeData;
+        }
+        
+        [Test]
+        public async Task WhenBreadcrumbCalledWithGuid_ReturnHtml()
+        {
+            var id = Guid.NewGuid();
+            var result = _controller.Breadcrumb(id) as ViewResult;
+            result.Should().NotBeNull();
+            result.Should().BeOfType<ViewResult>();
+            var data = result.ViewData.Model as ChangeActionCompositeViewModel;
+            data.BackLink.Should().Contain(id.ToString());
         }
 
-          [Test]
+        [Test]
         public async Task WhenBodyCalled_ReturnHtml()
         {
             var result = await _controller.Body(new Guid()) as ViewResult;
@@ -48,6 +63,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             result.Should().BeOfType<ViewResult>();
             result.ViewName.Should().BeNull();
         }
+
         
         [Test]
         public async Task WhenBodyCalledWithFormDataAndGoalUpdated_ThenRedirectToBody()

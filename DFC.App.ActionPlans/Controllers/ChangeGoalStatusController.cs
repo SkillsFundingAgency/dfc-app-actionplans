@@ -87,6 +87,11 @@ namespace DFC.App.ActionPlans.Controllers
             await ManageSession(customer.CustomerId, actionPlanId, interactionId);
         }
 
+        public override IActionResult Breadcrumb(Guid goalId)
+        {
+            return base.Breadcrumb(goalId);
+        }
+
         private void InitVM(ChangeGoalCompositeViewModel model)
         {
             ViewModel.ActionPlanId = model.ActionPlanId;

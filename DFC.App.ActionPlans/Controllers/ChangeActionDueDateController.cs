@@ -93,7 +93,10 @@ namespace DFC.App.ActionPlans.Controllers
             return await base.Body();
         }
 
-
+        public override IActionResult Breadcrumb(Guid actionId)
+        {
+            return base.Breadcrumb(actionId);
+        }
         private void InitVM(ChangeActionCompositeViewModel model)
         {
             ViewModel.CustomerId = model.CustomerId;
