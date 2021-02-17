@@ -9,6 +9,7 @@ using DFC.Compui.Cosmos.Contracts;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
@@ -37,7 +38,22 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         _logger = Substitute.For<ILogger<ChangeGoalDueDateController>>();
             _controller = new ChangeGoalDueDateController(_logger, _compositeSettings, _dssReader,_dssWriter, _cosmosService, _documentService, _config);
             _controller.ControllerContext.HttpContext = new DefaultHttpContext(){User = user};
-           
+            var routeData = new RouteData();
+            routeData.Values.Add("controller", Constants.Constants.ChangeGoalDueDateController);
+            _controller.ControllerContext.RouteData = routeData;
+
+        }
+
+
+        [Test]
+        public async Task WhenBreadcrumbCalledWithGuid_ReturnHtml()
+        {
+            var id = Guid.NewGuid();
+            var result = _controller.Breadcrumb(id) as ViewResult;
+            result.Should().NotBeNull();
+            result.Should().BeOfType<ViewResult>();
+            var data = result.ViewData.Model as ChangeGoalCompositeViewModel;
+            data.BackLink.Should().Contain(id.ToString());
         }
 
         [Test]

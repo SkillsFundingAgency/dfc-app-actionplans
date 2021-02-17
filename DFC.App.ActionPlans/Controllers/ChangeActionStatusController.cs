@@ -83,6 +83,10 @@ namespace DFC.App.ActionPlans.Controllers
             return await base.Body();
         }
 
+        public override IActionResult Breadcrumb(Guid actionId)
+        {
+            return base.Breadcrumb(actionId);
+        }
         private async Task LoadViewData(Guid actionPlanId, Guid interactionId)
         {
             var customer = await GetCustomerDetails();
