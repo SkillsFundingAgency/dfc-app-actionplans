@@ -52,7 +52,7 @@ namespace DFC.App.ActionPlans
         public void ConfigureBrowserStack()
         {
             this.Context.GetSettingsLibrary<AppSettings>().BrowserStackSettings.Name = this.Context.ScenarioInfo.Title;
-            this.Context.GetSettingsLibrary<AppSettings>().BrowserStackSettings.Build = "Accounts";
+            this.Context.GetSettingsLibrary<AppSettings>().BrowserStackSettings.Build = "Action-plans";
         }
 
         [BeforeScenario(Order = 4)]
