@@ -32,6 +32,12 @@
         "apimDSSProxyAddress": {
             "value": "__apimDSSProxyAddress__"
         },
+        "AppLoginEmail": {
+            "value": "__AppLoginEmail__"
+        },
+        "AppLoginPassword": {
+            "value": "__AppLoginPassword__"
+        },
         "cdnUrl": {
             "value": "__cdnUrl__"
         },
