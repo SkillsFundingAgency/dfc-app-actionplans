@@ -34,10 +34,10 @@
         "apimDSSApiKey": {
             "type": "securestring"
         },
-        "TestExecutionSettingsAppLoginEmail": {
+        "AppLoginEmail": {
             "type": "string"
         },
-        "TestExecutionSettingsAppLoginPassword": {
+        "AppLoginPassword": {
             "type": "string"
         },
         "cdnUrl": {
@@ -210,11 +210,11 @@
                             },
                             {
                                 "name": "TestExecutionSettings__AppLoginEmail",
-                                "value": "[parameters('TestExecutionSettingsAppLoginEmail')]"
+                                "value": "[parameters('AppLoginEmail')]"
                             },
                             {
                                 "name": "TestExecutionSettings__AppLoginPassword",
-                                "value": "[parameters('TestExecutionSettingsAppLoginPassword')]"
+                                "value": "[parameters('AppLoginPassword')]"
                             },
                             {
                                 "name": "Configuration__CosmosDbConnections__Actionplans__AccessKey",
