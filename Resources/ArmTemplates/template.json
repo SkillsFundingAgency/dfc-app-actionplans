@@ -209,11 +209,11 @@
                                 "value": "DFC-App-ActionPlans"
                             },
                             {
-                                "name": "TestExecutionSettings__AppLoginEmail",
+                                "name": "AppLoginEmail",
                                 "value": "[parameters('AppLoginEmail')]"
                             },
                             {
-                                "name": "TestExecutionSettings__AppLoginPassword",
+                                "name": "AppLoginPassword",
                                 "value": "[parameters('AppLoginPassword')]"
                             },
                             {
