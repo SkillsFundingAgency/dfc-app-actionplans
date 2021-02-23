@@ -34,6 +34,12 @@
         "apimDSSApiKey": {
             "type": "securestring"
         },
+        "TestExecutionSettingsAppLoginEmail": {
+            "type": "string"
+        },
+        "TestExecutionSettingsAppLoginPassword": {
+            "type": "string"
+        },
         "cdnUrl": {
             "type": "string"
         },
@@ -201,6 +207,14 @@
                             {
                                 "name": "Configuration__ApplicationName",
                                 "value": "DFC-App-ActionPlans"
+                            },
+                            {
+                                "name": "TestExecutionSettings__AppLoginEmail",
+                                "value": "[parameters('TestExecutionSettingsAppLoginEmail')]"
+                            },
+                            {
+                                "name": "TestExecutionSettings__AppLoginPassword",
+                                "value": "[parameters('TestExecutionSettingsAppLoginPassword')]"
                             },
                             {
                                 "name": "Configuration__CosmosDbConnections__Actionplans__AccessKey",
