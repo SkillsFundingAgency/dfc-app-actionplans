@@ -1,5 +1,6 @@
 ﻿@model DFC.App.ActionPlans.ViewModels.CompositeViewModel
 
+
 @if (!User.Identity.IsAuthenticated)
 {
     <div class="govuk-width-container">
@@ -10,5 +11,18 @@
                 </div>
             </div>
         </div>
+    </div>
+}
+else
+{
+    <div class="govuk-breadcrumbs">
+        <ol class="govuk-breadcrumbs__list">
+            <li class="govuk-breadcrumbs__list-item">
+                <a class="govuk-breadcrumbs__link" href="https://nationalcareers.service.gov.uk/">Home</a>
+            </li>
+            <li class="govuk-breadcrumbs__list-item">
+                <a class="govuk-breadcrumbs__link" href="/your-account">Your account</a>
+            </li>
+        </ol>
     </div>
 }
