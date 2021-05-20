@@ -1,5 +1,6 @@
 ﻿@using DFC.App.ActionPlans.Models
 @using DFC.App.ActionPlans.Constants
+@using DFC.App.ActionPlans.Helpers
 @model DFC.App.ActionPlans.ViewModels.ChangeGoalCompositeViewModel
 
 <partial name="~/ViewComponents/ErrorSummary/ErrorSummary.cshtml" />
@@ -31,7 +32,8 @@
                 </div>
                 <br />
                 <p>We will update your adviser's records with this change.</p>
-                <govukButton id="@Model.GetElementId("govukSecondaryButton", "Continue");" text="Continue"></govukButton>
+                <govukButton id="@Model.GetElementId("govukSecondaryButton", "Continue")" text="Continue"></govukButton>
+                <govukButtonLink additional-class="govuk-button--secondary" id="@Model.GetElementId("govukButtonLink", "Cancel")" LinkTitle="Cancel" LinkText="Cancel" LinkHref="@(Urls.GetViewGoalUrl(Model.CompositeSettings.Path, new Guid(Model.Goal.GoalId)))"></govukButtonLink>
             </form>
         </div>
         <div class="action-plan-secondary-content govuk-grid-column-one-third  ">

@@ -49,7 +49,7 @@
                 </div>
                 <br />
 
-                <govukButton id="@Model.GetElementId("govukSecondaryButton", "Continue");" text="Update status"></govukButton>
+                <govukButton id="@Model.GetElementId("govukSecondaryButton", "Continue")" text="Update status"></govukButton>
                 <govukButtonLink additional-class="govuk-button--secondary" id="@Model.GetElementId("govukButtonLink", "Cancel")" LinkTitle="Cancel" LinkText="Cancel" LinkHref="@(Urls.GetViewActionUrl(Model.CompositeSettings.Path, new Guid(Model.Action.ActionId)))"></govukButtonLink>
 
             </form>
