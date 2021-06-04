@@ -35,7 +35,9 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             _logger = new Logger<ViewGoalController>(new LoggerFactory());
             _logger = Substitute.For<ILogger<ViewGoalController>>();
             _controller = new ViewGoalController(_logger, _compositeSettings, _dssReader, _cosmosService, _documentService, _config);
-            _controller.ControllerContext.HttpContext = new DefaultHttpContext(){User = user};
+            var context = new DefaultHttpContext() { User = user };
+            _controller.ControllerContext.HttpContext = context;
+            context.Request.Headers["x-dfc-composite-sessionid"] = Guid.NewGuid().ToString();
             _controller.ControllerContext.RouteData = new RouteData();
             _controller.ControllerContext.RouteData.Values.Add("controller", Constants.Constants.ChangeGoalDueDateController);
         }

@@ -7,6 +7,7 @@ using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Services.DSS.Models;
 using DFC.App.ActionPlans.Services.DSS.Services;
+using DFC.APP.Account.CacheContentService;
 using DFC.APP.ActionPlans.CacheContentService;
 using DFC.APP.ActionPlans.Data.Contracts;
 using DFC.APP.ActionPlans.Data.Models;
@@ -15,7 +16,6 @@ using DFC.Compui.Cosmos.Contracts;
 using DFC.Compui.Subscriptions.Pkg.Netstandard.Extensions;
 using DFC.Compui.Telemetry;
 using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
-using DFC.Content.Pkg.Netcore.Data.Models.PollyOptions;
 using DFC.Content.Pkg.Netcore.Extensions;
 using DFC.Personalisation.Common.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -32,7 +32,6 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Threading.Tasks;
-using DFC.APP.Account.CacheContentService;
 
 
 namespace Dfc.App.ActionPlans
@@ -73,10 +72,10 @@ namespace Dfc.App.ActionPlans
             services.Configure<CompositeSettings>(Configuration.GetSection(nameof(CompositeSettings)));
             services.Configure<CosmosSettings>(Configuration.GetSection(nameof(CosmosSettings)));
 
-            services.AddScoped((x) => new CosmosClient(
+            services.AddSingleton((x) => new CosmosClient(
                 accountEndpoint: Configuration.GetSection("CosmosSettings:ApiUrl").Value,
                 authKeyOrResourceToken: Configuration.GetSection("CosmosSettings:ApiKey").Value));
-            services.AddScoped<ICosmosService, CosmosService>();
+            services.AddSingleton<ICosmosService, CosmosService>();
 
             services.Configure<AuthSettings>(Configuration.GetSection("AuthSettings"));
             var authSettings = new AuthSettings();
@@ -86,9 +85,7 @@ namespace Dfc.App.ActionPlans
             services.AddHostedServiceTelemetryWrapper();
             services.AddSubscriptionBackgroundService(Configuration);
             services.AddHostedService<CacheReloadBackgroundService>();
-
-            const string AppSettingsPolicies = "Policies";
-            var policyOptions = Configuration.GetSection(AppSettingsPolicies).Get<PolicyOptions>() ?? new PolicyOptions();
+            
             var policyRegistry = services.AddPolicyRegistry();
             services.AddApiServices(Configuration, policyRegistry);
 
@@ -157,25 +154,11 @@ namespace Dfc.App.ActionPlans
             var appPath = Configuration.GetSection("CompositeSettings:Path").Value;
             app.UseStaticFiles();
             app.UseHttpsRedirection();
-
-            //app.UseExceptionHandler(errorApp =>
-            //    errorApp.Run(async context =>
-            //    {
-            //        await ErrorService.LogException(context, logger);
-            //        context.Response.Redirect(appPath + "/Error");
-            //    }));
-
-
-
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
-                /*
-                endpoints.MapControllerRoute("action-plans", appPath + "/action-plans", new {controller = "home", action = "body"});
-                endpoints.MapControllerRoute("viewGoal", appPath + "/view-goal", new {controller = "viewGoal", action = "body"});
-                */
                 endpoints.MapControllers();
             });
 

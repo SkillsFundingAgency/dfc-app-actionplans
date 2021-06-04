@@ -27,18 +27,16 @@ namespace Dfc.App.ActionPlans.Controllers
     {
         private readonly IDssReader _dssReader;
         private readonly IDssWriter _dssWriter;
-        private readonly IOptions<AuthSettings> _authSettings;
         private readonly ILogger<HomeController> _logger;
         private readonly IDocumentService<CmsApiSharedContentModel> _documentService;
         private readonly Guid _sharedContent;
 
-        public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService, IOptions<AuthSettings> authSettings,
+        public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService,
             IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
             :base(compositeSettings, dssReader, cosmosServiceService, documentService, config)
         {
             _dssReader = dssReader;
             _dssWriter = dssWriter;
-            _authSettings = authSettings;
             _logger = logger;
             _sharedContent = config.GetValue<Guid>(Constants.SharedContentGuidConfig);
             _documentService = documentService;
@@ -83,7 +81,7 @@ namespace Dfc.App.ActionPlans.Controllers
         {
             var session = await GetUserSession();
             
-            if (session == null && actionPlanId == Guid.Empty && interactionId == Guid.Empty)
+            if (session == null && (actionPlanId == Guid.Empty || interactionId == Guid.Empty))
             {
                 return await Task.FromResult<IActionResult>(View("BodyUnAuth", ViewModel));
             }
