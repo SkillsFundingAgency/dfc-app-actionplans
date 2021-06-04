@@ -37,7 +37,9 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             _logger = new Logger<UpdateConfirmationController>(new LoggerFactory());
             _logger = Substitute.For<ILogger<UpdateConfirmationController>>();
             _controller = new UpdateConfirmationController(_logger, _compositeSettings, _dssReader, _cosmosService, _documentService, _config);
-            _controller.ControllerContext.HttpContext = new DefaultHttpContext() { User = user };
+            var context = new DefaultHttpContext() { User = user };
+            _controller.ControllerContext.HttpContext = context;
+            context.Request.Headers["x-dfc-composite-sessionid"] = Guid.NewGuid().ToString();
             var vm = new UpdateGoalConfirmationCompositeViewModel
             {
                 PageTitle = null,
