@@ -73,10 +73,10 @@ namespace Dfc.App.ActionPlans
             services.Configure<CompositeSettings>(Configuration.GetSection(nameof(CompositeSettings)));
             services.Configure<CosmosSettings>(Configuration.GetSection(nameof(CosmosSettings)));
 
-            services.AddScoped((x) => new CosmosClient(
+            services.AddSingleton((x) => new CosmosClient(
                 accountEndpoint: Configuration.GetSection("CosmosSettings:ApiUrl").Value,
                 authKeyOrResourceToken: Configuration.GetSection("CosmosSettings:ApiKey").Value));
-            services.AddScoped<ICosmosService, CosmosService>();
+            services.AddSingleton<ICosmosService, CosmosService>();
 
             services.Configure<AuthSettings>(Configuration.GetSection("AuthSettings"));
             var authSettings = new AuthSettings();

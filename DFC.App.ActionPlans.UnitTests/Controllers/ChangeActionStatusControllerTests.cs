@@ -38,7 +38,9 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             _logger = new Logger<ChangeActionStatusController>(new LoggerFactory());
             _logger = Substitute.For<ILogger<ChangeActionStatusController>>();
             _controller = new ChangeActionStatusController(_logger, _compositeSettings, _dssReader,_dssWriter,_cosmosService, _documentService, _config);
-            _controller.ControllerContext.HttpContext = new DefaultHttpContext(){User = user};
+            var context = new DefaultHttpContext() { User = user };
+            _controller.ControllerContext.HttpContext = context;
+            context.Request.Headers["x-dfc-composite-sessionid"] = Guid.NewGuid().ToString();
             var routeData = new RouteData();
             routeData.Values.Add("controller", Constants.Constants.ChangeActionStatusController);
             _controller.ControllerContext.RouteData = routeData;

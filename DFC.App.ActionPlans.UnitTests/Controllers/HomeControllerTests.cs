@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Dfc.App.ActionPlans.Controllers;
 using DFC.App.ActionPlans.Cosmos.Services;
 using DFC.APP.ActionPlans.Data.Models;
+using DFC.App.ActionPlans.Exceptions;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.ViewModels;
 using DFC.Compui.Cosmos.Contracts;
@@ -44,12 +45,14 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
                 .Build();
             _documentService = Substitute.For<IDocumentService<CmsApiSharedContentModel>>();
             _controller = new HomeController(_logger, _compositeSettings, _dssReader,_dssWriter, _cosmosService, Options.Create(new AuthSettings{AccountEndpoint = "https://www.g.com"}), _documentService, _config);
-            _controller.ControllerContext.HttpContext = new DefaultHttpContext(){User = user};
+
+            var context = new DefaultHttpContext() {User = user};
+            _controller.ControllerContext.HttpContext = context;
+            context.Request.Headers["x-dfc-composite-sessionid"] = Guid.NewGuid().ToString();
             _controller.ControllerContext.RouteData = new RouteData();
             _controller.ControllerContext.RouteData.Values.Add("controller", Constants.Constants.ChangeGoalDueDateController);
-            
-            
-            
+
+
         }
 
         [Test]
@@ -63,6 +66,15 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             result.ViewName.Should().BeNull();
 
 
+        }
+
+        [Test]
+        public void WhenBodyCalledAndNcsSessionNotFound_ThrowsCompositeSessionNotFoundException()
+        {
+            var context = new DefaultHttpContext() { User = user };
+            _controller.ControllerContext.HttpContext = context;
+
+            Assert.ThrowsAsync<CompositeSessionNotFoundException>(() => _controller.Body(Guid.Empty, Guid.Empty));
         }
 
         [Test]

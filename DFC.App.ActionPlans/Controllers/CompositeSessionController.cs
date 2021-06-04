@@ -108,6 +108,13 @@ namespace Dfc.App.ActionPlans.Controllers
 
         protected string GetSessionId()
         {
+            var compositeSessionId = Request.CompositeSessionId();
+
+            if (compositeSessionId == null)
+            {
+                throw new CompositeSessionNotFoundException("Composite Session is null");
+            }
+
             return $"{Request.CompositeSessionId()}|{GetLoggedInUserId()}";
         }
 
