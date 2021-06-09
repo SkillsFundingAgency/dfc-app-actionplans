@@ -7,6 +7,7 @@ using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Services.DSS.Models;
 using DFC.App.ActionPlans.Services.DSS.Services;
+using DFC.APP.Account.CacheContentService;
 using DFC.APP.ActionPlans.CacheContentService;
 using DFC.APP.ActionPlans.Data.Contracts;
 using DFC.APP.ActionPlans.Data.Models;
@@ -32,7 +33,6 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Threading.Tasks;
-using DFC.APP.Account.CacheContentService;
 
 
 namespace Dfc.App.ActionPlans
@@ -145,8 +145,7 @@ namespace Dfc.App.ActionPlans
             }).AddViewOptions(options =>
                 options.HtmlHelperOptions.ClientValidationEnabled = false);
         }
-
-        // This method gets called by the run-time. Use this method to configure the HTTP request pipeline.
+        
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,  ILoggerFactory logger)
         {
             if (env.IsDevelopment())
@@ -157,25 +156,12 @@ namespace Dfc.App.ActionPlans
             var appPath = Configuration.GetSection("CompositeSettings:Path").Value;
             app.UseStaticFiles();
             app.UseHttpsRedirection();
-
-            //app.UseExceptionHandler(errorApp =>
-            //    errorApp.Run(async context =>
-            //    {
-            //        await ErrorService.LogException(context, logger);
-            //        context.Response.Redirect(appPath + "/Error");
-            //    }));
-
-
-
+            
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
-                /*
-                endpoints.MapControllerRoute("action-plans", appPath + "/action-plans", new {controller = "home", action = "body"});
-                endpoints.MapControllerRoute("viewGoal", appPath + "/view-goal", new {controller = "viewGoal", action = "body"});
-                */
                 endpoints.MapControllers();
             });
 
