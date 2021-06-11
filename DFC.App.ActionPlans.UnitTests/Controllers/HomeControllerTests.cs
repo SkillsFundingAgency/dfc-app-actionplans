@@ -1,15 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Dfc.App.ActionPlans.Controllers;
-using DFC.App.ActionPlans.Cosmos.Services;
+﻿using DFC.App.ActionPlans.Cosmos.Services;
 using DFC.APP.ActionPlans.Data.Models;
-using DFC.App.ActionPlans.Exceptions;
-using DFC.App.ActionPlans.Models;
-using DFC.App.ActionPlans.ViewModels;
 using DFC.Compui.Cosmos.Contracts;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
@@ -20,8 +10,17 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using NSubstitute;
-using NSubstitute.ReturnsExtensions;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using DFC.App.ActionPlans.Controllers;
+using DFC.App.ActionPlans.Exceptions;
+using DFC.App.ActionPlans.Models;
+using DFC.App.ActionPlans.ViewModels;
 
 namespace DFC.App.ActionPlans.UnitTests.Controllers
 {

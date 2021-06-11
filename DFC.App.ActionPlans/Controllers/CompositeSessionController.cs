@@ -6,7 +6,6 @@ using DFC.App.ActionPlans.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
-using DFC.App.ActionPlans.Controllers;
 using DFC.App.ActionPlans.Cosmos.Interfaces;
 using DFC.APP.ActionPlans.Data.Models;
 using DFC.App.ActionPlans.Exceptions;
@@ -16,9 +15,9 @@ using DFC.App.ActionPlans.Services.DSS.Models;
 using DFC.Compui.Cosmos.Contracts;
 using DFC.Compui.Sessionstate;
 using Microsoft.Extensions.Configuration;
-using Constants = DFC.App.ActionPlans.Constants.Constants;
+using DFC.APP.ActionPlans.Data;
 
-namespace Dfc.App.ActionPlans.Controllers
+namespace DFC.App.ActionPlans.Controllers
 {
   
     /// <summary>
@@ -176,16 +175,16 @@ namespace Dfc.App.ActionPlans.Controllers
         {
             switch (controllerName)
             {
-                case Constants.ChangeGoalDueDateController: 
+                case Constants.Constants.ChangeGoalDueDateController: 
                     return Urls.GetViewGoalUrl(ViewModel.CompositeSettings.Path, objectId);
                     
-                case Constants.ChangeGoalStatusController:
+                case Constants.Constants.ChangeGoalStatusController:
                     return Urls.GetViewGoalUrl(ViewModel.CompositeSettings.Path, objectId); 
 
-                case Constants.ChangeActionDueDateController: 
+                case Constants.Constants.ChangeActionDueDateController: 
                     return Urls.GetViewActionUrl(ViewModel.CompositeSettings.Path, objectId);
                     
-                case Constants.ChangeActionStatusController:
+                case Constants.Constants.ChangeActionStatusController:
                     return Urls.GetViewActionUrl(ViewModel.CompositeSettings.Path,objectId);
                     
                 default:
