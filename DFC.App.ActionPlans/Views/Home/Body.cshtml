@@ -69,6 +69,12 @@
                                 </td>
                             </tr>
                         }
+                        if (!Model.Goals.Any())
+                        {
+                            <tr>
+                                <td class="govuk-table__cell" colspan="3">No goals have been set </td>
+                            </tr>
+                        }
                     }
                     </tbody>
                 </table>
@@ -101,6 +107,12 @@
                                                link-href="@Urls.GetViewActionUrl(Model.CompositeSettings.Path, new Guid(action.ActionId))" LinkText="View">
                                     </govukLink>
                                 </td>
+                            </tr>
+                        }
+                        if (!Model.Actions.Any())
+                        {
+                            <tr>
+                                <td class="govuk-table__cell" colspan="3">No actions have been set </td>
                             </tr>
                         }
                     }
