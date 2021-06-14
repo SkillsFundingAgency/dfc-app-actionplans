@@ -54,7 +54,7 @@
                     </thead>
                     <tbody class="govuk-table__body">
                     @{
-                        foreach (var goal in Model.Goals)
+                        foreach (var goal in Model.Goals.OrderBy(x => x.GoalStatus).ThenByDescending(x => x.DateGoalCaptured))
                         {
                             <tr class="govuk-table__row">
                                 <td class="govuk-table__cell">@goal.GoalType.GetDisplayName()</td>
@@ -67,6 +67,12 @@
                                     </govukLink>
 
                                 </td>
+                            </tr>
+                        }
+                        if (!Model.Goals.Any())
+                        {
+                            <tr>
+                                <td class="govuk-table__cell" colspan="3">No goals have been set </td>
                             </tr>
                         }
                     }
@@ -88,7 +94,7 @@
                     </thead>
                     <tbody class="govuk-table__body">
                     @{
-                        foreach (var action in Model.Actions)
+                        foreach (var action in Model.Actions.OrderBy(x => x.ActionStatus).ThenByDescending(x => x.DateActionAgreed))
                         {
                             <tr class="govuk-table__row">
                                 <td class="govuk-table__cell">
@@ -101,6 +107,12 @@
                                                link-href="@Urls.GetViewActionUrl(Model.CompositeSettings.Path, new Guid(action.ActionId))" LinkText="View">
                                     </govukLink>
                                 </td>
+                            </tr>
+                        }
+                        if (!Model.Actions.Any())
+                        {
+                            <tr>
+                                <td class="govuk-table__cell" colspan="3">No actions have been set </td>
                             </tr>
                         }
                     }

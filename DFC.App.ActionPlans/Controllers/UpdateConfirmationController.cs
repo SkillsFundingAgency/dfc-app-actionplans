@@ -108,7 +108,7 @@ namespace DFC.App.ActionPlans.Controllers
                 {
                     ViewModel.WhatChanged = "Goal status updated";
                     ViewModel.UpdateMessage =
-                        $"You have changed the status of this goal. <strong>{goal.GoalStatus.GetDisplayName()}</strong>.";
+                        $"You have changed the status of this goal to <strong>{goal.GoalStatus.GetDisplayName()}</strong>.";
                     break;
                 }
                 default:

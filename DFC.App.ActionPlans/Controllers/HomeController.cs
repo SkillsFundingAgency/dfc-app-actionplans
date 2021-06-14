@@ -83,7 +83,7 @@ namespace Dfc.App.ActionPlans.Controllers
         {
             var session = await GetUserSession();
             
-            if (session == null && actionPlanId == Guid.Empty && interactionId == Guid.Empty)
+            if (session == null && (actionPlanId == Guid.Empty || interactionId == Guid.Empty))
             {
                 return await Task.FromResult<IActionResult>(View("BodyUnAuth", ViewModel));
             }

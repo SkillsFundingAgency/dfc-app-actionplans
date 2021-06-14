@@ -19,7 +19,7 @@
                 @Html.HiddenFor(m => m.Goal.DateGoalShouldBeCompletedBy)
                 
                 <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")">
-                    <fieldset class="govuk-fieldset" role="group" aria-describedby="action-status-hint">
+                    <fieldset class="govuk-fieldset" role="group" aria-describedby="goal-status-hint">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
                             <govukHeadingH1 text="Change goal status" additional-class="govuk-fieldset__heading"></govukHeadingH1>
                         </legend>
@@ -48,7 +48,7 @@
                 </div>
                 <br />
 
-                <govukButton id="@Model.GetElementId("govukSecondaryButton", "Continue");" text="Update status"></govukButton>
+                <govukButton id="@Model.GetElementId("govukSecondaryButton", "Continue")" text="Update status"></govukButton>
                 <govukButtonLink additional-class="govuk-button--secondary" id="@Model.GetElementId("govukButtonLink", "Cancel")" LinkTitle="Cancel" LinkText="Cancel" LinkHref="@(Urls.GetViewGoalUrl(Model.CompositeSettings.Path, new Guid(Model.Goal.GoalId)))"></govukButtonLink>
 
             </form>

@@ -23,6 +23,12 @@
         "apimDSSProxyAddress": {
             "value": "https://foo.api.nationalcareersservice.org.uk"
         },
+        "AppLoginEmail": {
+            "value": "AppLoginEmail"
+        },
+        "AppLoginPassword": {
+            "value": "AppLoginPassword"
+        },
         "cdnUrl": {
             "value": "https://foo.api.nationalcareersservice.org.uk"
         },
