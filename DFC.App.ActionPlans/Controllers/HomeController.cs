@@ -114,7 +114,7 @@ namespace Dfc.App.ActionPlans.Controllers
         [Route("/bodytop")]
         public override async Task<IActionResult> BodyTop()
         {
-            if (Request.Query.ContainsKey("actionplanID") || (User.Identity.IsAuthenticated && await GetUserSession() != null))
+            if (Request.Path.Value != "/bodytop" || Request.Query.Any() && User.Identity.IsAuthenticated && await GetUserSession() != null)
             {
                 ViewModel.HideHeroBanner = true;
             }
