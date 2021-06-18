@@ -1,6 +1,5 @@
 ﻿// <copyright file="BeforeScenario.cs" company="National Careers Service">
-// Copyright (c) National Careers Service. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Copyright (c) National Careers Service. All rights reserved. Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 
 using DFC.App.ActionPlans.Model;
@@ -62,7 +61,6 @@ namespace DFC.App.ActionPlans
             var webDriver = new WebDriverSupport<AppSettings>(settingsLibrary).Create();
             webDriver.Manage().Window.Maximize();
             webDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(settingsLibrary.TestExecutionSettings.TimeoutSettings.PageNavigation);
-            webDriver.SwitchTo().Window(webDriver.CurrentWindowHandle);
             this.Context.SetWebDriver(webDriver);
         }
 
@@ -72,6 +70,5 @@ namespace DFC.App.ActionPlans
             var helperLibrary = new HelperLibrary<AppSettings>(this.Context.GetWebDriver(), this.Context.GetSettingsLibrary<AppSettings>());
             this.Context.SetHelperLibrary(helperLibrary);
         }
-
     }
 }
