@@ -124,6 +124,10 @@ namespace Dfc.App.ActionPlans.Controllers
         [Route("/breadcrumb")]
         public override IActionResult Breadcrumb(Guid objectId)
         {
+            if (Request.Path.Value == "/breadcrumb")
+            {
+                ViewModel.HideBreadcrumb = true;
+            }
             return base.Breadcrumb(objectId);
         }
       
