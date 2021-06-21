@@ -1,4 +1,4 @@
-﻿@model DFC.App.ActionPlans.ViewModels.CompositeViewModel
+﻿@model DFC.App.ActionPlans.ViewModels.HomeCompositeViewModel
 
 
 @if (!User.Identity.IsAuthenticated)
@@ -13,7 +13,7 @@
         </div>
     </div>
 }
-else
+else if (!Model.HideBreadcrumb)
 {
     <div class="govuk-breadcrumbs">
         <ol class="govuk-breadcrumbs__list">
