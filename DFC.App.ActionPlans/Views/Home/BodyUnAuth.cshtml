@@ -3,26 +3,38 @@
 @inject IOptions<AuthSettings> AuthSettings;
 @model HomeCompositeViewModel
 
-<div class="govuk-main-wrapper ">
 
-    <div class="govuk-width-container">
-        <div class="govuk-grid-row">
-            
+<div class="govuk-grid-column-two-thirds">
 
-            <div class="govuk-grid-column-two-thirds">
-
-                <govukHeadingH2 text="Your action plan"></govukHeadingH2>
-                <p>You need to log in to view and update your action plan set by you and your career adviser during your career’s advice appointment.</p>
-                <govukButtonLink id="@Model.GetElementId("govukButtonLink ", "GoToActionPlans")" LinkText="Go to your action plans" LinkHref="@AuthSettings.Value.AccountEndpoint"></govukButtonLink>
-                <govukHeadingH2 text="Do not have an action plan?"></govukHeadingH2>
-                <p>If you have not had a careers advice appointment and do not have an action plan you can see our <govukLink id="CareersAdviceLink" link-href="/careers-advice" link-text="careers advice articles" ></govukLink> to help you at any stage of your career.</p>
-
-            </div>
-            
-            <div class="action-plan-secondary-content govuk-grid-column-one-third  ">
-                <partial name="~/ViewComponents/contact/contact.cshtml" model="@Model"/>
-            </div>
-        </div>
+    <div class="govuk-warning-text">
+        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+        <strong class="govuk-warning-text__text">
+            <span class="govuk-warning-text__assistive">Warning</span>
+            Action plans can only be set up by your career adviser at a careers advice appointment. If you would like advice from a career adviser you can <govukLink id="ContactUS" link-href="/contact-us" link-text="contact us" additional-class="govuk-link--light"></govukLink>
+        </strong>
     </div>
 
+    <govukHeadingH2 text="Your action plan"></govukHeadingH2>
+    <p>To review and update your action plan, first you need to log in to your account.</p>
+    <govukButtonLink id="@Model.GetElementId("govukButtonLink ", "GoToActionPlans")" LinkText="Go to your action plans" LinkHref="@AuthSettings.Value.AccountEndpoint"></govukButtonLink>
+    <govukHeadingH2 text="If you do not have an action plan"></govukHeadingH2>
+    <p class="govuk-body">If you don’t have an action plan, don’t worry. There are lots of things you can do to take control of your career, like:</p>
+    <ul class="govuk-list govuk-list--bullet">
+        <li>
+            take a <a href="/skills-assessment" class="govuk-link">skills assessment</a> to find out more about your skills and motivations
+        </li>
+        <li>
+            explore different <a href="/job-profiles" class="govuk-link">job profiles</a> or <a href="/find-a-course" class="govuk-link">find a course</a> and see what might be a good fit for you
+        </li>
+        <li>
+            read <a href="/careers-advice" class="govuk-link">careers advice articles</a> for help making career decisions
+
+        </li>
+    </ul>
+    <p class="govuk-body">If you would still like to speak to an adviser and make an action plan, <a href="/contact-us" class="govuk-link">contact us</a> for an appointment.</p>
+
+</div>
+
+<div class="action-plan-secondary-content govuk-grid-column-one-third  ">
+    <partial name="~/ViewComponents/contact/contact.cshtml" model="@Model" />
 </div>
