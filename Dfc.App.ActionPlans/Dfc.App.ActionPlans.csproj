@@ -8,6 +8,9 @@
     <Folder Include="wwwroot\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
     <PackageReference Include="CorrelationId" Version="3.0.0" />
     <PackageReference Include="DFC.Compui.Sessionstate" Version="1.0.13" />
