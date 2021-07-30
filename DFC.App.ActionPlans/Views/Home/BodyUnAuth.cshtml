@@ -10,11 +10,11 @@
         <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
         <strong class="govuk-warning-text__text">
             <span class="govuk-warning-text__assistive">Warning</span>
-            Action plans can only be set up by your career adviser at a careers advice appointment. If you would like advice from a career adviser you can <govukLink id="ContactUS" link-href="/contact-us" link-text="contact us" additional-class="govuk-link--light"></govukLink>
+            You will only have an action plan if you’ve had an appointment with a careers adviser and they have set one up for you. If you would like to speak to an adviser, <govukLink id="ContactUS" link-href="/contact-us" link-text="contact us" additional-class="govuk-link--light"></govukLink> for an appointment.
         </strong>
     </div>
 
-    <govukHeadingH2 text="Your action plan"></govukHeadingH2>
+    <govukHeadingH2 text="Access your action plan"></govukHeadingH2>
     <p>To review and update your action plan, first you need to log in to your account.</p>
     <govukButtonLink id="@Model.GetElementId("govukButtonLink ", "GoToActionPlans")" LinkText="Go to your action plans" LinkHref="@AuthSettings.Value.AccountEndpoint"></govukButtonLink>
     <govukHeadingH2 text="If you do not have an action plan"></govukHeadingH2>
