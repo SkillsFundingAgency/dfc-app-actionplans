@@ -42,6 +42,7 @@ namespace DFC.App.ActionPlans.UI.FunctionalTests
                 case "view or update action":
                 case "when would you like to achieve this goal?":
                 case "action status updated":
+                case "goal status updated":
                 case "due date changed":
                     locator = By.ClassName("govuk-heading-xl");
                     break;
