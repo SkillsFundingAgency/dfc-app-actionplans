@@ -83,7 +83,7 @@ namespace DFC.App.ActionPlans.UI.FunctionalTests.Features
  testRunner.Given("I am on the action plans landing page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 5
- testRunner.When("I click the Go to your action plan button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I click the Go to your action plans button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 6
  testRunner.And("I enter the email address in the Email address field", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
