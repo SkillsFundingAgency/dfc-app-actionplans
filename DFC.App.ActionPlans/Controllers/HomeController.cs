@@ -106,12 +106,14 @@ namespace Dfc.App.ActionPlans.Controllers
         // The home page uses MVC default routes, so we need non "/[controller]" attribute routed versions of the endpoints just for here
         [Route("/head/home")]
         [Route("/head")]
+        [Route("/head/{id?}")]
         public override IActionResult Head()
         {
             return base.Head();
         }
         [Route("/bodytop/home")]
         [Route("/bodytop")]
+        [Route("/bodytop/{id?}")]
         public override async Task<IActionResult> BodyTop()
         {
             if (Request.Path.Value != "/bodytop" || Request.Query.Any() && User.Identity.IsAuthenticated && await GetUserSession() != null)
@@ -122,6 +124,7 @@ namespace Dfc.App.ActionPlans.Controllers
         }
         [Route("/breadcrumb/home")]
         [Route("/breadcrumb")]
+        [Route("/breadcrumb/{id?}")]
         public override IActionResult Breadcrumb(Guid objectId)
         {
             if (Request.Path.Value == "/breadcrumb")
@@ -134,6 +137,7 @@ namespace Dfc.App.ActionPlans.Controllers
 
         [Route("/bodyfooter/home")]
         [Route("/bodyfooter")]
+        [Route("/bodyfooter/{id?}")]
         public override IActionResult BodyFooter()
         {
             return base.BodyFooter();
