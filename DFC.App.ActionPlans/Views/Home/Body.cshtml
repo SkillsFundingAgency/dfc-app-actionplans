@@ -32,9 +32,9 @@
             
             <govukHeadingH1 text="Your action plan"></govukHeadingH1>
             <p>
-                During your careers advice appointment on @Model.LatestSession.DateandTimeOfSession.DateOnly(), you and @Model.Adviser.AdviserName spoke about your current situation and goals.
+                During your careers advice appointment on @Model.LatestSession.DateandTimeOfSession.DateOnly(), you and @(Model.Adviser?.AdviserName ?? "your adviser") spoke about your current situation and goals.
             </p>
-            <p>At the end of your appointment, you agreed your next steps and made an action plan with goals and actions for you to complete. You can contact @Model.Adviser.AdviserName if you want to add new goals or actions.</p>
+            <p>At the end of your appointment, you agreed your next steps and made an action plan with goals and actions for you to complete. You can contact @(Model.Adviser?.AdviserName ?? "your adviser") if you want to add new goals or actions.</p>
             <hr class="govuk-section-break--visible govuk-section-break govuk-section-break--xl">
 
             <section class="govuk-!-margin-top-6">
@@ -122,7 +122,10 @@
             </section>
         </div>
         <div class="action-plan-secondary-content govuk-grid-column-one-third  ">
-            <partial name="~/ViewComponents/YourAdviser/youradvisor.cshtml" model="@Model.Adviser"/>
+            @if (Model.Adviser != null)
+            {
+                <partial name="~/ViewComponents/YourAdviser/youradvisor.cshtml" model="@Model.Adviser"/>
+            }
             <partial name="~/ViewComponents/contact/contact.cshtml" model="@Model"/>
         </div>
     </div>

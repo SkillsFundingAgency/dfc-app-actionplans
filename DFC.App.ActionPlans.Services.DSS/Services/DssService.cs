@@ -204,7 +204,7 @@ namespace DFC.App.ActionPlans.Services.DSS.Services
                 {
                     var errorMessage = "Adviser Not found";
                     _logger.LogError(errorMessage);
-                    throw new DssException(errorMessage);
+                    return null;
                 }
 
                 return result;
