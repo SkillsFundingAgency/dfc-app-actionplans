@@ -57,11 +57,11 @@
             </section>
         </div>
         <div class="action-plan-secondary-content govuk-grid-column-one-third  ">
-            @if (Model.Adviser != null)
+            @if (!string.IsNullOrEmpty(Model.Adviser?.AdviserName))
             {
-                <partial name="~/ViewComponents/YourAdviser/youradvisor.cshtml" model="@Model.Adviser"/>
+                <partial name="~/ViewComponents/YourAdviser/youradvisor.cshtml" model="@Model.Adviser" />
             }
-            <partial name="~/ViewComponents/contact/contact.cshtml" model="@Model"/>
+            <partial name="~/ViewComponents/contact/contact.cshtml" model="@Model" />
         </div>
     </div>
 </div>
