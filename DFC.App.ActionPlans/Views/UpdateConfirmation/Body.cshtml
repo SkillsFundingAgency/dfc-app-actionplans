@@ -7,6 +7,9 @@
             <div class="govuk-panel govuk-panel--confirmation">
                 <govukHeadingH1 text="@Model.WhatChanged" additional-class="govuk-panel__title"></govukHeadingH1>
                 <div class="govuk-panel__body">@Model.Name</div>
+                @if(!string.IsNullOrEmpty(Model.Summary)){
+                    <div class="govuk-panel__body">@Model.Summary</div>
+                }
             </div>
             <p>
                 @Html.Raw(@Model.UpdateMessage)

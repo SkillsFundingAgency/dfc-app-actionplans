@@ -12,6 +12,7 @@ namespace DFC.App.ActionPlans.ViewModels
         public int PropertyUpdated { get; set; }
         public String WhatChanged { get; set; }
         public String Name { get; set; }
+        public string Summary { get; set; }
         public String UpdateMessage { get; set; }
         public String ObjLink { get; set; }
         public String ObjLinkText { get; set; }

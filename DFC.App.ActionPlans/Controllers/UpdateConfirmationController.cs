@@ -87,7 +87,8 @@ namespace DFC.App.ActionPlans.Controllers
             var goal = await _dssReader.GetGoalDetails(ViewModel.CustomerId.ToString(),
                 ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString(), goalId.ToString());
             
-            ViewModel.Name = $"{goal.GoalSummary} - {goal.GoalType.GetDisplayName()}";
+            ViewModel.Name = $"{goal.GoalType.GetDisplayName()} - ";
+            ViewModel.Summary = $"{goal.GoalSummary}";
             ViewModel.ObjLink =  Urls.GetViewGoalUrl(ViewModel.CompositeSettings.Path, goalId);
             ViewModel.ObjLinkText = "view or update this goal";
             SetGoalMessagesForProperty(propertyUpdated, goal);
@@ -124,7 +125,8 @@ namespace DFC.App.ActionPlans.Controllers
             
             var action = await _dssReader.GetActionDetails(ViewModel.CustomerId.ToString(),
                 ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString(), actionId.ToString());
-            ViewModel.Name = $"{action.ActionSummary} - {action.ActionType.GetDisplayName()}";
+            ViewModel.Name = $"{action.ActionType.GetDisplayName()} - ";
+            ViewModel.Summary = $"{action.ActionSummary}";
             ViewModel.ObjLink = Urls.GetViewActionUrl(ViewModel.CompositeSettings.Path, actionId);
             ViewModel.ObjLinkText = "view or update this action";
             SetActionStatusMessages(propertyUpdated, action);
