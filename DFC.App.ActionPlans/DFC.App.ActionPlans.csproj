@@ -13,7 +13,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
     <PackageReference Include="CorrelationId" Version="3.0.0" />
-    <PackageReference Include="DFC.Compui.Sessionstate" Version="1.0.13" />
+    <PackageReference Include="DFC.Compui.Sessionstate" Version="1.0.15" />
     <PackageReference Include="DFC.Compui.Telemetry" Version="1.0.31" />
     <PackageReference Include="DFC.Personalisation.Common" Version="0.1.28" />
     <PackageReference Include="DFC.Personalisation.CommonUI" Version="0.2.32" />
