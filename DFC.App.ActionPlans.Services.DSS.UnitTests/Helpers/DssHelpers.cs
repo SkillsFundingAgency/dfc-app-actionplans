@@ -1,16 +1,16 @@
-﻿using System.Net;
+﻿using Moq;
+using Moq.Protected;
+using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Moq;
-using Moq.Protected;
 
-namespace DFC.App.ActionPlans.Services.DSS.UnitTest.Helpers
+namespace DFC.App.ActionPlans.Services.DSS.UnitTests.Helpers
 {
-      public class DssHelpers
+    public class DssHelpers
     {
-       
-        
+
+
         public static string SuccessfulDssSessionDetails()
         {
             return
@@ -30,7 +30,7 @@ namespace DFC.App.ActionPlans.Services.DSS.UnitTest.Helpers
         {
             return "{\r\n  \"InteractionId\": \"2817ea6b-a1d6-4e1a-8eba-46b7d1a427ac\",\r\n  \"CustomerId\": \"53f904b3-77c8-4c94-9a15-c259b518336c\",\r\n  \"TouchpointId\": \"9000000000\",\r\n  \"AdviserDetailsId\": \"bb940afb-1423-4999-a234-5a64a5c00831\",\r\n  \"DateandTimeOfInteraction\": \"2019-10-01T16:52:10Z\",\r\n  \"Channel\": 1,\r\n  \"InteractionType\": 2,\r\n  \"LastModifiedDate\": \"2019-06-22T16:52:10\",\r\n  \"LastModifiedTouchpointId\": \"9000000000\"\r\n}";
         }
-        
+
         public static string SuccessfulDssAdviserDetails()
         {
             return "{\r\n  \"AdviserDetailId\": \"bb940afb-1423-4999-a234-5a64a5c00831\",\r\n  \"AdviserName\": \"this is some text\",\r\n  \"AdviserEmailAddress\": \"adviser2@test.com\",\r\n  \"AdviserContactNumber\": \"012345 678901\",\r\n  \"LastModifiedDate\": \"2019-02-22T16:02:47.8843571Z\",\r\n  \"LastModifiedTouchpointId\": \"0000000104\",\r\n  \"SubcontractorId\": \"21323234\"\r\n}";
