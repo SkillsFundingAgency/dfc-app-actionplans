@@ -18,7 +18,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 
-namespace DFC.App.ActionPlans.Services.Cosmos.UnitTest
+namespace DFC.App.ActionPlans.Services.Cosmos.UnitTests
 {
     public class CosmosServiceTests
     {
