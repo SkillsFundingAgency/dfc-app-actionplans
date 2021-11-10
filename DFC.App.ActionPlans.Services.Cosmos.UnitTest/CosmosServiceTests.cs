@@ -1,8 +1,3 @@
-using System;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
 using DFC.App.ActionPlans.Cosmos.Interfaces;
 using DFC.App.ActionPlans.Cosmos.Models;
 using DFC.App.ActionPlans.Cosmos.Services;
@@ -16,6 +11,11 @@ using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using NSubstitute.ReturnsExtensions;
 using NUnit.Framework;
+using System;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 
 namespace DFC.App.ActionPlans.Services.Cosmos.UnitTest
@@ -50,7 +50,7 @@ namespace DFC.App.ActionPlans.Services.Cosmos.UnitTest
             {
                 var client = Substitute.For<CosmosClient>();
                 _service = new CosmosService(_cosmosSettings, client, _logger);
-                _service.Invoking(x => x.CreateItemAsync(null, CosmosCollection.Session)).Should().Throw<ArgumentException>();
+                _service.Invoking(x => x.CreateItemAsync(null, CosmosCollection.Session)).Should().ThrowAsync<ArgumentException>();
 
             }
 
@@ -61,7 +61,7 @@ namespace DFC.App.ActionPlans.Services.Cosmos.UnitTest
                 client.GetContainer(_cosmosSettings.Value.DatabaseName, _cosmosSettings.Value.UserSessionsCollection)
                     .ReturnsNullForAnyArgs();
                 _service = new CosmosService(_cosmosSettings, client, _logger);
-                _service.Invoking(x => x.CreateItemAsync(new UserSession(), CosmosCollection.Session)).Should().Throw<ArgumentException>();
+                _service.Invoking(x => x.CreateItemAsync(new UserSession(), CosmosCollection.Session)).Should().ThrowAsync<ArgumentException>();
 
             }
             [Test]
@@ -143,7 +143,7 @@ namespace DFC.App.ActionPlans.Services.Cosmos.UnitTest
             {
                 var client = Substitute.For<CosmosClient>();
                 _service = new CosmosService(_cosmosSettings, client, _logger);
-                _service.Invoking(x => x.ReadItemAsync(null, null, CosmosCollection.Session)).Should().Throw<ArgumentException>();
+                _service.Invoking(x => x.ReadItemAsync(null, null, CosmosCollection.Session)).Should().ThrowAsync<ArgumentException>();
 
             }
 
@@ -154,7 +154,7 @@ namespace DFC.App.ActionPlans.Services.Cosmos.UnitTest
                 client.GetContainer(_cosmosSettings.Value.DatabaseName, _cosmosSettings.Value.UserSessionsCollection)
                     .ReturnsNullForAnyArgs();
                 _service = new CosmosService(_cosmosSettings, client, _logger);
-                _service.Invoking(x => x.ReadItemAsync("Id", "partitionKey", CosmosCollection.Session)).Should().Throw<ArgumentException>();
+                _service.Invoking(x => x.ReadItemAsync("Id", "partitionKey", CosmosCollection.Session)).Should().ThrowAsync<ArgumentException>();
 
             }
             [Test]
@@ -264,7 +264,7 @@ namespace DFC.App.ActionPlans.Services.Cosmos.UnitTest
             {
                 var client = Substitute.For<CosmosClient>();
                 _service = new CosmosService(_cosmosSettings, client, _logger);
-                _service.Invoking(x => x.UpsertItemAsync(null, CosmosCollection.Session)).Should().Throw<ArgumentException>();
+                _service.Invoking(x => x.UpsertItemAsync(null, CosmosCollection.Session)).Should().ThrowAsync<ArgumentException>();
 
             }
 
@@ -275,7 +275,7 @@ namespace DFC.App.ActionPlans.Services.Cosmos.UnitTest
                 client.GetContainer(_cosmosSettings.Value.DatabaseName, _cosmosSettings.Value.UserSessionsCollection)
                     .ReturnsNullForAnyArgs();
                 _service = new CosmosService(_cosmosSettings, client, _logger);
-                _service.Invoking(x => x.UpsertItemAsync(new UserSession(), CosmosCollection.Session)).Should().Throw<ArgumentException>();
+                _service.Invoking(x => x.UpsertItemAsync(new UserSession(), CosmosCollection.Session)).Should().ThrowAsync<ArgumentException>();
 
             }
             [Test]

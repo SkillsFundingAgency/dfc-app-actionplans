@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Threading.Tasks;
-using DFC.App.ActionPlans.Controllers;
-using DFC.APP.ActionPlans.Data.Models;
+﻿using DFC.App.ActionPlans.Controllers;
 using DFC.App.ActionPlans.Exceptions;
 using DFC.App.ActionPlans.ViewModels;
+using DFC.APP.ActionPlans.Data.Models;
 using DFC.Compui.Cosmos.Contracts;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
@@ -15,10 +11,13 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using NSubstitute;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DFC.App.ActionPlans.UnitTests.Controllers
 {
-    class UpdateGoalConfirmationControllerTests : BaseControllerTests
+    internal class UpdateGoalConfirmationControllerTests : BaseControllerTests
     {
         private UpdateConfirmationController _controller;
         private ILogger<UpdateConfirmationController> _logger;
@@ -103,7 +102,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         {
 
             _controller.Invoking(async sut => await sut.Body(new Guid(), 0, Constants.Constants.Date))
-              .Should().Throw<ObjectUpdatedNotSetException>();
+              .Should().ThrowAsync<ObjectUpdatedNotSetException>();
         }
 
         [Test]
@@ -111,7 +110,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         {
 
             _controller.Invoking(async sut => await sut.Body(new Guid(), Constants.Constants.Goal, 0))
-                .Should().Throw<PropertyUpdatedNotSetException>();
+                .Should().ThrowAsync<PropertyUpdatedNotSetException>();
         }
 
         [Test]
