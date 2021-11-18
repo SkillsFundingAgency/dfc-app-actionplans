@@ -24,6 +24,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -54,7 +55,8 @@ namespace Dfc.App.ActionPlans
         public void ConfigureServices(IServiceCollection services)
         {
             var cosmosDbConnectionContentPages = Configuration.GetSection(CosmosDbContentPagesConfigAppSettings).Get<CosmosDbConnection>();
-            services.AddDocumentServices<CmsApiSharedContentModel>(cosmosDbConnectionContentPages, env.IsDevelopment());
+            var cosmosRetryOptions = new RetryOptions { MaxRetryAttemptsOnThrottledRequests = 20, MaxRetryWaitTimeInSeconds = 60 };
+            services.AddDocumentServices<CmsApiSharedContentModel>(cosmosDbConnectionContentPages, env.IsDevelopment(), cosmosRetryOptions);
 
             services.AddTransient<IEventMessageService<CmsApiSharedContentModel>, EventMessageService<CmsApiSharedContentModel>>();
             services.AddTransient<ICacheReloadService, CacheReloadService>();
@@ -62,7 +64,7 @@ namespace Dfc.App.ActionPlans
             services.AddApplicationInsightsTelemetry();
 
             services.AddControllersWithViews();
-            
+
             services.AddScoped<IDssReader, DssService>();
             services.AddScoped<IDssWriter, DssService>();
 
@@ -114,7 +116,7 @@ namespace Dfc.App.ActionPlans
                     {
                         OnAuthenticationFailed = context =>
                         {
-                            
+
                             if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
                             {
                                 context.Response.Redirect(appPath + "/session-timeout");
@@ -124,12 +126,12 @@ namespace Dfc.App.ActionPlans
                                 context.Response.Redirect(authSettings.SignInUrl);
                             }
                             return Task.CompletedTask;
-                            
-                            
+
+
                         },
-                       OnChallenge = context =>
-                       {
-                            var requestingUrl = context.Request.Path.ToString().Replace("/head",appPath);
+                        OnChallenge = context =>
+                        {
+                            var requestingUrl = context.Request.Path.ToString().Replace("/head", appPath);
                             context.Response.Redirect($"{authSettings.SignInUrl}?redirectUrl={requestingUrl}");
                             context.HandleResponse();
                             return Task.CompletedTask;
@@ -145,8 +147,8 @@ namespace Dfc.App.ActionPlans
             }).AddViewOptions(options =>
                 options.HtmlHelperOptions.ClientValidationEnabled = false);
         }
-        
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,  ILoggerFactory logger)
+
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory logger)
         {
             if (env.IsDevelopment())
             {
@@ -156,7 +158,7 @@ namespace Dfc.App.ActionPlans
             var appPath = Configuration.GetSection("CompositeSettings:Path").Value;
             app.UseStaticFiles();
             app.UseHttpsRedirection();
-            
+
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
