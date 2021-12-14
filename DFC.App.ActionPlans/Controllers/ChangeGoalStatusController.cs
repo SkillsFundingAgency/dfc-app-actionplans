@@ -39,7 +39,12 @@ namespace DFC.App.ActionPlans.Controllers
         public async Task<IActionResult> Body( Guid goalId)
         {
             var session = await GetUserSession();
-            await LoadViewData(session.ActionPlanId, session.InteractionId);
+            var customer = await GetCustomerDetails();
+            if (customer == null || session == null)
+            {
+                return BadRequest("unable to get customer details");
+            }
+            await ManageSession(customer.CustomerId, session.ActionPlanId, session.InteractionId);
 
             ViewModel.Goal = await _dssReader.GetGoalDetails(ViewModel.CustomerId.ToString(),
                 ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString(), goalId.ToString());
@@ -77,14 +82,12 @@ namespace DFC.App.ActionPlans.Controllers
             ModelState.AddModelError(Constants.Constants.GoalStatus, model.ErrorMessage);
 
             var customer = await GetCustomerDetails();
+            if (customer == null)
+            {
+                return BadRequest("unable to get customer details");
+            }
             await ManageSession(customer.CustomerId, model.ActionPlanId, model.InteractionId);
             return await base.Body();
-        }
-
-        private async Task LoadViewData(Guid actionPlanId, Guid interactionId)
-        {
-            var customer = await GetCustomerDetails();
-            await ManageSession(customer.CustomerId, actionPlanId, interactionId);
         }
 
         public override IActionResult Breadcrumb(Guid goalId)

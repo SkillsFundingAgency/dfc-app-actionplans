@@ -28,6 +28,10 @@ namespace DFC.App.ActionPlans.Controllers
 
         protected async Task<UserSession> GetUserSession(string Id, string partitionKey = "")
         {
+            if (string.IsNullOrEmpty(Id))
+            {
+                return null;
+            }
             var result = await _cosmosService.ReadItemAsync(Id, partitionKey, CosmosCollection.Session);
             return result.IsSuccessStatusCode
                 ? JsonConvert.DeserializeObject<UserSession>(await result.Content.ReadAsStringAsync())

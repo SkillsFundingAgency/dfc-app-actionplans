@@ -125,8 +125,9 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
                 {"objectUpdated", "ggg"}
             });
 
-            _controller.Invoking(sut => sut.Head())
-                .Should().Throw<ObjectUpdatedNotSetException>();
+            var result =_controller.Head();
+            var badRequest = result.As<BadRequestObjectResult>();
+            Assert.NotNull(badRequest);
         }
 
         [Test]
