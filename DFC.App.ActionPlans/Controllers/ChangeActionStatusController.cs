@@ -41,7 +41,12 @@ namespace DFC.App.ActionPlans.Controllers
         public async Task<IActionResult> Body( Guid actionId)
         {
             var session = await GetUserSession();
-            await LoadViewData(session.ActionPlanId, session.InteractionId);
+            var customer = await GetCustomerDetails();
+            if (customer == null || session == null)
+            {
+                return BadRequest("unable to get customer details");
+            }
+            await ManageSession(customer.CustomerId, session.ActionPlanId, session.InteractionId);
 
             ViewModel.Action = await _dssReader.GetActionDetails(ViewModel.CustomerId.ToString(),
                 ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString(), actionId.ToString());
@@ -79,6 +84,10 @@ namespace DFC.App.ActionPlans.Controllers
             ModelState.AddModelError(Constants.Constants.ActionStatus, model.ErrorMessage);
 
             var customer = await GetCustomerDetails();
+            if (customer == null)
+            {
+                return BadRequest("unable to get customer details");
+            }
             await ManageSession(customer.CustomerId, model.ActionPlanId, model.InteractionId);
             return await base.Body();
         }
@@ -86,11 +95,6 @@ namespace DFC.App.ActionPlans.Controllers
         public override IActionResult Breadcrumb(Guid actionId)
         {
             return base.Breadcrumb(actionId);
-        }
-        private async Task LoadViewData(Guid actionPlanId, Guid interactionId)
-        {
-            var customer = await GetCustomerDetails();
-            await ManageSession(customer.CustomerId, actionPlanId, interactionId);
         }
 
         private void InitVM(ChangeActionCompositeViewModel model)

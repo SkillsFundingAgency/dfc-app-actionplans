@@ -41,6 +41,10 @@ namespace DFC.App.ActionPlans.Controllers
         {
             var session = await GetUserSession();
             var customer = await GetCustomerDetails();
+            if (customer == null || session == null)
+            {
+                return BadRequest("unable to get customer details");
+            }
             await ManageSession(customer.CustomerId, session.ActionPlanId, session.InteractionId);
             ViewModel.Goal = await _dssReader.GetGoalDetails(ViewModel.CustomerId.ToString(), session.InteractionId.ToString(),
                 session.ActionPlanId.ToString(), goalId.ToString());
@@ -89,6 +93,10 @@ namespace DFC.App.ActionPlans.Controllers
             ModelState.AddModelError(Constants.Constants.DateGoalShouldBeCompletedBy, model.ErrorMessage);
 
             var customer = await GetCustomerDetails();
+            if (customer == null)
+            {
+                return BadRequest("unable to get customer details");
+            }
             await ManageSession(customer.CustomerId, model.ActionPlanId, model.InteractionId);
             return await base.Body();
         }

@@ -34,7 +34,7 @@ namespace Dfc.App.ActionPlans.Controllers
 
         public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService, IOptions<AuthSettings> authSettings,
             IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
-            :base(compositeSettings, dssReader, cosmosServiceService, documentService, config)
+            : base(compositeSettings, dssReader, cosmosServiceService, documentService, config)
         {
             _dssReader = dssReader;
             _dssWriter = dssWriter;
@@ -49,20 +49,24 @@ namespace Dfc.App.ActionPlans.Controllers
         public async Task<IActionResult> Body(HomeCompositeViewModel viewModel, IFormCollection formCollection)
         {
             var session = await GetUserSession();
+            if (session == null)
+            {
+                return BadRequest("No customer session found");
+            }
             if (formCollection.FirstOrDefault(x =>
                 string.Compare(x.Key, "homeGovukCheckBoxAcceptplan", StringComparison.CurrentCultureIgnoreCase) ==
                 0).Value == "on")
             {
                 await _dssWriter.UpdateActionPlan(new UpdateActionPlan()
                 {
-                  CustomerId  = session.CustomerId,
-                  InteractionId = session.InteractionId,
-                  ActionPlanId = session.ActionPlanId,
-                  DateActionPlanAcknowledged = DateTime.UtcNow.AddMinutes(-1)
+                    CustomerId = session.CustomerId,
+                    InteractionId = session.InteractionId,
+                    ActionPlanId = session.ActionPlanId,
+                    DateActionPlanAcknowledged = DateTime.UtcNow.AddMinutes(-1)
                 });
             }
 
-            await  ManageSession(session.CustomerId, session.ActionPlanId, session.InteractionId);
+            await ManageSession(session.CustomerId, session.ActionPlanId, session.InteractionId);
             return RedirectTo("/home");
         }
 
@@ -82,7 +86,7 @@ namespace Dfc.App.ActionPlans.Controllers
         public async Task<IActionResult> Body(Guid actionPlanId, Guid interactionId)
         {
             var session = await GetUserSession();
-            
+
             if (session == null && (actionPlanId == Guid.Empty || interactionId == Guid.Empty))
             {
                 return await Task.FromResult<IActionResult>(View("BodyUnAuth", ViewModel));
@@ -92,6 +96,10 @@ namespace Dfc.App.ActionPlans.Controllers
             var timer = new Stopwatch();
             timer.Start();
             var customer = await GetCustomerDetails();
+            if (customer == null)
+            {
+                return BadRequest("unable to get customer details");
+            }
             await ManageSession(customer.CustomerId, actionPlanId, interactionId, session);
             ViewModel.Goals = await _dssReader.GetGoals(ViewModel.CustomerId.ToString(), ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString());
             ViewModel.Actions = await _dssReader.GetActions(ViewModel.CustomerId.ToString(), ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString());
@@ -133,7 +141,7 @@ namespace Dfc.App.ActionPlans.Controllers
             }
             return base.Breadcrumb(objectId);
         }
-      
+
 
         [Route("/bodyfooter/home")]
         [Route("/bodyfooter")]
@@ -143,7 +151,7 @@ namespace Dfc.App.ActionPlans.Controllers
             return base.BodyFooter();
         }
         #endregion Default Routes
-        
+
         private async Task<Session> GetLatestSession()
         {
             _logger.LogInformation("Getting sessions from DSS");

@@ -96,33 +96,18 @@ namespace Dfc.App.ActionPlans.Controllers
 
         protected string GetLoggedInUserId()
         {
-            var userId = User.Claims.FirstOrDefault(x => x.Type == "CustomerId")?.Value;
-
-            if (userId == null)
-            {
-                throw new NoUserIdInClaimException("Unable to locate userID");
-            }
-
-            return userId;
+            return User.Claims.FirstOrDefault(x => x.Type == "CustomerId")?.Value;
         }
 
         protected string GetSessionId()
         {
             var compositeSessionId = Request.CompositeSessionId();
-
-            if (compositeSessionId == null)
-            {
-                throw new CompositeSessionNotFoundException("Composite Session is null");
-            }
-
-            return $"{Request.CompositeSessionId()}|{GetLoggedInUserId()}";
+            return compositeSessionId.HasValue ? $"{Request.CompositeSessionId()}|{GetLoggedInUserId()}" : null;
         }
 
         protected async Task<UserSession> GetUserSession()
         {
-            
-                return await GetUserSession(GetSessionId());
-            
+            return await GetUserSession(GetSessionId());
         }
 
         protected async Task ManageSession(Guid customerId, Guid actionPlanId, Guid interactionId, UserSession session = null)
