@@ -34,6 +34,10 @@ namespace DFC.App.ActionPlans.Controllers
         {
             var session = await GetUserSession();
             var customer = await GetCustomerDetails();
+            if (customer == null || session == null)
+            {
+                return BadRequest("unable to get customer details");
+            }
             await ManageSession(customer.CustomerId, session.ActionPlanId, session.InteractionId);
             ViewModel.Action = await _dssReader.GetActionDetails(ViewModel.CustomerId.ToString(),
                 ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString(), actionId.ToString());

@@ -67,16 +67,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
 
 
         }
-
-        [Test]
-        public void WhenBodyCalledAndNcsSessionNotFound_ThrowsCompositeSessionNotFoundException()
-        {
-            var context = new DefaultHttpContext() { User = user };
-            _controller.ControllerContext.HttpContext = context;
-
-            Assert.ThrowsAsync<CompositeSessionNotFoundException>(() => _controller.Body(Guid.Empty, Guid.Empty));
-        }
-
+        
         [Test]
         public async Task WhenBodyCalledAndUserNotLoggedIn_ReturnHtml()
         {

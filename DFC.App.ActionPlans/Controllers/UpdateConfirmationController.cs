@@ -1,9 +1,5 @@
-﻿using System;
-using System.Runtime.Serialization;
-using System.Threading.Tasks;
-using Dfc.App.ActionPlans.Controllers;
+﻿using Dfc.App.ActionPlans.Controllers;
 using DFC.App.ActionPlans.Cosmos.Interfaces;
-using DFC.APP.ActionPlans.Data.Models;
 using DFC.App.ActionPlans.Exceptions;
 using DFC.App.ActionPlans.Extensions;
 using DFC.App.ActionPlans.Helpers;
@@ -11,6 +7,7 @@ using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Services.DSS.Models;
 using DFC.App.ActionPlans.ViewModels;
+using DFC.APP.ActionPlans.Data.Models;
 using DFC.Compui.Cosmos.Contracts;
 using DFC.Personalisation.Common.Extensions;
 using Microsoft.AspNetCore.Authorization;
@@ -18,6 +15,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System;
+using System.Threading.Tasks;
+using Microsoft.IdentityModel.Tokens;
 
 namespace DFC.App.ActionPlans.Controllers
 {
@@ -32,18 +32,28 @@ namespace DFC.App.ActionPlans.Controllers
             _dssReader = dssReader;
         }
 
-        
+
         [Route("/body/update-confirmation")]
         [HttpGet]
-        public async  Task<IActionResult> Body(Guid objectId, int objectUpdated, int propertyUpdated)
+        public async Task<IActionResult> Body(Guid objectId, int objectUpdated, int propertyUpdated)
         {
             var customer = await GetCustomerDetails();
             var session = await base.GetUserSession();
+            if (customer == null || session == null)
+            {
+                return BadRequest("unable to get customer details");
+            }
+
             await ManageSession(customer.CustomerId, session.ActionPlanId, session.InteractionId);
+            if (objectUpdated != Constants.Constants.Goal && objectUpdated != Constants.Constants.Action ||
+                propertyUpdated != Constants.Constants.Date && propertyUpdated != Constants.Constants.Status)
+            {
+                return BadRequest("Object updated has not been provided or is incorrect.");
+            }
             await SetUpdateMessages(objectId, objectUpdated, propertyUpdated);
             return await base.Body();
         }
-        
+
         [Route("/head/update-confirmation")]
         [HttpGet]
         public override IActionResult Head()
@@ -52,14 +62,23 @@ namespace DFC.App.ActionPlans.Controllers
                 : Request.Query["objectUpdated"].ToString();
             int.TryParse(queryobjectUpdated, out var objectUpdated);
 
-           var title = objectUpdated switch
+            var title = string.Empty;
+
+            switch (objectUpdated)
             {
-                Constants.Constants.Goal => "Goal updated",
-                Constants.Constants.Action => "Action updated",
-                _ => throw new ObjectUpdatedNotSetException($"Object updated has not been provided or is incorrect.")
-            };
-           ViewModel.GeneratePageTitle(title);
-            return  base.Head();
+                case Constants.Constants.Goal:
+                    title = "Goal updated";
+                    break;
+                case Constants.Constants.Action:
+                        title = "Action updated";
+                    break;
+                default:
+                    return BadRequest("Object updated has not been provided or is incorrect.");
+
+            }
+
+            ViewModel.GeneratePageTitle(title);
+            return base.Head();
         }
 
         private async Task SetUpdateMessages(Guid objId, int objectUpdated, int propertyUpdated)
@@ -71,13 +90,9 @@ namespace DFC.App.ActionPlans.Controllers
                     await SetGoalUpdateMessages(objId, propertyUpdated);
                     break;
 
-                case Constants.Constants.Action:
+                default:
                     await SetActionUpdateMessages(objId, propertyUpdated);
                     break;
-                
-                default:
-                    throw new ObjectUpdatedNotSetException(
-                        $"Object updated has not been provided or is incorrect.");
             }
         }
 
@@ -86,43 +101,38 @@ namespace DFC.App.ActionPlans.Controllers
             ViewModel.PageTitle = "Goal Updated";
             var goal = await _dssReader.GetGoalDetails(ViewModel.CustomerId.ToString(),
                 ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString(), goalId.ToString());
-            
+
             ViewModel.Name = $"{goal.GoalType.GetDisplayName()} - ";
             ViewModel.Summary = $"{goal.GoalSummary}";
-            ViewModel.ObjLink =  Urls.GetViewGoalUrl(ViewModel.CompositeSettings.Path, goalId);
+            ViewModel.ObjLink = Urls.GetViewGoalUrl(ViewModel.CompositeSettings.Path, goalId);
             ViewModel.ObjLinkText = "view or update this goal";
             SetGoalMessagesForProperty(propertyUpdated, goal);
         }
 
-        private void SetGoalMessagesForProperty(int propertyUpdated,Goal goal)
+        private void SetGoalMessagesForProperty(int propertyUpdated, Goal goal)
         {
             switch (propertyUpdated)
             {
                 case Constants.Constants.Date:
-                {
-                    ViewModel.WhatChanged = "Due date changed";
-                    ViewModel.UpdateMessage =
-                        $"You have changed the due date of this goal to <strong>{goal.DateGoalShouldBeCompletedBy.DateOnly()}</strong>.";
-                    break;
-                }
-                case Constants.Constants.Status:
-                {
-                    ViewModel.WhatChanged = "Goal status updated";
-                    ViewModel.UpdateMessage =
-                        $"You have changed the status of this goal to <strong>{goal.GoalStatus.GetDisplayName()}</strong>.";
-                    break;
-                }
+                    {
+                        ViewModel.WhatChanged = "Due date changed";
+                        ViewModel.UpdateMessage =
+                            $"You have changed the due date of this goal to <strong>{goal.DateGoalShouldBeCompletedBy.DateOnly()}</strong>.";
+                        break;
+                    }
                 default:
-                {
-                    throw new PropertyUpdatedNotSetException(
-                        $"Property updated has not been provided or is incorrect for Goal. {ViewModel.Name}");
-                }
+                    {
+                        ViewModel.WhatChanged = "Goal status updated";
+                        ViewModel.UpdateMessage =
+                            $"You have changed the status of this goal to <strong>{goal.GoalStatus.GetDisplayName()}</strong>.";
+                        break;
+                    }
             }
         }
 
         private async Task SetActionUpdateMessages(Guid actionId, int propertyUpdated)
         {
-            
+
             var action = await _dssReader.GetActionDetails(ViewModel.CustomerId.ToString(),
                 ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString(), actionId.ToString());
             ViewModel.Name = $"{action.ActionType.GetDisplayName()} - ";
@@ -142,14 +152,11 @@ namespace DFC.App.ActionPlans.Controllers
                     ViewModel.UpdateMessage =
                         $"You have changed the due date of this action to <strong>{action.DateActionAimsToBeCompletedBy.DateOnly()}</strong>.";
                     break;
-                case Constants.Constants.Status:
+                default:
                     ViewModel.WhatChanged = "Action status updated";
                     ViewModel.UpdateMessage =
                         $"You have changed the status of this action to <strong>{action.ActionStatus.GetDisplayName()}</strong>.";
                     break;
-                default:
-                    throw new PropertyUpdatedNotSetException(
-                        $"Property updated has not been provided or is incorrect for Action. {ViewModel.Name}");
             }
         }
     }
