@@ -2,6 +2,9 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+         "appInsightsInstrumentationKey":{
+            "type": "string"
+        },
         "environment": {
             "type": "string"
         },
@@ -110,7 +113,7 @@
         "appServicePlanName": "[concat(variables('resourcePrefix'), '-asp')]",
         "appServicePlanResourceGroup": "[concat(variables('resourcePrefix'),'-rg')]",
         "webAppName": "[concat(variables('ResourcePrefix'), '-as')]",
-        "webAppInsightsName": "[concat(variables('webAppName'), '-ai')]"
+        "WebAppInsightInstrumentationKey":"[parameters('appInsightsInstrumentationKey')]"
     },
     "resources": [
         {
@@ -141,26 +144,6 @@
                     },
                     "nonASETier": {
                         "value": "[parameters('aspTier')]"
-                    }
-                }
-            }
-        },
-        {
-            "apiVersion": "2017-05-10",
-            "name": "[variables('webAppInsightsName')]",
-            "type": "Microsoft.Resources/deployments",
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "uri": "[concat(variables('buildingBlocksDfcBaseUrl'), 'application-insights.json')]",
-                    "contentVersion": "1.0.0.0"
-                },
-                "parameters": {
-                    "appInsightsName": {
-                        "value": "[variables('webAppInsightsName')]"
-                    },
-                    "attachedService": {
-                        "value": ""
                     }
                 }
             }
@@ -366,7 +349,7 @@
                             },
                             {
                                 "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-                                "value": "[reference(variables('webAppInsightsName')).outputs.InstrumentationKey.value]"
+                                "value": "[variables('WebAppInsightInstrumentationKey')]"
                             },
                             {
                                 "name": "WEBSITE_RUN_FROM_PACKAGE",
@@ -439,10 +422,7 @@
                         ]
                     }
                 }
-            },
-            "dependsOn": [
-                "[variables('webAppInsightsName')]"
-            ]
+            }
         },
         {
             "name": "[variables('CosmosDbDatabaseName')]",
