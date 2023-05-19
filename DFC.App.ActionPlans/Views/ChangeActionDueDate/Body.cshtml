@@ -34,7 +34,7 @@
                 <br />
                 <p>We will update your adviser's records with this change.</p>
                 <govukButton id="@Model.GetElementId("govukSecondaryButton", "Continue");" text="Continue"></govukButton>
-                <govukButtonLink additional-class="govuk-button--secondary" id="@Model.GetElementId("govukButtonLink", "Cancel")" LinkTitle="Cancel" LinkText="Cancel" LinkHref="@(Urls.GetViewActionUrl(Model.CompositeSettings.Path, new Guid(Model.Action.ActionId)))"></govukButtonLink>
+                <govukButtonLink additional-class="ncs-button__primary" id="@Model.GetElementId("govukButtonLink", "Cancel")" LinkTitle="Cancel" LinkText="Cancel" LinkHref="@(Urls.GetViewActionUrl(Model.CompositeSettings.Path, new Guid(Model.Action.ActionId)))"></govukButtonLink>
 
             </form>
         </div>
