@@ -2,15 +2,56 @@
 
 <partial name="~/Views/Shared/BodyTop.cshtml" />
 @if (!Model.HideHeroBanner)
-{
-    <div class="primary-hero">
-        <div class="govuk-width-container">
-            <div class="govuk-grid-row">
-                <div class="govuk-grid-column-two-thirds">
-                    <h1 class="govuk-heading-xl">@CompositeViewModel.AppTitle</h1>
-                    <p class="govuk-body-lead">Taking the next step in your career can sometimes feel overwhelming. It’s helpful to break down a big decision into small steps that you can do one at a time. Use your action plan to keep track of the goals and actions you and your adviser set during your appointment.</p>
-                </div>
-            </div>
+{    
+    <div class="ncs-hero page-hero">
+    
+        <div class="d-only">
+            <img src="https://lab-cdn.nationalcareersservice.org.uk/media/headers/page-header.jpg" alt=""/>
         </div>
+
+        <div class="m-only">
+            <img src="https://lab-cdn.nationalcareersservice.org.uk/media/headers/page-mobile-header.jpg" alt=""/>
+        </div>
+
+        <div class="content govuk-width-container">
+            <div class="govuk-grid-row">
+                
+                <div class="govuk-grid-column-two-thirds">
+
+                    <h1 class="govuk-heading-xl">
+                        <div class="block ncs">
+                            <span>@CompositeViewModel.AppTitle</span>
+                        </div>
+                    </h1>
+
+                    <div class="sub-heading">
+                        <p class="block">
+                            <span>Use</span>
+                            <span>your</span>
+                            <span>action</span>
+                            <span>plan</span>
+                            <span>to</span>
+                            <span>keep</span>
+                            <span>track</span>                        
+                            <span>of</span>                        
+                            <span>the</span>                        
+                            <span>goals</span>                        
+                            <span>and</span>
+                            <span>actions</span>
+                            <span>you</span>
+                            <span>and</span>
+                            <span>your</span>
+                            <span>adviser</span>
+                            <span>set</span>
+                            <span>during</span>
+                            <span>your</span>
+                            <span>appointment.</span>
+                        </p>
+                    </div>
+
+                </div>
+           </div>
+        </div>
+     
     </div>
 }
