@@ -16,7 +16,7 @@
 
     <govukHeadingH2 text="Access your action plan"></govukHeadingH2>
     <p>To review and update your action plan, first you need to log in to your account.</p>
-    <govukButtonLink id="@Model.GetElementId("govukButtonLink ", "GoToActionPlans")" LinkText="Go to your action plan" LinkHref="@AuthSettings.Value.AccountEndpoint"></govukButtonLink>
+    <govukButtonLink additional-class="ncs-button__primary" id="@Model.GetElementId("govukButtonLink ", "GoToActionPlans")" LinkText="Go to your action plan" LinkHref="@AuthSettings.Value.AccountEndpoint"></govukButtonLink>
     <govukHeadingH2 text="If you do not have an action plan"></govukHeadingH2>
     <p class="govuk-body">If you don’t have an action plan, don’t worry. There are lots of things you can do to take control of your career, like:</p>
     <ul class="govuk-list govuk-list--bullet">
