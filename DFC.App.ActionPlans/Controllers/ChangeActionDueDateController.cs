@@ -25,14 +25,15 @@ namespace DFC.App.ActionPlans.Controllers
     {
         private readonly IDssWriter _dssWriter;
         private readonly IDssReader _dssReader;
-
-        public ChangeActionDueDateController(ILogger<ChangeActionDueDateController> logger,
+        private readonly ILogger _dsslogger;
+        public ChangeActionDueDateController(ILogger logger,
             IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService,
             IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
-            : base(compositeSettings, dssReader, cosmosServiceService, documentService, config)
+            : base(logger,compositeSettings, dssReader, cosmosServiceService, documentService, config)
         {
             _dssWriter = dssWriter;
             _dssReader = dssReader;
+            _dsslogger = logger;
             ViewModel.GeneratePageTitle("Change action due date");
         }
 
@@ -44,11 +45,16 @@ namespace DFC.App.ActionPlans.Controllers
             var customer = await GetCustomerDetails();
             if (customer == null || session == null)
             {
+                _dsslogger.LogError($"ChangeActionDueDateController Body Customer or session is null actionId {actionId}");
                 return BadRequest("unable to get customer details");
             }
+
             await ManageSession(customer.CustomerId, session.ActionPlanId, session.InteractionId);
             ViewModel.Action = await _dssReader.GetActionDetails(ViewModel.CustomerId.ToString(),
                 session.InteractionId.ToString(), session.ActionPlanId.ToString(), actionId.ToString());
+
+            _dsslogger.LogInformation($"ChangeActionDueDateController Body actionId {actionId} CustomerId {customer.CustomerId} ");
+
             return await base.Body();
         }
 

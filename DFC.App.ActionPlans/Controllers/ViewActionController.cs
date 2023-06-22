@@ -20,12 +20,14 @@ namespace DFC.App.ActionPlans.Controllers
     public class ViewActionController : CompositeSessionController<ViewActionCompositeViewModel>
     {
         private readonly IDssReader _dssReader;
+        private readonly ILogger _dsslogger;
 
         public ViewActionController(ILogger<ViewActionController> logger, IOptions<CompositeSettings> compositeSettings,
             IDssReader dssReader, ICosmosService cosmosServiceService, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
-            : base(compositeSettings, dssReader, cosmosServiceService, documentService, config)
+            : base(logger,compositeSettings, dssReader, cosmosServiceService, documentService, config)
         {
             _dssReader = dssReader;
+            _dsslogger = logger;
         }
 
         [Route("/body/view-action")]
@@ -36,6 +38,8 @@ namespace DFC.App.ActionPlans.Controllers
             var customer = await GetCustomerDetails();
             if (customer == null || session == null)
             {
+                _dsslogger.LogError($"ViewActionController Body Customer or session is null actionId {actionId}");
+
                 return BadRequest("unable to get customer details");
             }
             await ManageSession(customer.CustomerId, session.ActionPlanId, session.InteractionId);
@@ -47,6 +51,7 @@ namespace DFC.App.ActionPlans.Controllers
 
         private void  SetBackLink()
         {
+            _dsslogger.LogError($"ViewActionController SetBackLink {ViewModel.CompositeSettings.Path}");
             ViewModel.BackLink = Urls.GetViewActionPlanUrl(ViewModel.CompositeSettings.Path);
         }
     }

@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Antlr.Runtime.Misc;
 
 namespace DFC.App.ActionPlans.Controllers
 {
@@ -24,13 +25,15 @@ namespace DFC.App.ActionPlans.Controllers
     {
         private readonly IDssWriter _dssWriter;
         private readonly IDssReader _dssReader;
+        private readonly ILogger _dsslogger;
 
-        public ChangeGoalStatusController(ILogger<ChangeGoalStatusController> logger, IOptions<CompositeSettings> compositeSettings,
+        public ChangeGoalStatusController(ILogger logger, IOptions<CompositeSettings> compositeSettings,
             IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
-            : base(compositeSettings, dssReader, cosmosServiceService, documentService, config)
+            : base(logger,compositeSettings, dssReader, cosmosServiceService, documentService, config)
         {
             _dssWriter = dssWriter;
             _dssReader = dssReader;
+            _dsslogger = logger;
             ViewModel.GeneratePageTitle("Change goal status");
         }
 
@@ -42,6 +45,7 @@ namespace DFC.App.ActionPlans.Controllers
             var customer = await GetCustomerDetails();
             if (customer == null || session == null)
             {
+                _dsslogger.LogError($"ChangeActionDueDateController Body Customer or session is null goalId {goalId}");
                 return BadRequest("unable to get customer details");
             }
             await ManageSession(customer.CustomerId, session.ActionPlanId, session.InteractionId);
@@ -84,6 +88,7 @@ namespace DFC.App.ActionPlans.Controllers
             var customer = await GetCustomerDetails();
             if (customer == null)
             {
+                _dsslogger.LogError($"ChangeGoalStatusController Body Customer is null");
                 return BadRequest("unable to get customer details");
             }
             await ManageSession(customer.CustomerId, model.ActionPlanId, model.InteractionId);

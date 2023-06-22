@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using static NHibernate.Engine.Query.CallableParser;
 
 namespace DFC.App.ActionPlans.Controllers
 {
@@ -24,14 +25,16 @@ namespace DFC.App.ActionPlans.Controllers
     {
         private readonly IDssWriter _dssWriter;
         private readonly IDssReader _dssReader;
+        private readonly ILogger _dsslogger;
 
         public ChangeGoalDueDateController(ILogger<ChangeGoalDueDateController> logger,
             IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService,
             IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
-            : base(compositeSettings, dssReader, cosmosServiceService, documentService, config)
+            : base((ILogger<CompositeSessionController>)logger,compositeSettings, dssReader, cosmosServiceService, documentService, config)
         {
             _dssWriter = dssWriter;
             _dssReader = dssReader;
+            _dsslogger = logger;
             ViewModel.GeneratePageTitle("Change goal due date");
         }
 
@@ -43,11 +46,13 @@ namespace DFC.App.ActionPlans.Controllers
             var customer = await GetCustomerDetails();
             if (customer == null || session == null)
             {
+                _dsslogger.LogError($"ChangeGoalDueDateController Body : unable to get customer details");
                 return BadRequest("unable to get customer details");
             }
             await ManageSession(customer.CustomerId, session.ActionPlanId, session.InteractionId);
             ViewModel.Goal = await _dssReader.GetGoalDetails(ViewModel.CustomerId.ToString(), session.InteractionId.ToString(),
                 session.ActionPlanId.ToString(), goalId.ToString());
+            _dsslogger.LogInformation($"ChangeGoalDueDateController Body : Customerid {customer.CustomerId}  ActionPlanId {session.ActionPlanId} ");
             return await base.Body();
         }
 

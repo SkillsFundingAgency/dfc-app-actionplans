@@ -18,6 +18,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
+using Antlr.Runtime.Misc;
 
 namespace DFC.App.ActionPlans.Controllers
 {
@@ -25,11 +26,14 @@ namespace DFC.App.ActionPlans.Controllers
     public class UpdateConfirmationController : CompositeSessionController<UpdateGoalConfirmationCompositeViewModel>
     {
         private readonly IDssReader _dssReader;
-        public UpdateConfirmationController(ILogger<UpdateConfirmationController> logger, IOptions<CompositeSettings> compositeSettings,
+        private readonly ILogger _dsslogger;
+
+        public UpdateConfirmationController(ILogger logger, IOptions<CompositeSettings> compositeSettings,
             IDssReader dssReader, ICosmosService cosmosServiceService, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
-            : base(compositeSettings, dssReader, cosmosServiceService, documentService, config)
+            : base(logger,compositeSettings, dssReader, cosmosServiceService, documentService, config)
         {
             _dssReader = dssReader;
+            _dsslogger= logger;
         }
 
 
@@ -41,6 +45,7 @@ namespace DFC.App.ActionPlans.Controllers
             var session = await base.GetUserSession();
             if (customer == null || session == null)
             {
+                _dsslogger.LogError($"UpdateConfirmationController Body Customer or session is null objectId {objectId}");
                 return BadRequest("unable to get customer details");
             }
 
@@ -48,6 +53,7 @@ namespace DFC.App.ActionPlans.Controllers
             if (objectUpdated != Constants.Constants.Goal && objectUpdated != Constants.Constants.Action ||
                 propertyUpdated != Constants.Constants.Date && propertyUpdated != Constants.Constants.Status)
             {
+                _dsslogger.LogError($"UpdateConfirmationController Body bject updated has not been provided or is incorrect. customer.CustomerId{customer.CustomerId}");
                 return BadRequest("Object updated has not been provided or is incorrect.");
             }
             await SetUpdateMessages(objectId, objectUpdated, propertyUpdated);
@@ -67,12 +73,15 @@ namespace DFC.App.ActionPlans.Controllers
             switch (objectUpdated)
             {
                 case Constants.Constants.Goal:
+                    _dsslogger.LogInformation($"UpdateConfirmationController Goal updated");
                     title = "Goal updated";
                     break;
                 case Constants.Constants.Action:
-                        title = "Action updated";
+                    _dsslogger.LogInformation($"UpdateConfirmationController Action updated");
+                    title = "Action updated";
                     break;
                 default:
+                    _dsslogger.LogInformation($"UpdateConfirmationController Object updated has not been provided or is incorrect.");
                     return BadRequest("Object updated has not been provided or is incorrect.");
 
             }
@@ -87,6 +96,7 @@ namespace DFC.App.ActionPlans.Controllers
             switch (objectUpdated)
             {
                 case Constants.Constants.Goal:
+                    _dsslogger.LogInformation($"UpdateConfirmationController SetUpdateMessages calling SetGoalUpdateMessages objId {objId}");
                     await SetGoalUpdateMessages(objId, propertyUpdated);
                     break;
 
@@ -94,6 +104,7 @@ namespace DFC.App.ActionPlans.Controllers
                     await SetActionUpdateMessages(objId, propertyUpdated);
                     break;
             }
+            _dsslogger.LogInformation($"UpdateConfirmationController SetUpdateMessages calling SetActionUpdateMessages objId {objId}");
         }
 
         private async Task SetGoalUpdateMessages(Guid goalId, int propertyUpdated)
@@ -118,7 +129,7 @@ namespace DFC.App.ActionPlans.Controllers
                         ViewModel.WhatChanged = "Due date changed";
                         ViewModel.UpdateMessage =
                             $"You have changed the due date of this goal to <strong>{goal.DateGoalShouldBeCompletedBy.DateOnly()}</strong>.";
-                        break;
+                          break;
                     }
                 default:
                     {
@@ -128,6 +139,9 @@ namespace DFC.App.ActionPlans.Controllers
                         break;
                     }
             }
+
+            _dsslogger.LogInformation($"UpdateConfirmationController SetGoalMessagesForProperty {ViewModel.UpdateMessage}");
+
         }
 
         private async Task SetActionUpdateMessages(Guid actionId, int propertyUpdated)
@@ -158,6 +172,8 @@ namespace DFC.App.ActionPlans.Controllers
                         $"You have changed the status of this action to <strong>{action.ActionStatus.GetDisplayName()}</strong>.";
                     break;
             }
+
+            _dsslogger.LogInformation($"UpdateConfirmationController SetActionStatusMessages {ViewModel.UpdateMessage}");
         }
     }
 }

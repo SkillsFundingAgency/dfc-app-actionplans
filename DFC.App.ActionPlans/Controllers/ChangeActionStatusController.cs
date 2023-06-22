@@ -17,6 +17,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Action = DFC.App.ActionPlans.Services.DSS.Models.Action;
+using Antlr.Runtime.Misc;
 
 namespace DFC.App.ActionPlans.Controllers
 {
@@ -25,14 +26,16 @@ namespace DFC.App.ActionPlans.Controllers
     {
         private readonly IDssWriter _dssWriter;
         private readonly IDssReader _dssReader;
+        private readonly ILogger _dsslogger;
 
-        public ChangeActionStatusController(ILogger<ChangeActionStatusController> logger,
+        public ChangeActionStatusController(ILogger logger,
             IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService,
             IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
-            : base(compositeSettings, dssReader, cosmosServiceService, documentService, config)
+            : base(logger,compositeSettings, dssReader, cosmosServiceService, documentService, config)
         {
             _dssWriter = dssWriter;
             _dssReader = dssReader;
+            _dsslogger = logger;
             ViewModel.GeneratePageTitle("Change action status");
         }
 
@@ -44,14 +47,15 @@ namespace DFC.App.ActionPlans.Controllers
             var customer = await GetCustomerDetails();
             if (customer == null || session == null)
             {
+                _dsslogger.LogError($"ChangeActionStatusController Body Customer or session is null actionId {actionId}");
                 return BadRequest("unable to get customer details");
             }
             await ManageSession(customer.CustomerId, session.ActionPlanId, session.InteractionId);
 
             ViewModel.Action = await _dssReader.GetActionDetails(ViewModel.CustomerId.ToString(),
-                ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString(), actionId.ToString());
+               ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString(), actionId.ToString());
 
-            return await base.Body();
+           return await base.Body();
         }
 
         [Route("/body/change-action-status")]
@@ -77,6 +81,7 @@ namespace DFC.App.ActionPlans.Controllers
             }
             else
             {
+                _dsslogger.LogError($"ChangeActionStatusController Body : Choose a status for this action or select ‘Cancel’ to view it.");
                 model.ErrorMessage = "Choose a status for this action or select ‘Cancel’ to view it.";
             }
 
@@ -86,6 +91,8 @@ namespace DFC.App.ActionPlans.Controllers
             var customer = await GetCustomerDetails();
             if (customer == null)
             {
+                _dsslogger.LogError($"ChangeActionStatusController Body : unable to get customer details");
+
                 return BadRequest("unable to get customer details");
             }
             await ManageSession(customer.CustomerId, model.ActionPlanId, model.InteractionId);

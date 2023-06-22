@@ -30,6 +30,7 @@ namespace DFC.APP.Account.CacheContentService
             
             if (apiDataModel == null)
             {
+                logger.LogInformation("WebhookContentProcessor ProcessContentAsync apiDataModel is null");
                 return HttpStatusCode.NoContent;
             }
             apiDataModel.Id = apiDataModel.ItemId.Value;
@@ -37,15 +38,16 @@ namespace DFC.APP.Account.CacheContentService
 
             if (contentResult == HttpStatusCode.NotFound)
             {
+                logger.LogInformation("WebhookContentProcessor ProcessContentAsync contentResult is NotFound");
                 contentResult = await eventMessageService.CreateAsync(apiDataModel).ConfigureAwait(false);
             }
-
 
             return contentResult;
         }
 
         public async Task<HttpStatusCode> DeleteContentAsync(Guid contentId)
         {
+            logger.LogInformation($"WebhookContentProcessor DeleteContentAsync contentId {contentId}");
             var result = await eventMessageService.DeleteAsync(contentId).ConfigureAwait(false);
             
             return result;

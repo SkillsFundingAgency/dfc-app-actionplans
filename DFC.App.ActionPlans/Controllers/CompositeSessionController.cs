@@ -17,6 +17,7 @@ using DFC.Compui.Cosmos.Contracts;
 using DFC.Compui.Sessionstate;
 using Microsoft.Extensions.Configuration;
 using Constants = DFC.App.ActionPlans.Constants.Constants;
+using Microsoft.Extensions.Logging;
 
 namespace Dfc.App.ActionPlans.Controllers
 {
@@ -32,7 +33,7 @@ namespace Dfc.App.ActionPlans.Controllers
         protected TViewModel ViewModel { get; }
         private readonly IDocumentService<CmsApiSharedContentModel> _documentService;
         private readonly Guid _sharedContent;
-        protected CompositeSessionController(IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, ICosmosService cosmosServiceService, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
+        protected CompositeSessionController(ILogger logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, ICosmosService cosmosServiceService, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
             : base(cosmosServiceService)        
         {
             ViewModel = new TViewModel()
@@ -180,5 +181,8 @@ namespace Dfc.App.ActionPlans.Controllers
         }
     }
 
+    public class CompositeSessionController
+    {
+    }
 }
 

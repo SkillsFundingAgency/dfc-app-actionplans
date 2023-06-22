@@ -20,12 +20,14 @@ namespace DFC.App.ActionPlans.Controllers
     public class ViewGoalController : CompositeSessionController<ViewGoalCompositeViewModel>
     {
         private readonly IDssReader _dssReader;
-        
-        public ViewGoalController(ILogger<ViewGoalController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, ICosmosService cosmosServiceService,
+        private readonly ILogger _dsslogger;
+
+        public ViewGoalController(ILogger logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, ICosmosService cosmosServiceService,
             IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
-            : base(compositeSettings, dssReader, cosmosServiceService, documentService, config)
+            : base(logger, compositeSettings, dssReader, cosmosServiceService, documentService, config)
         {
             _dssReader = dssReader;
+            _dsslogger = logger;
         }
         
         [Route("/body/view-goal")]
@@ -36,10 +38,13 @@ namespace DFC.App.ActionPlans.Controllers
             var customer = await GetCustomerDetails();
             if (customer == null || session == null)
             {
+                _dsslogger.LogError($"ViewGoalController Body Customer or session is null goalId {goalId}");
                 return BadRequest("unable to get customer details");
             }
             await ManageSession(customer.CustomerId, session.ActionPlanId, session.InteractionId);
             ViewModel.Goal = await _dssReader.GetGoalDetails(ViewModel.CustomerId.ToString(), ViewModel.InteractionId.ToString(), ViewModel.ActionPlanId.ToString(),goalId.ToString());
+
+            _dsslogger.LogInformation($"ViewGoalController Body ViewModel.Goal {ViewModel.Goal.GoalId}");
             SetBackLink();
             return await base.Body();
         }

@@ -26,6 +26,8 @@ namespace DFC.APP.ActionPlans.CacheContentService
         {
             var serviceDataModels = await _documentService.GetAllAsync().ConfigureAwait(false);
 
+            logger.LogInformation($"EventMessageService GetAllCachedItemsAsync ");
+
             return serviceDataModels?.ToList();
         }
 
@@ -33,12 +35,14 @@ namespace DFC.APP.ActionPlans.CacheContentService
         {
             if (upsertDocumentModel == null)
             {
+                logger.LogError($"EventMessageService CreateAsync upsertDocumentModel is null");
                 return HttpStatusCode.BadRequest;
             }
 
             var existingDocument = await _documentService.GetByIdAsync(upsertDocumentModel.Id).ConfigureAwait(false);
             if (existingDocument != null)
             {
+                logger.LogError($"EventMessageService CreateAsync existingDocument {existingDocument} is AlreadyReported");
                 return HttpStatusCode.AlreadyReported;
             }
             
@@ -59,6 +63,7 @@ namespace DFC.APP.ActionPlans.CacheContentService
             var existingDocument = await _documentService.GetByIdAsync(upsertDocumentModel.Id).ConfigureAwait(false);
             if (existingDocument == null)
             {
+                logger.LogError($"EventMessageService UpdateAsync existingDocument {existingDocument} is NotFound");
                 return HttpStatusCode.NotFound;
             }
 
