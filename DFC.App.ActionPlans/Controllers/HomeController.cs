@@ -51,7 +51,7 @@ namespace Dfc.App.ActionPlans.Controllers
             var session = await GetUserSession();
             if (session == null)
             {
-                _logger.LogError($"HomeController Session is null; CustomerId {viewModel.CustomerId} ActionPlanId {viewModel.ActionPlanId} ");
+                _logger.LogError($"HomeController Session is null; ");
                 return BadRequest("No customer session found");
             }
             if (formCollection.FirstOrDefault(x =>
