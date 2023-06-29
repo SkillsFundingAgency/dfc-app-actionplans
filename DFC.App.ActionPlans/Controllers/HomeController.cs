@@ -28,11 +28,11 @@ namespace Dfc.App.ActionPlans.Controllers
         private readonly IDssReader _dssReader;
         private readonly IDssWriter _dssWriter;
         private readonly IOptions<AuthSettings> _authSettings;
-        private readonly ILogger _logger;
+        private readonly ILogger<HomeController> _logger;
         private readonly IDocumentService<CmsApiSharedContentModel> _documentService;
         private readonly Guid _sharedContent;
 
-        public HomeController(ILogger logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService, IOptions<AuthSettings> authSettings,
+        public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService, IOptions<AuthSettings> authSettings,
             IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
             : base(logger,compositeSettings, dssReader, cosmosServiceService, documentService, config)
         {
