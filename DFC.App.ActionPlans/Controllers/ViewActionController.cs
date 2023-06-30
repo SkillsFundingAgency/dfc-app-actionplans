@@ -20,7 +20,7 @@ namespace DFC.App.ActionPlans.Controllers
     public class ViewActionController : CompositeSessionController<ViewActionCompositeViewModel>
     {
         private readonly IDssReader _dssReader;
-        private readonly ILogger _dsslogger;
+        private readonly ILogger<ViewActionController> _dsslogger;
 
         public ViewActionController(ILogger<ViewActionController> logger, IOptions<CompositeSettings> compositeSettings,
             IDssReader dssReader, ICosmosService cosmosServiceService, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)

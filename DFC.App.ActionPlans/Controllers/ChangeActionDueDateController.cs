@@ -25,8 +25,8 @@ namespace DFC.App.ActionPlans.Controllers
     {
         private readonly IDssWriter _dssWriter;
         private readonly IDssReader _dssReader;
-        private readonly ILogger _dsslogger;
-        public ChangeActionDueDateController(ILogger logger,
+        private readonly ILogger<ChangeActionDueDateController> _dsslogger;
+        public ChangeActionDueDateController(ILogger<ChangeActionDueDateController> logger,
             IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService,
             IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
             : base(logger,compositeSettings, dssReader, cosmosServiceService, documentService, config)

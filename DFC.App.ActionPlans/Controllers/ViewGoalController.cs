@@ -20,9 +20,9 @@ namespace DFC.App.ActionPlans.Controllers
     public class ViewGoalController : CompositeSessionController<ViewGoalCompositeViewModel>
     {
         private readonly IDssReader _dssReader;
-        private readonly ILogger _dsslogger;
+        private readonly ILogger<ViewGoalController> _dsslogger;
 
-        public ViewGoalController(ILogger logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, ICosmosService cosmosServiceService,
+        public ViewGoalController(ILogger<ViewGoalController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, ICosmosService cosmosServiceService,
             IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
             : base(logger, compositeSettings, dssReader, cosmosServiceService, documentService, config)
         {

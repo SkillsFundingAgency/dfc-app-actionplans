@@ -17,8 +17,8 @@ namespace DFC.App.ActionPlans.Controllers
     public class ErrorController : CompositeSessionController<ErrorCompositeViewModel>
     {
         private readonly CompositeSettings _configuration;
-        private readonly ILogger _dsslogger;
-        public ErrorController(ILogger logger, IOptions<CompositeSettings> compositeSettings,
+        private readonly ILogger<ErrorController> _dsslogger;
+        public ErrorController(ILogger<ErrorController> logger, IOptions<CompositeSettings> compositeSettings,
             IDssReader _dssReader, ICosmosService cosmosServiceService, IOptions<CompositeSettings> configuration,
             IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
             : base(logger,compositeSettings, _dssReader, cosmosServiceService, documentService, config)

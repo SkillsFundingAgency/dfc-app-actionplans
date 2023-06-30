@@ -26,7 +26,7 @@ namespace DFC.App.ActionPlans.Controllers
     {
         private readonly IDssWriter _dssWriter;
         private readonly IDssReader _dssReader;
-        private readonly ILogger _dsslogger;
+        private readonly ILogger<ChangeActionStatusController> _dsslogger;
 
         public ChangeActionStatusController(ILogger<ChangeActionStatusController> logger,
             IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService,
