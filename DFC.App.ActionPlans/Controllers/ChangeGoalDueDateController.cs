@@ -27,7 +27,7 @@ namespace DFC.App.ActionPlans.Controllers
         private readonly IDssReader _dssReader;
         private readonly ILogger _dsslogger;
 
-        public ChangeGoalDueDateController(ILogger logger,
+        public ChangeGoalDueDateController(ILogger<ChangeGoalDueDateController> logger,
             IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService,
             IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
             : base(logger,compositeSettings, dssReader, cosmosServiceService, documentService, config)
