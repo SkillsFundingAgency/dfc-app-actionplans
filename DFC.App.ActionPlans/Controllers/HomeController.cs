@@ -34,7 +34,7 @@ namespace Dfc.App.ActionPlans.Controllers
 
         public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService, IOptions<AuthSettings> authSettings,
             IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
-            : base(compositeSettings, dssReader, cosmosServiceService, documentService, config)
+            : base(logger,compositeSettings, dssReader, cosmosServiceService, documentService, config)
         {
             _dssReader = dssReader;
             _dssWriter = dssWriter;
@@ -51,6 +51,7 @@ namespace Dfc.App.ActionPlans.Controllers
             var session = await GetUserSession();
             if (session == null)
             {
+                _logger.LogError($"HomeController Session is null; ");
                 return BadRequest("No customer session found");
             }
             if (formCollection.FirstOrDefault(x =>
@@ -64,6 +65,8 @@ namespace Dfc.App.ActionPlans.Controllers
                     ActionPlanId = session.ActionPlanId,
                     DateActionPlanAcknowledged = DateTime.UtcNow.AddMinutes(-1)
                 });
+
+                _logger.LogInformation($"HomeController UpdateActionPlan CustomerId {viewModel.CustomerId} ActionPlanId {viewModel.ActionPlanId} ");
             }
 
             await ManageSession(session.CustomerId, session.ActionPlanId, session.InteractionId);
@@ -98,6 +101,7 @@ namespace Dfc.App.ActionPlans.Controllers
             var customer = await GetCustomerDetails();
             if (customer == null)
             {
+                _logger.LogError($"HomeController  Body Customer is null actionPlanId {actionPlanId} interactionId  {interactionId}");
                 return BadRequest("unable to get customer details");
             }
             await ManageSession(customer.CustomerId, actionPlanId, interactionId, session);

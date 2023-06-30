@@ -16,6 +16,7 @@ using Microsoft.Extensions.Primitives;
 using NSubstitute;
 using NUnit.Framework;
 
+
 namespace DFC.App.ActionPlans.UnitTests.Controllers
 {
     class ChangeGoalDueDateControllerTests : BaseControllerTests
@@ -35,7 +36,10 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
                 .Build();
             _documentService = Substitute.For<IDocumentService<CmsApiSharedContentModel>>();
             _logger = new Logger<ChangeGoalDueDateController>(new LoggerFactory());
-        _logger = Substitute.For<ILogger<ChangeGoalDueDateController>>();
+            _logger = Substitute.For<ILogger<ChangeGoalDueDateController>>();
+
+     
+
             _controller = new ChangeGoalDueDateController(_logger, _compositeSettings, _dssReader,_dssWriter, _cosmosService, _documentService, _config);
             var context = new DefaultHttpContext() { User = user };
             _controller.ControllerContext.HttpContext = context;
@@ -48,7 +52,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
 
 
         [Test]
-        public async Task WhenBreadcrumbCalledWithGuid_ReturnHtml()
+        public Task WhenBreadcrumbCalledWithGuid_ReturnHtml()
         {
             var id = Guid.NewGuid();
             var result = _controller.Breadcrumb(id) as ViewResult;
@@ -56,6 +60,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             result.Should().BeOfType<ViewResult>();
             var data = result.ViewData.Model as ChangeGoalCompositeViewModel;
             data.BackLink.Should().Contain(id.ToString());
+            return Task.CompletedTask;
         }
 
         [Test]

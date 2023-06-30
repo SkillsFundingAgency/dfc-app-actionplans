@@ -37,6 +37,8 @@ namespace DFC.App.ActionPlans.Cosmos.Services
             var container = _client.GetContainer(_settings.DatabaseName, GetContainerName(collection));
             Throw.IfNull(container, nameof(container));
 
+            _logger.LogInformation($"CosmosService CreateItemAsync collection {GetContainerName(collection)} ");
+
             var result =  await container.CreateItemAsync(item);
 
             if (result.StatusCode == HttpStatusCode.Created) 
@@ -51,14 +53,18 @@ namespace DFC.App.ActionPlans.Cosmos.Services
 
             var container = _client.GetContainer(_settings.DatabaseName, GetContainerName(collection));
             Throw.IfNull(container, nameof(container));
+            _logger.LogInformation($"CosmosService ReadItemAsync id {id} ");
             try
             {
                 var result = await container.ReadItemAsync<object>(id, string.IsNullOrEmpty(partitionKey) ? PartitionKey.None : new PartitionKey(partitionKey));
 
                 if (result.StatusCode == HttpStatusCode.OK)
                 {
-                    if(result.Resource == null)
+                    if (result.Resource == null)
+                    {
+                        _logger.LogInformation($"CosmosService ReadItemAsync resource not found ");
                         return new HttpResponseMessage(HttpStatusCode.NotFound);
+                    }
 
                     return new HttpResponseMessage(HttpStatusCode.OK)
                     {
