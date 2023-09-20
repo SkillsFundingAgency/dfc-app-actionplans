@@ -192,7 +192,7 @@
                         "value": true
                     },
                     "clientAffinity": {
-                        "value": true
+                        "value": false
                     },
                     "appServiceAppSettings": {
                         "value": [
