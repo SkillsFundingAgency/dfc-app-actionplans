@@ -235,7 +235,7 @@ namespace DFC.App.ActionPlans.Services.Cosmos.UnitTests
                 var result = await _service.ReadItemAsync("Id", "partitionKey", CosmosCollection.Session);
                 var expected = new HttpResponseMessage(HttpStatusCode.NotFound);
                 result.StatusCode.Should().Be(expected.StatusCode);
-                _logger.ReceivedCalls().Count().Should().Equals(1);
+                _logger.ReceivedCalls().Count().Should().Be(1);
             }
         }
 

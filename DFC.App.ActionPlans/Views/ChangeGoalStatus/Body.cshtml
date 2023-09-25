@@ -49,7 +49,7 @@
                 <br />
 
                 <govukButton id="@Model.GetElementId("govukSecondaryButton", "Continue")" text="Update status"></govukButton>
-                <govukButtonLink additional-class="govuk-button--secondary" id="@Model.GetElementId("govukButtonLink", "Cancel")" LinkTitle="Cancel" LinkText="Cancel" LinkHref="@(Urls.GetViewGoalUrl(Model.CompositeSettings.Path, new Guid(Model.Goal.GoalId)))"></govukButtonLink>
+                <govukButtonLink additional-class="ncs-button__primary" id="@Model.GetElementId("govukButtonLink", "Cancel")" LinkTitle="Cancel" LinkText="Cancel" LinkHref="@(Urls.GetViewGoalUrl(Model.CompositeSettings.Path, new Guid(Model.Goal.GoalId)))"></govukButtonLink>
 
             </form>
         </div>
