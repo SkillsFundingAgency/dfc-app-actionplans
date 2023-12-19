@@ -85,6 +85,12 @@
         },
         "subscriptionUrl": {
             "value": "subscriptionUrl"
-        }         
+        },
+        "workspaceName": {
+            "value": "aTestLogAnalyticsAccount"
+        },
+        "workspaceResourceGroup": {
+            "value": "aResourceGroup"
+        }
     }
 }
