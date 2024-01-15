@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 
 namespace DFC.App.ActionPlans.Controllers
 {
@@ -26,8 +27,8 @@ namespace DFC.App.ActionPlans.Controllers
         private readonly IDssReader _dssReader;
 
         public ChangeGoalStatusController(ILogger<ChangeGoalStatusController> logger, IOptions<CompositeSettings> compositeSettings,
-            IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
-            : base(compositeSettings, dssReader, cosmosServiceService, documentService, config)
+            IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService, ISharedContentRedisInterface sharedContentRedis, IConfiguration config)
+            : base(compositeSettings, dssReader, cosmosServiceService, sharedContentRedis, config)
         {
             _dssWriter = dssWriter;
             _dssReader = dssReader;

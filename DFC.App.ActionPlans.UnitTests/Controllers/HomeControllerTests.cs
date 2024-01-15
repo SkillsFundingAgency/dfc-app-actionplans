@@ -10,7 +10,7 @@ using DFC.APP.ActionPlans.Data.Models;
 using DFC.App.ActionPlans.Exceptions;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.ViewModels;
-using DFC.Compui.Cosmos.Contracts;
+//using DFC.Compui.Cosmos.Contracts;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +22,7 @@ using Microsoft.Extensions.Primitives;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 using NUnit.Framework;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 
 namespace DFC.App.ActionPlans.UnitTests.Controllers
 {
@@ -30,7 +31,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
        
         private HomeController _controller;
         private ILogger<HomeController> _logger;
-        private IDocumentService<CmsApiSharedContentModel> _documentService;
+        private ISharedContentRedisInterface _sharedContentRedisInterface;
         private IConfiguration _config;
         [SetUp]
         public void Init()
@@ -43,8 +44,8 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             _config = new ConfigurationBuilder()
                 .AddInMemoryCollection(inMemorySettings)
                 .Build();
-            _documentService = Substitute.For<IDocumentService<CmsApiSharedContentModel>>();
-            _controller = new HomeController(_logger, _compositeSettings, _dssReader,_dssWriter, _cosmosService, Options.Create(new AuthSettings{AccountEndpoint = "https://www.g.com"}), _documentService, _config);
+            _sharedContentRedisInterface = Substitute.For<ISharedContentRedisInterface>();
+            _controller = new HomeController(_logger, _compositeSettings, _dssReader,_dssWriter, _cosmosService, Options.Create(new AuthSettings{AccountEndpoint = "https://www.g.com"}), _sharedContentRedisInterface, _config);
 
             var context = new DefaultHttpContext() {User = user};
             _controller.ControllerContext.HttpContext = context;
@@ -72,7 +73,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         public async Task WhenBodyCalledAndUserNotLoggedIn_ReturnHtml()
         {
             var controller = new HomeController(_logger, _compositeSettings, _dssReader, _dssWriter, _cosmosService,
-                Options.Create(new AuthSettings()), _documentService, _config)
+                Options.Create(new AuthSettings()), _sharedContentRedisInterface, _config)
             {
                 ControllerContext = {HttpContext = new DefaultHttpContext() {User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>()))}}
             };

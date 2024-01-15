@@ -5,16 +5,20 @@
     <ProjectGuid>{4F355A7C-583D-4B0A-8FC4-4E4443E9CA00}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Controllers\BaseWebhooksControllerTests.cs" />
+    <Compile Remove="Controllers\WebhooksControllerPostTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
 	  <PackageReference Include="FluentAssertions" Version="6.8.0" />
 	  <PackageReference Include="CorrelationId" Version="3.0.1" />
     <PackageReference Include="DFC.Personalisation.Common" Version="0.1.28" />
     <PackageReference Include="DFC.Personalisation.CommonUI" Version="0.2.32" />
     <PackageReference Include="Dfc.ProviderPortal.Packages" Version="0.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.1.21" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.21" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.1" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.25.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="NSubstitute" Version="4.2.2" />
     <PackageReference Include="NUnit" Version="3.13.2" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.1.0">

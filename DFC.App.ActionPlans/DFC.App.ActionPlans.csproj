@@ -5,6 +5,14 @@
     <ProjectGuid>{57AECDC7-1C49-45CA-87A4-3478C7A1320D}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Controllers\WebhooksController.cs" />
+    <Compile Remove="HostedServices\CacheReloadBackgroundService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="appsettings-template.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="HostedServices\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
   <ItemGroup>
@@ -13,6 +21,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="CorrelationId" Version="3.0.1" />
+    <PackageReference Include="DFC.Common.SharedContent.Pkg.Netcore" Version="0.1.16" />
     <PackageReference Include="DFC.Compui.Sessionstate" Version="1.0.15" />
     <PackageReference Include="DFC.Compui.Telemetry" Version="1.0.31" />
     <PackageReference Include="DFC.Personalisation.Common" Version="0.1.28" />
@@ -29,12 +38,11 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.ApplicationInsights" Version="2.21.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="NSubstitute" Version="4.2.2" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.25.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DFC.APP.ActionPlans.CacheContentService\DFC.APP.ActionPlans.CacheContentService.csproj" />
     <ProjectReference Include="..\DFC.APP.ActionPlans.Data\DFC.APP.ActionPlans.Data.csproj" />
     <ProjectReference Include="..\DFC.App.ActionPlans.Services.Cosmos\DFC.App.ActionPlans.Services.Cosmos.csproj" />
     <ProjectReference Include="..\DFC.App.ActionPlans.Services.DSS\DFC.App.ActionPlans.Services.DSS.csproj" />

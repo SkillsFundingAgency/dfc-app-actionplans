@@ -3,7 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using DFC.APP.ActionPlans.CacheContentService;
 using DFC.APP.ActionPlans.Data.Models;
-using DFC.Compui.Cosmos.Contracts;
+//using DFC.Compui.Cosmos.Contracts;
 using FakeItEasy;
 using Microsoft.Extensions.Logging;
 using Xunit;

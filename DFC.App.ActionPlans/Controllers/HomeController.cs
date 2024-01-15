@@ -19,6 +19,10 @@ using DFC.APP.ActionPlans.Data.Models;
 using DFC.Compui.Cosmos.Contracts;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
+using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
+using DFC.Common.SharedContent.Pkg.Netcore;
+
 
 namespace Dfc.App.ActionPlans.Controllers
 {
@@ -29,19 +33,21 @@ namespace Dfc.App.ActionPlans.Controllers
         private readonly IDssWriter _dssWriter;
         private readonly IOptions<AuthSettings> _authSettings;
         private readonly ILogger<HomeController> _logger;
-        private readonly IDocumentService<CmsApiSharedContentModel> _documentService;
+        //private readonly IDocumentService<CmsApiSharedContentModel> _documentService;
         private readonly Guid _sharedContent;
+        public const string SharedContentStaxId = "2c9da1b3-3529-4834-afc9-9cd741e59788";
+        private readonly ISharedContentRedisInterface sharedContentRedis;
 
         public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService, IOptions<AuthSettings> authSettings,
-            IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
-            : base(compositeSettings, dssReader, cosmosServiceService, documentService, config)
+            ISharedContentRedisInterface sharedContentRedis, IConfiguration config)
+            : base(compositeSettings, dssReader, cosmosServiceService, sharedContentRedis, config)
         {
             _dssReader = dssReader;
             _dssWriter = dssWriter;
             _authSettings = authSettings;
             _logger = logger;
-            _sharedContent = config.GetValue<Guid>(Constants.SharedContentGuidConfig);
-            _documentService = documentService;
+           // _sharedContent = config.GetValue<Guid>(Constants.SharedContentGuidConfig);
+         // _documentService = documentService;
         }
         [Authorize]
         [Route("/body/home")]
@@ -74,9 +80,19 @@ namespace Dfc.App.ActionPlans.Controllers
         [HttpGet]
         public override async Task<IActionResult> Body()
         {
-            var sharedContent = await _documentService.GetByIdAsync(_sharedContent, "account").ConfigureAwait(false);
-            ViewModel.SharedContent = sharedContent?.Content;
-            _logger.LogInformation("Request for Homepage by unauthed user");
+            try
+            {
+                var sharedhtml = await sharedContentRedis.GetDataAsync<SharedHtml>("sharedContent/" + SharedContentStaxId);
+
+                ViewModel.SharedContent = sharedhtml.Html;
+           
+            }
+            catch
+            {
+                ViewModel.SharedContent = "";
+            }
+            _logger.LogInformation("HokeController body: " + ViewModel.SharedContent);
+          
             return await Task.FromResult<IActionResult>(View("BodyUnAuth", ViewModel));
         }
 

@@ -6,8 +6,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Contracts\ICacheReloadService.cs" />
+    <Compile Remove="Contracts\ICmsApiMarkupContentItem.cs" />
+    <Compile Remove="Contracts\IEventMessageService.cs" />
+    <Compile Remove="Contracts\IWebhookContentProcessor.cs" />
+    <Compile Remove="Contracts\IWebhooksService.cs" />
+    <Compile Remove="Models\CmsApiDataModel.cs" />
+    <Compile Remove="Models\CmsApiSharedContentModel.cs" />
+    <Compile Remove="Models\CmsApiSummaryItemModel.cs" />
+    <Compile Remove="WebhookCacheOperation.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="DFC.Compui.Cosmos" Version="1.0.67" />
     <PackageReference Include="DFC.Content.Pkg.Netcore" Version="1.0.106" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Contracts\" />
   </ItemGroup>
 
 </Project>
