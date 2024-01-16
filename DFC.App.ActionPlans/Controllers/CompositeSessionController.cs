@@ -35,7 +35,7 @@ namespace Dfc.App.ActionPlans.Controllers
         //private readonly IDocumentService<CmsApiSharedContentModel> _documentService;
         private readonly Guid _sharedContent;
         private readonly ISharedContentRedisInterface sharedContentRedis;
-        public const string SharedContectStaxId = "c0117ac7-115a-4bc1-9350-3fb4b00c7857";
+        //public const string SharedContectStaxId = "c0117ac7-115a-4bc1-9350-3fb4b00c7857";
         protected CompositeSessionController(IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, ICosmosService cosmosServiceService,  ISharedContentRedisInterface sharedContentRedis, IConfiguration config)
             : base(cosmosServiceService)        
         {
@@ -81,7 +81,7 @@ namespace Dfc.App.ActionPlans.Controllers
 
             try
             {
-                var sharedhtml = await sharedContentRedis.GetDataAsync<SharedHtml>("sharedContent/" + SharedContectStaxId);
+                var sharedhtml = await sharedContentRedis.GetDataAsync<SharedHtml>("sharedContent/" + _sharedContent);
 
                 ViewModel.SharedContent = sharedhtml.Html;
 
