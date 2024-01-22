@@ -105,6 +105,21 @@
         },
         "workspaceResourceGroup": {
             "type": "string"
+        },
+        "CmsRedisCacheConnectionString": {
+          "type": "string"
+        },
+        "CmsClientSecret": {
+          "type": "string"
+        },
+        "CmsClientId": {
+          "type": "string"
+        },
+        "CmsGraphApiUrl": {
+          "type": "string"
+        },
+        "CmsTokenEndPointUrl": {
+          "type": "string"
         }
     },
     "variables": {
