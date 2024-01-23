@@ -47,6 +47,7 @@ namespace Dfc.App.ActionPlans.Controllers
             _authSettings = authSettings;
             _logger = logger;
             _sharedContent = config.GetValue<Guid>(Constants.SharedContentGuidConfig);
+            this.sharedContentRedis = sharedContentRedis;
          // _documentService = documentService;
         }
         [Authorize]
