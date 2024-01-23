@@ -21,7 +21,7 @@
       "value": "__aseResourceGroup__"
     },
     "aspInstances": {
-      "value": "__aspInstances__"
+      "value": __aspInstances__
     },
     "aspTier": {
       "value": "__aspTier__"
@@ -66,10 +66,10 @@
       "value": "__cosmosContentDbCollectionName__"
     },
     "actionplanAppDatabaseNeedsCreation": {
-      "value": "__CosmosDbDatabaseDoesntExist__"
+      "value": __CosmosDbDatabaseDoesntExist__
     },
     "actionplanAppDatabaseThroughput": {
-      "value": "__actionplanAppDatabaseThroughput__"
+      "value": __actionplanAppDatabaseThroughput__
     },
     "AuthSettingsIssuer": {
       "value": "__AuthSettingsIssuer__"
