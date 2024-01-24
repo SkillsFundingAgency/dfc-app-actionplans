@@ -107,19 +107,19 @@
             "type": "string"
         },
         "CmsRedisCacheConnectionString": {
-          "type": "string"
+          "type": "securestring"
         },
         "CmsClientSecret": {
-          "type": "string"
+          "type": "securestring"
         },
         "CmsClientId": {
-          "type": "string"
+          "type": "securestring"
         },
         "CmsGraphApiUrl": {
-          "type": "string"
+          "type": "securestring"
         },
         "CmsTokenEndPointUrl": {
-          "type": "string"
+          "type": "securestring"
         }
     },
     "variables": {
