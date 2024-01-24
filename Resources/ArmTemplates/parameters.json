@@ -114,7 +114,7 @@
       "value": "__CmsClientSecret__"
     },
     "CmsRedisCacheConnectionString": {
-      "value": "__CmsRedisCacheConnectionString__"
+      "value": "__RedisConnectionString__"
     }
   }
 }
