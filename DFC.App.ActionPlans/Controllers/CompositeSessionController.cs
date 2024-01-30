@@ -81,7 +81,7 @@ namespace Dfc.App.ActionPlans.Controllers
 
             try
             {
-                var sharedhtml = await sharedContentRedis.GetDataAsync<SharedHtml>("sharedContent/" + _sharedContent);
+                var sharedhtml = await sharedContentRedis.GetDataAsync<SharedHtml>("SharedContent/" + _sharedContent);
 
                 ViewModel.SharedContent = sharedhtml.Html;
 
