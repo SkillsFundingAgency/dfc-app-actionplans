@@ -33,9 +33,7 @@ namespace Dfc.App.ActionPlans.Controllers
         private readonly IDssWriter _dssWriter;
         private readonly IOptions<AuthSettings> _authSettings;
         private readonly ILogger<HomeController> _logger;
-        //private readonly IDocumentService<CmsApiSharedContentModel> _documentService;
         private readonly Guid _sharedContent;
-       //public const string SharedContentStaxId = "2c9da1b3-3529-4834-afc9-9cd741e59788";
         private readonly ISharedContentRedisInterface sharedContentRedis;
 
         public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService, IOptions<AuthSettings> authSettings,
@@ -47,7 +45,7 @@ namespace Dfc.App.ActionPlans.Controllers
             _authSettings = authSettings;
             _logger = logger;
             _sharedContent = config.GetValue<Guid>(Constants.SharedContentGuidConfig);
-         // _documentService = documentService;
+            this.sharedContentRedis = sharedContentRedis;
         }
         [Authorize]
         [Route("/body/home")]
