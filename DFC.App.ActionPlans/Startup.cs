@@ -2,15 +2,21 @@
 using DFC.App.ActionPlans.Cosmos.Interfaces;
 using DFC.App.ActionPlans.Cosmos.Models;
 using DFC.App.ActionPlans.Cosmos.Services;
-using DFC.App.ActionPlans.HostedServices;
+//using DFC.App.ActionPlans.HostedServices;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Services.DSS.Models;
 using DFC.App.ActionPlans.Services.DSS.Services;
-using DFC.APP.Account.CacheContentService;
-using DFC.APP.ActionPlans.CacheContentService;
-using DFC.APP.ActionPlans.Data.Contracts;
+//using DFC.APP.Account.CacheContentService;
+//using DFC.APP.ActionPlans.CacheContentService;
+//using DFC.APP.ActionPlans.Data.Contracts;
 using DFC.APP.ActionPlans.Data.Models;
+using DFC.Common.SharedContent.Pkg.Netcore.Infrastructure.Strategy;
+using DFC.Common.SharedContent.Pkg.Netcore.Infrastructure;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
+using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
+using DFC.Common.SharedContent.Pkg.Netcore.RequestHandler;
+using DFC.Common.SharedContent.Pkg.Netcore;
 using DFC.Compui.Cosmos;
 using DFC.Compui.Cosmos.Contracts;
 using DFC.Compui.Subscriptions.Pkg.Netstandard.Extensions;
@@ -19,9 +25,13 @@ using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
 using DFC.Content.Pkg.Netcore.Data.Models.PollyOptions;
 using DFC.Content.Pkg.Netcore.Extensions;
 using DFC.Personalisation.Common.Helpers;
+using GraphQL.Client.Abstractions;
+using GraphQL.Client.Http;
+using GraphQL.Client.Serializer.Newtonsoft;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Documents.Client;
@@ -32,6 +42,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -42,6 +53,8 @@ namespace Dfc.App.ActionPlans
     public class Startup
     {
         private const string CosmosDbContentPagesConfigAppSettings = "Configuration:CosmosDbConnections:ActionPlans";
+        private const string RedisCacheConnectionStringAppSettings = "Cms:RedisCacheConnectionString";
+        private const string GraphApiUrlAppSettings = "Cms:GraphApiUrl";
         public IConfiguration Configuration { get; }
         private readonly IWebHostEnvironment env;
 
@@ -56,10 +69,10 @@ namespace Dfc.App.ActionPlans
         {
             var cosmosDbConnectionContentPages = Configuration.GetSection(CosmosDbContentPagesConfigAppSettings).Get<CosmosDbConnection>();
             var cosmosRetryOptions = new RetryOptions { MaxRetryAttemptsOnThrottledRequests = 20, MaxRetryWaitTimeInSeconds = 60 };
-            services.AddDocumentServices<CmsApiSharedContentModel>(cosmosDbConnectionContentPages, env.IsDevelopment(), cosmosRetryOptions);
+            //services.AddDocumentServices<CmsApiSharedContentModel>(cosmosDbConnectionContentPages, env.IsDevelopment(), cosmosRetryOptions);
 
-            services.AddTransient<IEventMessageService<CmsApiSharedContentModel>, EventMessageService<CmsApiSharedContentModel>>();
-            services.AddTransient<ICacheReloadService, CacheReloadService>();
+            //services.AddTransient<IEventMessageService<CmsApiSharedContentModel>, EventMessageService<CmsApiSharedContentModel>>();
+            //services.AddTransient<ICacheReloadService, CacheReloadService>();
 
             services.AddApplicationInsightsTelemetry();
 
@@ -69,11 +82,32 @@ namespace Dfc.App.ActionPlans
             services.AddScoped<IDssWriter, DssService>();
 
             services.AddAutoMapper(typeof(Startup).Assembly);
-            services.AddTransient<IWebhooksService, WebhooksService>();
-            services.AddTransient<IWebhookContentProcessor, WebhookContentProcessor>();
+           // services.AddTransient<IWebhooksService, WebhooksService>();
+            //services.AddTransient<IWebhookContentProcessor, WebhookContentProcessor>();
             services.Configure<DssSettings>(Configuration.GetSection(nameof(DssSettings)));
             services.Configure<CompositeSettings>(Configuration.GetSection(nameof(CompositeSettings)));
             services.Configure<CosmosSettings>(Configuration.GetSection(nameof(CosmosSettings)));
+
+            services.AddStackExchangeRedisCache(options => { options.Configuration = Configuration.GetSection(RedisCacheConnectionStringAppSettings).Get<string>(); });
+
+            services.AddHttpClient();
+            services.AddSingleton<IGraphQLClient>(s =>
+            {
+                var option = new GraphQLHttpClientOptions()
+                {
+                    EndPoint = new Uri(Configuration.GetSection(GraphApiUrlAppSettings).Get<string>()),
+                    HttpMessageHandler = new CmsRequestHandler(s.GetService<IHttpClientFactory>(), s.GetService<IConfiguration>(), s.GetService<IHttpContextAccessor>()),
+                };
+                var client = new GraphQLHttpClient(option, new NewtonsoftJsonSerializer());
+                return client;
+            });
+
+
+            services.AddSingleton<ISharedContentRedisInterfaceStrategy<SharedHtml>, SharedHtmlQueryStrategy>();
+
+            services.AddSingleton<ISharedContentRedisInterfaceStrategyFactory, SharedContentRedisStrategyFactory>();
+
+            services.AddScoped<ISharedContentRedisInterface, SharedContentRedis>();
 
             services.AddSingleton((x) => new CosmosClient(
                 accountEndpoint: Configuration.GetSection("CosmosSettings:ApiUrl").Value,
@@ -87,7 +121,7 @@ namespace Dfc.App.ActionPlans
             services.AddSingleton(Configuration.GetSection(nameof(CmsApiClientOptions)).Get<CmsApiClientOptions>() ?? new CmsApiClientOptions());
             services.AddHostedServiceTelemetryWrapper();
             services.AddSubscriptionBackgroundService(Configuration);
-            services.AddHostedService<CacheReloadBackgroundService>();
+            //services.AddHostedService<CacheReloadBackgroundService>();
 
             const string AppSettingsPolicies = "Policies";
             var policyOptions = Configuration.GetSection(AppSettingsPolicies).Get<PolicyOptions>() ?? new PolicyOptions();

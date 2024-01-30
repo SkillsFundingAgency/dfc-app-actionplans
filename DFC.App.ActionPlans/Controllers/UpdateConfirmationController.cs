@@ -18,6 +18,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 
 namespace DFC.App.ActionPlans.Controllers
 {
@@ -26,8 +27,8 @@ namespace DFC.App.ActionPlans.Controllers
     {
         private readonly IDssReader _dssReader;
         public UpdateConfirmationController(ILogger<UpdateConfirmationController> logger, IOptions<CompositeSettings> compositeSettings,
-            IDssReader dssReader, ICosmosService cosmosServiceService, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
-            : base(compositeSettings, dssReader, cosmosServiceService, documentService, config)
+            IDssReader dssReader, ICosmosService cosmosServiceService, ISharedContentRedisInterface sharedContentRedis, IConfiguration config)
+            : base(compositeSettings, dssReader, cosmosServiceService, sharedContentRedis, config)
         {
             _dssReader = dssReader;
         }

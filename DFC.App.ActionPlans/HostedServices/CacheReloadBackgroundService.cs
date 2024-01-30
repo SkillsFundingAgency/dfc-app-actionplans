@@ -14,7 +14,7 @@ namespace DFC.App.ActionPlans.HostedServices
     {
         private readonly ILogger<CacheReloadBackgroundService> logger;
         private readonly CmsApiClientOptions cmsApiClientOptions;
-        private readonly ICacheReloadService cacheReloadService;
+        //private readonly ICacheReloadService cacheReloadService;
         private readonly IHostedServiceTelemetryWrapper hostedServiceTelemetryWrapper;
 
         public CacheReloadBackgroundService(ILogger<CacheReloadBackgroundService> logger, CmsApiClientOptions cmsApiClientOptions, ICacheReloadService cacheReloadService, IHostedServiceTelemetryWrapper hostedServiceTelemetryWrapper)

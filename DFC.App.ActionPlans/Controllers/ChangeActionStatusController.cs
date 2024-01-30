@@ -17,6 +17,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Action = DFC.App.ActionPlans.Services.DSS.Models.Action;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 
 namespace DFC.App.ActionPlans.Controllers
 {
@@ -28,8 +29,8 @@ namespace DFC.App.ActionPlans.Controllers
 
         public ChangeActionStatusController(ILogger<ChangeActionStatusController> logger,
             IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService,
-            IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
-            : base(compositeSettings, dssReader, cosmosServiceService, documentService, config)
+           ISharedContentRedisInterface sharedContentRedis, IConfiguration config)
+            : base(compositeSettings, dssReader, cosmosServiceService, sharedContentRedis, config)
         {
             _dssWriter = dssWriter;
             _dssReader = dssReader;

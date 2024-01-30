@@ -17,6 +17,8 @@ using DFC.Compui.Cosmos.Contracts;
 using DFC.Compui.Sessionstate;
 using Microsoft.Extensions.Configuration;
 using Constants = DFC.App.ActionPlans.Constants.Constants;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
+using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
 
 namespace Dfc.App.ActionPlans.Controllers
 {
@@ -30,9 +32,9 @@ namespace Dfc.App.ActionPlans.Controllers
     {
         private readonly IDssReader _dssReader;
         protected TViewModel ViewModel { get; }
-        private readonly IDocumentService<CmsApiSharedContentModel> _documentService;
         private readonly Guid _sharedContent;
-        protected CompositeSessionController(IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, ICosmosService cosmosServiceService, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
+        private readonly ISharedContentRedisInterface sharedContentRedis;
+        protected CompositeSessionController(IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, ICosmosService cosmosServiceService,  ISharedContentRedisInterface sharedContentRedis, IConfiguration config)
             : base(cosmosServiceService)        
         {
             ViewModel = new TViewModel()
@@ -40,8 +42,8 @@ namespace Dfc.App.ActionPlans.Controllers
                 CompositeSettings = compositeSettings.Value,
             };  
             _dssReader = dssReader;
-            _documentService = documentService;
             _sharedContent = config.GetValue<Guid>(DFC.APP.ActionPlans.Data.Common.Constants.SharedContentGuidConfig);
+            this.sharedContentRedis = sharedContentRedis;
         }
 
         [HttpGet]
@@ -71,8 +73,18 @@ namespace Dfc.App.ActionPlans.Controllers
         [Route("/body/[controller]/{id?}")]
         public virtual async Task<IActionResult> Body()
         {
-            var sharedContent = await _documentService.GetByIdAsync(_sharedContent, "account").ConfigureAwait(false);
-            ViewModel.SharedContent = sharedContent?.Content;
+            try
+            {
+                var sharedhtml = await sharedContentRedis.GetDataAsync<SharedHtml>("SharedContent/" + _sharedContent);
+
+                ViewModel.SharedContent = sharedhtml.Html;
+
+            }
+            catch
+            {
+                ViewModel.SharedContent = "";
+            }
+         
             return await Task.FromResult<IActionResult>(View(ViewModel));
         }
 

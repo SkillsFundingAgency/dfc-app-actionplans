@@ -5,29 +5,30 @@
     <ProjectGuid>{4F355A7C-583D-4B0A-8FC4-4E4443E9CA00}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
-	  <PackageReference Include="FluentAssertions" Version="6.8.0" />
+    <Compile Remove="Controllers\BaseWebhooksControllerTests.cs" />
+    <Compile Remove="Controllers\WebhooksControllerPostTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+	  <PackageReference Include="FluentAssertions" Version="6.12.0" />
 	  <PackageReference Include="CorrelationId" Version="3.0.1" />
-    <PackageReference Include="DFC.Personalisation.Common" Version="0.1.28" />
-    <PackageReference Include="DFC.Personalisation.CommonUI" Version="0.2.32" />
+    <PackageReference Include="DFC.Personalisation.Common" Version="0.1.29" />
+    <PackageReference Include="DFC.Personalisation.CommonUI" Version="0.2.33" />
     <PackageReference Include="Dfc.ProviderPortal.Packages" Version="0.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.1.21" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.21" />
-    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.25.1" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="NSubstitute" Version="4.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="6.0.26" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="NSubstitute" Version="5.1.0" />
     <PackageReference Include="NUnit" Version="3.13.2" />
-    <PackageReference Include="NUnit3TestAdapter" Version="4.1.0">
+    <PackageReference Include="NUnit3TestAdapter" Version="4.5.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="xunit" Version="2.4.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+    <PackageReference Include="xunit" Version="2.6.6" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.6">
 	    <PrivateAssets>all</PrivateAssets>
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="FakeItEasy" Version="7.2.0" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.25.1" />
+    <PackageReference Include="FakeItEasy" Version="8.1.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DFC.App.ActionPlans\DFC.App.ActionPlans.csproj" />
