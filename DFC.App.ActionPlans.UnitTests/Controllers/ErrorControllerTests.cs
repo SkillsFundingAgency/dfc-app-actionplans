@@ -6,7 +6,7 @@ using DFC.App.ActionPlans.Cosmos.Interfaces;
 using DFC.APP.ActionPlans.Data.Models;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
-using DFC.Compui.Cosmos.Contracts;
+//using DFC.Compui.Cosmos.Contracts;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 using NUnit.Framework;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 
 namespace DFC.App.ActionPlans.UnitTests.Controllers
 {
@@ -25,7 +26,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         protected readonly IDssReader _dssReader;
         protected readonly ICosmosService _cosmosService;
         private IOptions<CompositeSettings> _options;
-        private IDocumentService<CmsApiSharedContentModel> _documentService;
+        private ISharedContentRedisInterface _sharedContentRedisInterface;
         private IConfiguration _config;
 
 
@@ -38,7 +39,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             _config = new ConfigurationBuilder()
                 .AddInMemoryCollection(inMemorySettings)
                 .Build();
-            _documentService = Substitute.For<IDocumentService<CmsApiSharedContentModel>>();
+            _sharedContentRedisInterface = Substitute.For<ISharedContentRedisInterface>();
             _logger = Substitute.For<ILogger<ErrorController>>();
             _compositeSettings = Options.Create(new CompositeSettings());
             _logger = new Logger<ErrorController>(new LoggerFactory());
@@ -48,7 +49,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
         [Test]
         public async Task WhenBodyCalled_ReturnHtml()
         {
-            var controller = new ErrorController(_logger, _compositeSettings, _dssReader, _cosmosService, _options, _documentService, _config);
+            var controller = new ErrorController(_logger, _compositeSettings, _dssReader, _cosmosService, _options, _sharedContentRedisInterface, _config);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
