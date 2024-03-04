@@ -64,6 +64,7 @@ namespace Dfc.App.ActionPlans
 
         public void ConfigureServices(IServiceCollection services)
         {
+            ConfigureMinimumThreads();
             var cosmosDbConnectionContentPages = Configuration.GetSection(CosmosDbContentPagesConfigAppSettings).Get<CosmosDbConnection>();
             var cosmosRetryOptions = new RetryOptions { MaxRetryAttemptsOnThrottledRequests = 20, MaxRetryWaitTimeInSeconds = 60 };
             //services.AddDocumentServices<CmsApiSharedContentModel>(cosmosDbConnectionContentPages, env.IsDevelopment(), cosmosRetryOptions);
