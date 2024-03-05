@@ -9,9 +9,6 @@
     <Compile Remove="HostedServices\CacheReloadBackgroundService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Remove="appsettings-template.json" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="HostedServices\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
