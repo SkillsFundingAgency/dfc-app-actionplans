@@ -22,6 +22,7 @@ using Microsoft.Extensions.Configuration;
 using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
 using DFC.Common.SharedContent.Pkg.Netcore;
+using NHibernate.Engine;
 
 
 namespace Dfc.App.ActionPlans.Controllers
@@ -35,6 +36,7 @@ namespace Dfc.App.ActionPlans.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly Guid _sharedContent;
         private readonly ISharedContentRedisInterface sharedContentRedis;
+        private string status;
 
         public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService, IOptions<AuthSettings> authSettings,
             ISharedContentRedisInterface sharedContentRedis, IConfiguration config)
@@ -46,6 +48,7 @@ namespace Dfc.App.ActionPlans.Controllers
             _logger = logger;
             _sharedContent = config.GetValue<Guid>(Constants.SharedContentGuidConfig);
             this.sharedContentRedis = sharedContentRedis;
+            status = config.GetConnectionString("contentMode.contentMode");
         }
         [Authorize]
         [Route("/body/home")]
@@ -78,9 +81,14 @@ namespace Dfc.App.ActionPlans.Controllers
         [HttpGet]
         public override async Task<IActionResult> Body()
         {
+            if (status == string.Empty)
+            {
+                status = "PUBLISHED";
+            }
+
             try
             {
-                var sharedhtml = await sharedContentRedis.GetDataAsync<SharedHtml>("SharedContent/" + _sharedContent);
+                var sharedhtml = await sharedContentRedis.GetDataAsync<SharedHtml>("SharedContent/" + _sharedContent, status);
 
                 ViewModel.SharedContent = sharedhtml.Html;
            

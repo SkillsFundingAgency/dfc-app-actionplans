@@ -34,6 +34,7 @@ namespace Dfc.App.ActionPlans.Controllers
         protected TViewModel ViewModel { get; }
         private readonly Guid _sharedContent;
         private readonly ISharedContentRedisInterface sharedContentRedis;
+        private string status;
         protected CompositeSessionController(IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, ICosmosService cosmosServiceService,  ISharedContentRedisInterface sharedContentRedis, IConfiguration config)
             : base(cosmosServiceService)        
         {
@@ -44,6 +45,7 @@ namespace Dfc.App.ActionPlans.Controllers
             _dssReader = dssReader;
             _sharedContent = config.GetValue<Guid>(DFC.APP.ActionPlans.Data.Common.Constants.SharedContentGuidConfig);
             this.sharedContentRedis = sharedContentRedis;
+            status = config.GetConnectionString("contentMode.contentMode");
         }
 
         [HttpGet]
@@ -73,9 +75,14 @@ namespace Dfc.App.ActionPlans.Controllers
         [Route("/body/[controller]/{id?}")]
         public virtual async Task<IActionResult> Body()
         {
+            if (status == string.Empty)
+            {
+                status = "PUBLISHED";
+            }
+
             try
             {
-                var sharedhtml = await sharedContentRedis.GetDataAsync<SharedHtml>("SharedContent/" + _sharedContent);
+                var sharedhtml = await sharedContentRedis.GetDataAsync<SharedHtml>("SharedContent/" + _sharedContent, status);
 
                 ViewModel.SharedContent = sharedhtml.Html;
 
