@@ -44,6 +44,9 @@
     "apimDSSApiKey": {
       "value": "__apimDSSApiKey__"
     },
+    "contentMode": {
+      "value": "__contentMode__"
+    },
     "cosmosDBName": {
       "value": "__appSharedCosmosDBName__"
     },
