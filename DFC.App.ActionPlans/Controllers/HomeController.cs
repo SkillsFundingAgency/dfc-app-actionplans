@@ -48,7 +48,7 @@ namespace Dfc.App.ActionPlans.Controllers
             _logger = logger;
             _sharedContent = config.GetValue<Guid>(Constants.SharedContentGuidConfig);
             this.sharedContentRedis = sharedContentRedis;
-            status = config.GetConnectionString("contentMode.contentMode");
+            status = config.GetConnectionString("contentMode:contentMode");
         }
         [Authorize]
         [Route("/body/home")]
@@ -81,7 +81,7 @@ namespace Dfc.App.ActionPlans.Controllers
         [HttpGet]
         public override async Task<IActionResult> Body()
         {
-            if (status == string.Empty)
+            if (string.IsNullOrEmpty(status))
             {
                 status = "PUBLISHED";
             }
