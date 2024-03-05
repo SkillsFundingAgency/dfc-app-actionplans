@@ -43,9 +43,9 @@ namespace Dfc.App.ActionPlans.Controllers
                 CompositeSettings = compositeSettings.Value,
             };  
             _dssReader = dssReader;
-            _sharedContent = config.GetValue<Guid>(DFC.APP.ActionPlans.Data.Common.Constants.SharedContentGuidConfig);
+            _sharedContent = config.GetValue<Guid>(DFC.APP.ActionPlans.Data.Common.Constants.SharedContentGuidConfig); //2c9da1b3-3529-4834-afc9-9cd741e59788
             this.sharedContentRedis = sharedContentRedis;
-            status = config.GetConnectionString("contentMode.contentMode");
+            status = config.GetConnectionString("contentMode:contentMode");
         }
 
         [HttpGet]
@@ -75,7 +75,7 @@ namespace Dfc.App.ActionPlans.Controllers
         [Route("/body/[controller]/{id?}")]
         public virtual async Task<IActionResult> Body()
         {
-            if (status == string.Empty)
+            if (string.IsNullOrEmpty(status))
             {
                 status = "PUBLISHED";
             }
