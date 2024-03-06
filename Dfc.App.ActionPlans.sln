@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29709.97
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.ActionPlans", "DFC.App.ActionPlans\DFC.App.ActionPlans.csproj", "{57AECDC7-1C49-45CA-87A4-3478C7A1320D}"
 EndProject
@@ -46,6 +46,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.ActionPlans.Services.Cosmos.UnitTests", "DFC.App.ActionPlans.Services.Cosmos.UnitTests\DFC.App.ActionPlans.Services.Cosmos.UnitTests.csproj", "{D28D2037-8B70-406D-8F0A-BF43D864D971}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.ActionPlans.Services.DSS.UnitTests", "DFC.App.ActionPlans.Services.DSS.UnitTests\DFC.App.ActionPlans.Services.DSS.UnitTests.csproj", "{668CC5F8-C0BE-45C5-A66D-83BE2047C15C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.ActionPlans.Services.DSS.UnitTest", "DFC.App.Account.Services.DSS.UnitTest\DFC.App.ActionPlans.Services.DSS.UnitTest.csproj", "{03253A93-7BB9-4AFA-A0E7-89EBF268F3CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -177,6 +179,18 @@ Global
 		{668CC5F8-C0BE-45C5-A66D-83BE2047C15C}.Release|x64.Build.0 = Release|Any CPU
 		{668CC5F8-C0BE-45C5-A66D-83BE2047C15C}.Release|x86.ActiveCfg = Release|Any CPU
 		{668CC5F8-C0BE-45C5-A66D-83BE2047C15C}.Release|x86.Build.0 = Release|Any CPU
+		{03253A93-7BB9-4AFA-A0E7-89EBF268F3CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03253A93-7BB9-4AFA-A0E7-89EBF268F3CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03253A93-7BB9-4AFA-A0E7-89EBF268F3CD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{03253A93-7BB9-4AFA-A0E7-89EBF268F3CD}.Debug|x64.Build.0 = Debug|Any CPU
+		{03253A93-7BB9-4AFA-A0E7-89EBF268F3CD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{03253A93-7BB9-4AFA-A0E7-89EBF268F3CD}.Debug|x86.Build.0 = Debug|Any CPU
+		{03253A93-7BB9-4AFA-A0E7-89EBF268F3CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03253A93-7BB9-4AFA-A0E7-89EBF268F3CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03253A93-7BB9-4AFA-A0E7-89EBF268F3CD}.Release|x64.ActiveCfg = Release|Any CPU
+		{03253A93-7BB9-4AFA-A0E7-89EBF268F3CD}.Release|x64.Build.0 = Release|Any CPU
+		{03253A93-7BB9-4AFA-A0E7-89EBF268F3CD}.Release|x86.ActiveCfg = Release|Any CPU
+		{03253A93-7BB9-4AFA-A0E7-89EBF268F3CD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
