@@ -2,23 +2,16 @@
 using DFC.App.ActionPlans.Cosmos.Interfaces;
 using DFC.App.ActionPlans.Cosmos.Models;
 using DFC.App.ActionPlans.Cosmos.Services;
-//using DFC.App.ActionPlans.HostedServices;
 using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Services.DSS.Models;
 using DFC.App.ActionPlans.Services.DSS.Services;
-//using DFC.APP.Account.CacheContentService;
-//using DFC.APP.ActionPlans.CacheContentService;
-//using DFC.APP.ActionPlans.Data.Contracts;
-using DFC.APP.ActionPlans.Data.Models;
 using DFC.Common.SharedContent.Pkg.Netcore.Infrastructure.Strategy;
 using DFC.Common.SharedContent.Pkg.Netcore.Infrastructure;
 using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
 using DFC.Common.SharedContent.Pkg.Netcore.RequestHandler;
 using DFC.Common.SharedContent.Pkg.Netcore;
-using DFC.Compui.Cosmos;
-using DFC.Compui.Cosmos.Contracts;
 using DFC.Compui.Subscriptions.Pkg.Netstandard.Extensions;
 using DFC.Compui.Telemetry;
 using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
@@ -34,7 +27,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Azure.Cosmos;
-using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -52,7 +44,6 @@ namespace Dfc.App.ActionPlans
     [ExcludeFromCodeCoverage]
     public class Startup
     {
-        //private const string CosmosDbContentPagesConfigAppSettings = "Configuration:CosmosDbConnections:ActionPlans";
         private const string RedisCacheConnectionStringAppSettings = "Cms:RedisCacheConnectionString";
         private const string GraphApiUrlAppSettings = "Cms:GraphApiUrl";
         public IConfiguration Configuration { get; }
@@ -67,8 +58,6 @@ namespace Dfc.App.ActionPlans
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //var cosmosDbConnectionContentPages = Configuration.GetSection(CosmosDbContentPagesConfigAppSettings).Get<CosmosDbConnection>();
-            //var cosmosRetryOptions = new RetryOptions { MaxRetryAttemptsOnThrottledRequests = 20, MaxRetryWaitTimeInSeconds = 60 };
             services.AddApplicationInsightsTelemetry();
 
             services.AddControllersWithViews();
