@@ -43,9 +43,9 @@ namespace Dfc.App.ActionPlans.Controllers
                 CompositeSettings = compositeSettings.Value,
             };  
             _dssReader = dssReader;
-            _sharedContent = config.GetValue<Guid>(DFC.APP.ActionPlans.Data.Common.Constants.SharedContentGuidConfig); //2c9da1b3-3529-4834-afc9-9cd741e59788
+            _sharedContent = config.GetValue<Guid>(DFC.APP.ActionPlans.Data.Common.Constants.SharedContentGuidConfig);
             this.sharedContentRedis = sharedContentRedis;
-            status = config.GetConnectionString("contentMode:contentMode");
+            status = config?.GetSection("contentMode:contentMode").Get<string>();
         }
 
         [HttpGet]

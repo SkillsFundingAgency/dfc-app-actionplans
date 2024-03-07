@@ -48,7 +48,7 @@ namespace Dfc.App.ActionPlans.Controllers
             _logger = logger;
             _sharedContent = config.GetValue<Guid>(Constants.SharedContentGuidConfig);
             this.sharedContentRedis = sharedContentRedis;
-            status = config.GetConnectionString("contentMode:contentMode");
+            status = config?.GetSection("contentMode:contentMode").Get<string>();
         }
         [Authorize]
         [Route("/body/home")]
