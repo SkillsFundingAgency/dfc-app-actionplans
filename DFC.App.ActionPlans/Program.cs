@@ -1,22 +1,21 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
 
-namespace Dfc.App.ActionPlans
+namespace Dfc.App.ActionPlans;
+
+[ExcludeFromCodeCoverage]
+public class Program
 {
-    [ExcludeFromCodeCoverage]
-    public class Program
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
+        CreateHostBuilder(args).Build().Run();
+    }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+    public static IWebHostBuilder CreateHostBuilder(string[] args)
+    {
+        var webHost = WebHost.CreateDefaultBuilder(args).UseStartup<Startup>();
+
+        return webHost;
     }
 }
