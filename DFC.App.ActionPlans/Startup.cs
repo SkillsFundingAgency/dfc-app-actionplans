@@ -46,7 +46,6 @@ namespace Dfc.App.ActionPlans
     [ExcludeFromCodeCoverage]
     public class Startup
     {
-        private const string CosmosDbContentPagesConfigAppSettings = "Configuration:CosmosDbConnections:ActionPlans";
         private const string RedisCacheConnectionStringAppSettings = "Cms:RedisCacheConnectionString";
         private const string GraphApiUrlAppSettings = "Cms:GraphApiUrl";
         private const string WorkerThreadsConfigAppSettings = "ThreadSettings:WorkerThreads";
@@ -67,10 +66,6 @@ namespace Dfc.App.ActionPlans
             ConfigureMinimumThreads();
             var cosmosDbConnectionContentPages = Configuration.GetSection(CosmosDbContentPagesConfigAppSettings).Get<CosmosDbConnection>();
             var cosmosRetryOptions = new RetryOptions { MaxRetryAttemptsOnThrottledRequests = 20, MaxRetryWaitTimeInSeconds = 60 };
-            //services.AddDocumentServices<CmsApiSharedContentModel>(cosmosDbConnectionContentPages, env.IsDevelopment(), cosmosRetryOptions);
-
-            //services.AddTransient<IEventMessageService<CmsApiSharedContentModel>, EventMessageService<CmsApiSharedContentModel>>();
-            //services.AddTransient<ICacheReloadService, CacheReloadService>();
 
             services.AddApplicationInsightsTelemetry();
 
@@ -78,10 +73,8 @@ namespace Dfc.App.ActionPlans
 
             services.AddScoped<IDssReader, DssService>();
             services.AddScoped<IDssWriter, DssService>();
-
             services.AddAutoMapper(typeof(Startup).Assembly);
-           // services.AddTransient<IWebhooksService, WebhooksService>();
-            //services.AddTransient<IWebhookContentProcessor, WebhookContentProcessor>();
+ 
             services.Configure<DssSettings>(Configuration.GetSection(nameof(DssSettings)));
             services.Configure<CompositeSettings>(Configuration.GetSection(nameof(CompositeSettings)));
             services.Configure<CosmosSettings>(Configuration.GetSection(nameof(CosmosSettings)));
@@ -102,9 +95,7 @@ namespace Dfc.App.ActionPlans
 
 
             services.AddSingleton<ISharedContentRedisInterfaceStrategy<SharedHtml>, SharedHtmlQueryStrategy>();
-
             services.AddSingleton<ISharedContentRedisInterfaceStrategyFactory, SharedContentRedisStrategyFactory>();
-
             services.AddScoped<ISharedContentRedisInterface, SharedContentRedis>();
 
             services.AddSingleton((x) => new CosmosClient(
@@ -119,8 +110,7 @@ namespace Dfc.App.ActionPlans
             services.AddSingleton(Configuration.GetSection(nameof(CmsApiClientOptions)).Get<CmsApiClientOptions>() ?? new CmsApiClientOptions());
             services.AddHostedServiceTelemetryWrapper();
             services.AddSubscriptionBackgroundService(Configuration);
-            //services.AddHostedService<CacheReloadBackgroundService>();
-
+          
             const string AppSettingsPolicies = "Policies";
             var policyOptions = Configuration.GetSection(AppSettingsPolicies).Get<PolicyOptions>() ?? new PolicyOptions();
             var policyRegistry = services.AddPolicyRegistry();
