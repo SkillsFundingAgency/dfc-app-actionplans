@@ -50,6 +50,8 @@ namespace Dfc.App.ActionPlans
         private const string GraphApiUrlAppSettings = "Cms:GraphApiUrl";
         private const string WorkerThreadsConfigAppSettings = "ThreadSettings:WorkerThreads";
         private const string IocpThreadsConfigAppSettings = "ThreadSettings:IocpThreads";
+        private const string CosmosDbContentPagesConfigAppSettings = "Configuration:CosmosDbConnections:Account";
+
         public IConfiguration Configuration { get; }
         private readonly IWebHostEnvironment env;
         private readonly ILogger<Startup> logger;
