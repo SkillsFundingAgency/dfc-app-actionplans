@@ -1,9 +1,132 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-  "parameters": {
-    "environment": {
-      "type": "string"
+    "parameters": {
+        "environment": {
+            "type": "string"
+        },
+        "appSharedResourceGroup": {
+            "type": "string"
+        },
+        "aseHostingEnvironmentName": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "aseResourceGroup": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "aspInstances": {
+            "type": "int"
+        },
+        "aspSize": {
+            "type": "string"
+        },
+        "aspTier": {
+            "type": "string"
+        },
+        "appSharedStorageAccountName": {
+            "type": "string"
+        },
+        "apimDSSProxyAddress": {
+            "type": "string"
+        },
+        "apimDSSApiKey": {
+            "type": "securestring"
+        },
+        "AppLoginEmail": {
+            "type": "string"
+        },
+        "AppLoginPassword": {
+            "type": "string"
+        },
+        "cdnUrl": {
+            "type": "string"
+        },
+        "CosmosDbResourceGroup": {
+            "type": "string"
+        },
+        "cosmosDbName": {
+            "type": "string"
+        },
+        "cosmosDbKey": {
+            "type": "securestring"
+        },
+        "UserSessionsCollection": {
+            "type": "string"
+        },
+        "ContentCollection": {
+            "type": "string"
+        },
+        "cosmosDbCollectionName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the collection to create"
+            }
+        },
+        "cosmosContentDbCollectionName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the collection to create"
+            }
+        },
+        "actionplanAppDatabaseNeedsCreation": {
+            "type": "bool"
+        },
+        "actionplanAppDatabaseThroughput": {
+            "type": "int"
+        },
+        "AuthSettingsIssuer": {
+            "type": "string"
+        },
+        "AuthSettingsClientSecret": {
+            "type": "string"
+        },
+        "AuthSettingsClientId": {
+            "type": "string"
+        },
+        "AuthSettingsAccountEndpoint": {
+            "type": "string"
+        },
+        "subscriptionUrl": {
+            "type": "string"
+        },
+        "SubscriptionSettingsEndpoint": {
+            "type": "string"
+        },
+        "contentUrl": {
+            "type": "string"
+        },
+        "SummaryEndpoint": {
+            "type": "string"
+        },
+        "workspaceName": {
+            "type": "string"
+        },
+        "workspaceResourceGroup": {
+            "type": "string"
+        },
+        "CmsRedisCacheConnectionString": {
+          "type": "securestring"
+        },
+        "CmsClientSecret": {
+          "type": "securestring"
+        },
+        "CmsClientId": {
+          "type": "securestring"
+        },
+        "CmsGraphApiUrl": {
+          "type": "securestring"
+        },
+        "CmsTokenEndPointUrl": {
+          "type": "securestring"
+        },
+        "WorkerThreads": {
+          "type": "string"
+        },
+        "IocpThreads": {
+            "type": "string"
+        }
     },
     "appSharedResourceGroup": {
       "type": "string"
@@ -490,6 +613,14 @@
                         {
                           "name": "Cms__RedisCacheConnectionString",
                           "value": "[parameters('CmsRedisCacheConnectionString')]"
+                        },
+                        {
+                          "name": "ThreadSettings__WorkerThreads",
+                          "value": "[parameters('WorkerThreads')]"
+                        },
+                        {
+                           "name": "ThreadSettings__IocpThreads",
+                           "value": "[parameters('IocpThreads')]"
                         }
                       ]
                     }

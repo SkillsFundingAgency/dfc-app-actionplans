@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using DFC.App.ActionPlans.Cosmos.Interfaces;
+﻿using DFC.App.ActionPlans.Cosmos.Interfaces;
 using DFC.App.ActionPlans.Cosmos.Models;
 using DFC.App.ActionPlans.Cosmos.Services;
 using DFC.App.ActionPlans.Models;
@@ -12,6 +11,7 @@ using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
 using DFC.Common.SharedContent.Pkg.Netcore.RequestHandler;
 using DFC.Common.SharedContent.Pkg.Netcore;
+using DFC.Compui.Cosmos.Contracts;
 using DFC.Compui.Subscriptions.Pkg.Netstandard.Extensions;
 using DFC.Compui.Telemetry;
 using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
@@ -27,6 +27,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -37,6 +38,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 
 
 namespace Dfc.App.ActionPlans
@@ -46,18 +48,25 @@ namespace Dfc.App.ActionPlans
     {
         private const string RedisCacheConnectionStringAppSettings = "Cms:RedisCacheConnectionString";
         private const string GraphApiUrlAppSettings = "Cms:GraphApiUrl";
+        private const string WorkerThreadsConfigAppSettings = "ThreadSettings:WorkerThreads";
+        private const string IocpThreadsConfigAppSettings = "ThreadSettings:IocpThreads";
         public IConfiguration Configuration { get; }
         private readonly IWebHostEnvironment env;
+        private readonly ILogger<Startup> logger;
 
-        public Startup(IConfiguration configuration, IWebHostEnvironment env)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env, ILogger<Startup> logger)
         {
             Configuration = configuration;
             this.env = env;
-
+            this.logger = logger;
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
+            ConfigureMinimumThreads();
+            var cosmosDbConnectionContentPages = Configuration.GetSection(CosmosDbContentPagesConfigAppSettings).Get<CosmosDbConnection>();
+            var cosmosRetryOptions = new RetryOptions { MaxRetryAttemptsOnThrottledRequests = 20, MaxRetryWaitTimeInSeconds = 60 };
+
             services.AddApplicationInsightsTelemetry();
 
             services.AddControllersWithViews();
@@ -180,6 +189,25 @@ namespace Dfc.App.ActionPlans
                 endpoints.MapControllers();
             });
 
+        }
+
+        private void ConfigureMinimumThreads()
+        {
+            var workerThreads = Convert.ToInt32(Configuration[WorkerThreadsConfigAppSettings]);
+
+            var iocpThreads = Convert.ToInt32(Configuration[IocpThreadsConfigAppSettings]);
+
+            if (ThreadPool.SetMinThreads(workerThreads, iocpThreads))
+            {
+                logger.LogInformation(
+                    "ConfigureMinimumThreads: Minimum configuration value set. IOCP = {0} and WORKER threads = {1}",
+                    iocpThreads,
+                    workerThreads);
+            }
+            else
+            {
+                logger.LogWarning("ConfigureMinimumThreads: The minimum number of threads was not changed");
+            }
         }
     }
 }
