@@ -31,8 +31,12 @@ namespace Dfc.App.ActionPlans.Controllers
         private readonly IDssReader _dssReader;
         protected TViewModel ViewModel { get; }
         private readonly ISharedContentRedisInterface sharedContentRedis;
+        private readonly IConfiguration configuration;
         private string status;
-        protected CompositeSessionController(IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, ICosmosService cosmosServiceService, ISharedContentRedisInterface sharedContentRedis, IConfiguration config)
+        protected CompositeSessionController(IOptions<CompositeSettings> compositeSettings, 
+            IDssReader dssReader, 
+            ICosmosService cosmosServiceService, 
+            ISharedContentRedisInterface sharedContentRedis, IConfiguration config)
             : base(cosmosServiceService)
         {
             ViewModel = new TViewModel()
@@ -41,7 +45,9 @@ namespace Dfc.App.ActionPlans.Controllers
             };
             _dssReader = dssReader;
             this.sharedContentRedis = sharedContentRedis;
-            status = config.GetConnectionString("contentMode:contentMode");
+            configuration = config;
+
+            status = config?.GetSection("contentMode:contentMode").Get<string>();
         }
 
         [HttpGet]
