@@ -16,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Constants = DFC.App.ActionPlans.Constants.Constants;
 using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
+using DFC.Common.SharedContent.Pkg.Netcore.Constant;
 
 namespace Dfc.App.ActionPlans.Controllers
 {
@@ -25,22 +26,20 @@ namespace Dfc.App.ActionPlans.Controllers
     /// </summary>
     /// 
     [ExcludeFromCodeCoverage]
-    public abstract class CompositeSessionController<TViewModel>:SessionController where TViewModel : CompositeViewModel, new()
+    public abstract class CompositeSessionController<TViewModel> : SessionController where TViewModel : CompositeViewModel, new()
     {
         private readonly IDssReader _dssReader;
         protected TViewModel ViewModel { get; }
-        private readonly Guid _sharedContent;
         private readonly ISharedContentRedisInterface sharedContentRedis;
         private string status;
-        protected CompositeSessionController(IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, ICosmosService cosmosServiceService,  ISharedContentRedisInterface sharedContentRedis, IConfiguration config)
-            : base(cosmosServiceService)        
+        protected CompositeSessionController(IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, ICosmosService cosmosServiceService, ISharedContentRedisInterface sharedContentRedis, IConfiguration config)
+            : base(cosmosServiceService)
         {
             ViewModel = new TViewModel()
             {
                 CompositeSettings = compositeSettings.Value,
-            };  
+            };
             _dssReader = dssReader;
-            _sharedContent = config.GetValue<Guid>(DFC.APP.ActionPlans.Data.Common.Constants.SharedContentGuidConfig); //2c9da1b3-3529-4834-afc9-9cd741e59788
             this.sharedContentRedis = sharedContentRedis;
             status = config.GetConnectionString("contentMode:contentMode");
         }
@@ -54,7 +53,7 @@ namespace Dfc.App.ActionPlans.Controllers
 
         [HttpGet]
         [Route("/bodytop/[controller]")]
-        public virtual  Task<IActionResult> BodyTop()
+        public virtual Task<IActionResult> BodyTop()
         {
             return Task.FromResult<IActionResult>(View(ViewModel));
         }
@@ -79,7 +78,7 @@ namespace Dfc.App.ActionPlans.Controllers
 
             try
             {
-                var sharedhtml = await sharedContentRedis.GetDataAsync<SharedHtml>("SharedContent/" + _sharedContent, status);
+                var sharedhtml = await sharedContentRedis.GetDataAsync<SharedHtml>(ApplicationKeys.SpeakToAnAdviserSharedContent, status);
 
                 ViewModel.SharedContent = sharedhtml.Html;
 
@@ -88,7 +87,7 @@ namespace Dfc.App.ActionPlans.Controllers
             {
                 ViewModel.SharedContent = "";
             }
-         
+
             return await Task.FromResult<IActionResult>(View(ViewModel));
         }
 
@@ -98,11 +97,11 @@ namespace Dfc.App.ActionPlans.Controllers
         {
             return View(ViewModel);
         }
-       
+
         protected IActionResult RedirectTo(string relativeAddress)
         {
             relativeAddress = $"~{ViewModel.CompositeSettings.Path}/" + relativeAddress;
-            
+
             return Redirect(relativeAddress);
         }
         protected async Task<Customer> GetCustomerDetails()
@@ -129,7 +128,7 @@ namespace Dfc.App.ActionPlans.Controllers
         protected async Task ManageSession(Guid customerId, Guid actionPlanId, Guid interactionId, UserSession session = null)
         {
             session ??= await GetUserSession();
-            
+
             if (session == null)
             {
                 var interaction =
@@ -141,7 +140,7 @@ namespace Dfc.App.ActionPlans.Controllers
                     ActionPlanId = actionPlanId,
                     InteractionId = interactionId,
                     CustomerId = customerId,
-                    Interaction = interaction, 
+                    Interaction = interaction,
                     Adviser = adviser
                 };
                 await CreateUserSession(session);
@@ -177,21 +176,21 @@ namespace Dfc.App.ActionPlans.Controllers
         {
             switch (controllerName)
             {
-                case Constants.ChangeGoalDueDateController: 
+                case Constants.ChangeGoalDueDateController:
                     return Urls.GetViewGoalUrl(ViewModel.CompositeSettings.Path, objectId);
-                    
-                case Constants.ChangeGoalStatusController:
-                    return Urls.GetViewGoalUrl(ViewModel.CompositeSettings.Path, objectId); 
 
-                case Constants.ChangeActionDueDateController: 
+                case Constants.ChangeGoalStatusController:
+                    return Urls.GetViewGoalUrl(ViewModel.CompositeSettings.Path, objectId);
+
+                case Constants.ChangeActionDueDateController:
                     return Urls.GetViewActionUrl(ViewModel.CompositeSettings.Path, objectId);
-                    
+
                 case Constants.ChangeActionStatusController:
-                    return Urls.GetViewActionUrl(ViewModel.CompositeSettings.Path,objectId);
-                    
+                    return Urls.GetViewActionUrl(ViewModel.CompositeSettings.Path, objectId);
+
                 default:
                     return ViewModel.CompositeSettings.Path + "/home";
-                    
+
             }
         }
     }

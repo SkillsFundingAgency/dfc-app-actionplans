@@ -3,9 +3,13 @@ using DFC.App.ActionPlans.Models;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Services.DSS.Models;
 using DFC.App.ActionPlans.ViewModels;
+using DFC.Common.SharedContent.Pkg.Netcore.Constant;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
+using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
@@ -14,16 +18,6 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
-using DFC.APP.ActionPlans.Data.Common;
-using DFC.APP.ActionPlans.Data.Models;
-using DFC.Compui.Cosmos.Contracts;
-using FluentAssertions;
-using Microsoft.Extensions.Configuration;
-using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
-using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
-using DFC.Common.SharedContent.Pkg.Netcore;
-using NHibernate.Engine;
-
 
 namespace Dfc.App.ActionPlans.Controllers
 {
@@ -34,7 +28,6 @@ namespace Dfc.App.ActionPlans.Controllers
         private readonly IDssWriter _dssWriter;
         private readonly IOptions<AuthSettings> _authSettings;
         private readonly ILogger<HomeController> _logger;
-        private readonly Guid _sharedContent;
         private readonly ISharedContentRedisInterface sharedContentRedis;
         private string status;
 
@@ -46,7 +39,6 @@ namespace Dfc.App.ActionPlans.Controllers
             _dssWriter = dssWriter;
             _authSettings = authSettings;
             _logger = logger;
-            _sharedContent = config.GetValue<Guid>(Constants.SharedContentGuidConfig);
             this.sharedContentRedis = sharedContentRedis;
             status = config.GetConnectionString("contentMode:contentMode");
         }
@@ -88,7 +80,7 @@ namespace Dfc.App.ActionPlans.Controllers
 
             try
             {
-                var sharedhtml = await sharedContentRedis.GetDataAsync<SharedHtml>("SharedContent/" + _sharedContent, status);
+                var sharedhtml = await sharedContentRedis.GetDataAsync<SharedHtml>(ApplicationKeys.SpeakToAnAdviserSharedContent, status);
 
                 ViewModel.SharedContent = sharedhtml.Html;
            
