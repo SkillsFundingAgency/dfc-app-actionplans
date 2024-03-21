@@ -29,6 +29,7 @@ namespace Dfc.App.ActionPlans.Controllers
         private readonly IOptions<AuthSettings> _authSettings;
         private readonly ILogger<HomeController> _logger;
         private readonly ISharedContentRedisInterface sharedContentRedis;
+        private readonly IConfiguration configuration;
         private string status;
 
         public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService, IOptions<AuthSettings> authSettings,
@@ -40,7 +41,8 @@ namespace Dfc.App.ActionPlans.Controllers
             _authSettings = authSettings;
             _logger = logger;
             this.sharedContentRedis = sharedContentRedis;
-            status = config.GetConnectionString("contentMode:contentMode");
+            configuration = config;
+            status = configuration?.GetSection("contentMode:contentMode").Get<string>();
         }
         [Authorize]
         [Route("/body/home")]
@@ -83,7 +85,6 @@ namespace Dfc.App.ActionPlans.Controllers
                 var sharedhtml = await sharedContentRedis.GetDataAsync<SharedHtml>(ApplicationKeys.SpeakToAnAdviserSharedContent, status);
 
                 ViewModel.SharedContent = sharedhtml.Html;
-           
             }
             catch
             {

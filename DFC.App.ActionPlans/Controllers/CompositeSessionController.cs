@@ -47,7 +47,7 @@ namespace Dfc.App.ActionPlans.Controllers
             this.sharedContentRedis = sharedContentRedis;
             configuration = config;
 
-            status = config?.GetSection("contentMode:contentMode").Get<string>();
+            status = configuration?.GetSection("contentMode:contentMode").Get<string>();
         }
 
         [HttpGet]
