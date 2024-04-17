@@ -51,7 +51,7 @@ stages:
         BuildConfiguration: $(BuildConfiguration)
         PublishWebApp: true
         TestSuffix: UnitTests
-    
+
     #Build UI functional Tests
   - job: Builduifunctionaltests
     displayName: Build UI functional tests
