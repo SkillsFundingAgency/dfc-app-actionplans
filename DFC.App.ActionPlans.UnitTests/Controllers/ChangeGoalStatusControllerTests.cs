@@ -6,7 +6,7 @@ using DFC.APP.ActionPlans.Data.Models;
 using DFC.App.ActionPlans.Services.DSS.Enums;
 using DFC.App.ActionPlans.Services.DSS.Models;
 using DFC.App.ActionPlans.ViewModels;
-using DFC.Compui.Cosmos.Contracts;
+//using DFC.Compui.Cosmos.Contracts;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +16,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using NSubstitute;
 using NUnit.Framework;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 
 namespace DFC.App.ActionPlans.UnitTests.Controllers
 {
@@ -23,7 +24,7 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
     {
         private ChangeGoalStatusController _controller;
         private ILogger<ChangeGoalStatusController> _logger;
-        private IDocumentService<CmsApiSharedContentModel> _documentService;
+        private ISharedContentRedisInterface _sharedContentRedisInterface;
         private IConfiguration _config;
         [SetUp]
         public void Init()
@@ -34,10 +35,10 @@ namespace DFC.App.ActionPlans.UnitTests.Controllers
             _config = new ConfigurationBuilder()
                 .AddInMemoryCollection(inMemorySettings)
                 .Build();
-            _documentService = Substitute.For<IDocumentService<CmsApiSharedContentModel>>();
+            _sharedContentRedisInterface = Substitute.For<ISharedContentRedisInterface>();
             _logger = new Logger<ChangeGoalStatusController>(new LoggerFactory());
             _logger = Substitute.For<ILogger<ChangeGoalStatusController>>();
-            _controller = new ChangeGoalStatusController(_logger, _compositeSettings, _dssReader,_dssWriter, _cosmosService, _documentService, _config);
+            _controller = new ChangeGoalStatusController(_logger, _compositeSettings, _dssReader,_dssWriter, _cosmosService, _sharedContentRedisInterface, _config);
             var context = new DefaultHttpContext() { User = user };
             _controller.ControllerContext.HttpContext = context;
             context.Request.Headers["x-dfc-composite-sessionid"] = Guid.NewGuid().ToString();

@@ -8,40 +8,46 @@ using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using DFC.App.ActionPlans.Controllers;
 using DFC.App.ActionPlans.Cosmos.Interfaces;
-using DFC.APP.ActionPlans.Data.Models;
-using DFC.App.ActionPlans.Exceptions;
 using DFC.App.ActionPlans.Helpers;
 using DFC.App.ActionPlans.Services.DSS.Interfaces;
 using DFC.App.ActionPlans.Services.DSS.Models;
-using DFC.Compui.Cosmos.Contracts;
 using DFC.Compui.Sessionstate;
 using Microsoft.Extensions.Configuration;
 using Constants = DFC.App.ActionPlans.Constants.Constants;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
+using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
+using DFC.Common.SharedContent.Pkg.Netcore.Constant;
 
 namespace Dfc.App.ActionPlans.Controllers
 {
-  
+
     /// <summary>
     /// Adds default Composite UI endpoints and routing logic to the base session controller.
     /// </summary>
     /// 
     [ExcludeFromCodeCoverage]
-    public abstract class CompositeSessionController<TViewModel>:SessionController where TViewModel : CompositeViewModel, new()
+    public abstract class CompositeSessionController<TViewModel> : SessionController where TViewModel : CompositeViewModel, new()
     {
         private readonly IDssReader _dssReader;
         protected TViewModel ViewModel { get; }
-        private readonly IDocumentService<CmsApiSharedContentModel> _documentService;
-        private readonly Guid _sharedContent;
-        protected CompositeSessionController(IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, ICosmosService cosmosServiceService, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
-            : base(cosmosServiceService)        
+        private readonly ISharedContentRedisInterface sharedContentRedis;
+        private readonly IConfiguration configuration;
+        private string status;
+        protected CompositeSessionController(IOptions<CompositeSettings> compositeSettings, 
+            IDssReader dssReader, 
+            ICosmosService cosmosServiceService, 
+            ISharedContentRedisInterface sharedContentRedis, IConfiguration config)
+            : base(cosmosServiceService)
         {
             ViewModel = new TViewModel()
             {
                 CompositeSettings = compositeSettings.Value,
-            };  
+            };
             _dssReader = dssReader;
-            _documentService = documentService;
-            _sharedContent = config.GetValue<Guid>(DFC.APP.ActionPlans.Data.Common.Constants.SharedContentGuidConfig);
+            this.sharedContentRedis = sharedContentRedis;
+            configuration = config;
+
+            status = configuration?.GetSection("contentMode:contentMode").Get<string>();
         }
 
         [HttpGet]
@@ -53,7 +59,7 @@ namespace Dfc.App.ActionPlans.Controllers
 
         [HttpGet]
         [Route("/bodytop/[controller]")]
-        public virtual  Task<IActionResult> BodyTop()
+        public virtual Task<IActionResult> BodyTop()
         {
             return Task.FromResult<IActionResult>(View(ViewModel));
         }
@@ -71,8 +77,23 @@ namespace Dfc.App.ActionPlans.Controllers
         [Route("/body/[controller]/{id?}")]
         public virtual async Task<IActionResult> Body()
         {
-            var sharedContent = await _documentService.GetByIdAsync(_sharedContent, "account").ConfigureAwait(false);
-            ViewModel.SharedContent = sharedContent?.Content;
+            if (string.IsNullOrEmpty(status))
+            {
+                status = "PUBLISHED";
+            }
+
+            try
+            {
+                var sharedhtml = await sharedContentRedis.GetDataAsync<SharedHtml>(ApplicationKeys.SpeakToAnAdviserSharedContent, status);
+
+                ViewModel.SharedContent = sharedhtml.Html;
+
+            }
+            catch
+            {
+                ViewModel.SharedContent = "";
+            }
+
             return await Task.FromResult<IActionResult>(View(ViewModel));
         }
 
@@ -82,11 +103,11 @@ namespace Dfc.App.ActionPlans.Controllers
         {
             return View(ViewModel);
         }
-       
+
         protected IActionResult RedirectTo(string relativeAddress)
         {
             relativeAddress = $"~{ViewModel.CompositeSettings.Path}/" + relativeAddress;
-            
+
             return Redirect(relativeAddress);
         }
         protected async Task<Customer> GetCustomerDetails()
@@ -113,7 +134,7 @@ namespace Dfc.App.ActionPlans.Controllers
         protected async Task ManageSession(Guid customerId, Guid actionPlanId, Guid interactionId, UserSession session = null)
         {
             session ??= await GetUserSession();
-            
+
             if (session == null)
             {
                 var interaction =
@@ -125,7 +146,7 @@ namespace Dfc.App.ActionPlans.Controllers
                     ActionPlanId = actionPlanId,
                     InteractionId = interactionId,
                     CustomerId = customerId,
-                    Interaction = interaction, 
+                    Interaction = interaction,
                     Adviser = adviser
                 };
                 await CreateUserSession(session);
@@ -161,21 +182,21 @@ namespace Dfc.App.ActionPlans.Controllers
         {
             switch (controllerName)
             {
-                case Constants.ChangeGoalDueDateController: 
+                case Constants.ChangeGoalDueDateController:
                     return Urls.GetViewGoalUrl(ViewModel.CompositeSettings.Path, objectId);
-                    
-                case Constants.ChangeGoalStatusController:
-                    return Urls.GetViewGoalUrl(ViewModel.CompositeSettings.Path, objectId); 
 
-                case Constants.ChangeActionDueDateController: 
+                case Constants.ChangeGoalStatusController:
+                    return Urls.GetViewGoalUrl(ViewModel.CompositeSettings.Path, objectId);
+
+                case Constants.ChangeActionDueDateController:
                     return Urls.GetViewActionUrl(ViewModel.CompositeSettings.Path, objectId);
-                    
+
                 case Constants.ChangeActionStatusController:
-                    return Urls.GetViewActionUrl(ViewModel.CompositeSettings.Path,objectId);
-                    
+                    return Urls.GetViewActionUrl(ViewModel.CompositeSettings.Path, objectId);
+
                 default:
                     return ViewModel.CompositeSettings.Path + "/home";
-                    
+
             }
         }
     }

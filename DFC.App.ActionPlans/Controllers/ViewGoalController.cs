@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 
 namespace DFC.App.ActionPlans.Controllers
 {
@@ -22,8 +23,8 @@ namespace DFC.App.ActionPlans.Controllers
         private readonly IDssReader _dssReader;
         
         public ViewGoalController(ILogger<ViewGoalController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, ICosmosService cosmosServiceService,
-            IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
-            : base(compositeSettings, dssReader, cosmosServiceService, documentService, config)
+           ISharedContentRedisInterface sharedContentRedis, IConfiguration config)
+            : base(compositeSettings, dssReader, cosmosServiceService, sharedContentRedis, config)
         {
             _dssReader = dssReader;
         }
