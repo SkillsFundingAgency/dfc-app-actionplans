@@ -8,17 +8,14 @@
     "appSharedResourceGroup": {
       "value": "dfc-dev-app-sharedresources-rg"
     },
-    "aspSize": {
-      "value": "2"
-    },
-    "aspTier": {
-      "value": "Standard"
-    },
-    "aspInstances": {
-      "value": 2
-    },
     "appSharedStorageAccountName": {
       "value": "dfcdevappsharedstr"
+    },
+    "appServicePlanSuffix": {
+      "value": "-migrated"
+    },
+    "appServiceName": {
+      "value": "dfc-foo-app-actionplans-ver"
     },
     "apimDSSProxyAddress": {
       "value": "https://foo.api.nationalcareersservice.org.uk"
@@ -116,5 +113,5 @@
     "IocpThreads": {
         "value": "200"
     }
-  }  
+  }
 }

@@ -8,21 +8,11 @@
     "appSharedResourceGroup": {
       "type": "string"
     },
-    "aseHostingEnvironmentName": {
+    "appServicePlanSuffix": {
       "type": "string",
       "defaultValue": ""
     },
-    "aseResourceGroup": {
-      "type": "string",
-      "defaultValue": ""
-    },
-    "aspInstances": {
-      "type": "int"
-    },
-    "aspSize": {
-      "type": "string"
-    },
-    "aspTier": {
+    "appServiceName": {
       "type": "string"
     },
     "appSharedStorageAccountName": {
@@ -137,10 +127,9 @@
     "cosmosDbDatabaseName": "dfc-app-actionplans",
     "cosmosDbEndpoint": "[concat('https://', parameters('cosmosDbName'), '.documents.azure.com:443/')]",
     "resourcePrefix": "[tolower(concat('dfc-', parameters('Environment'), '-pers-actplans'))]",
-    "appServicePlanName": "[concat(variables('resourcePrefix'), '-asp')]",
+    "appServicePlanName": "[concat(variables('resourcePrefix'), parameters('appServicePlanSuffix'), '-asp')]",
     "appServicePlanResourceGroup": "[concat(variables('resourcePrefix'),'-rg')]",
-    "webAppName": "[concat(variables('ResourcePrefix'), '-as')]",
-    "webAppInsightsName": "[concat(variables('webAppName'), '-ai')]"
+    "webAppInsightsName": "[concat(parameters('appServiceName'), '-ai')]"
   },
   "resources": [
     {
@@ -171,7 +160,7 @@
     },
     {
       "apiVersion": "2017-05-10",
-      "name": "[variables('WebAppName')]",
+      "name": "[parameters('appServiceName')]",
       "type": "Microsoft.Resources/deployments",
       "properties": {
         "mode": "Incremental",
@@ -181,7 +170,7 @@
         },
         "parameters": {
           "appServiceName": {
-            "value": "[variables('webAppName')]"
+            "value": "[parameters('appServiceName')]"
           },
           "appServicePlanName": {
             "value": "[variables('appServicePlanName')]"
