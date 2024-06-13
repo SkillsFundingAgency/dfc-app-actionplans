@@ -28,11 +28,14 @@ namespace Dfc.App.ActionPlans.Controllers
     [ExcludeFromCodeCoverage]
     public abstract class CompositeSessionController<TViewModel> : SessionController where TViewModel : CompositeViewModel, new()
     {
+        private const string ExpiryAppSettings = "Cms:Expiry";
         private readonly IDssReader _dssReader;
         protected TViewModel ViewModel { get; }
         private readonly ISharedContentRedisInterface sharedContentRedis;
         private readonly IConfiguration configuration;
         private string status;
+        private double expiry = 4;
+
         protected CompositeSessionController(IOptions<CompositeSettings> compositeSettings, 
             IDssReader dssReader, 
             ICosmosService cosmosServiceService, 
@@ -48,6 +51,11 @@ namespace Dfc.App.ActionPlans.Controllers
             configuration = config;
 
             status = configuration?.GetSection("contentMode:contentMode").Get<string>();
+            if (this.configuration != null)
+            {
+                string expiryAppString = this.configuration.GetSection(ExpiryAppSettings).Get<string>();
+                this.expiry = double.Parse(string.IsNullOrEmpty(expiryAppString) ? "4" : expiryAppString);
+            }
         }
 
         [HttpGet]
@@ -84,7 +92,7 @@ namespace Dfc.App.ActionPlans.Controllers
 
             try
             {
-                var sharedhtml = await sharedContentRedis.GetDataAsync<SharedHtml>(ApplicationKeys.SpeakToAnAdviserSharedContent, status);
+                var sharedhtml = await sharedContentRedis.GetDataAsyncWithExpiry<SharedHtml>(ApplicationKeys.SpeakToAnAdviserSharedContent, status, expiry);
 
                 ViewModel.SharedContent = sharedhtml.Html;
 

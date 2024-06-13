@@ -39,6 +39,8 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
+using DFC.Common.SharedContent.Pkg.Netcore.Constant;
+using Microsoft.Extensions.Caching.Memory;
 
 
 namespace Dfc.App.ActionPlans
@@ -88,15 +90,20 @@ namespace Dfc.App.ActionPlans
             {
                 var option = new GraphQLHttpClientOptions()
                 {
-                    EndPoint = new Uri(Configuration.GetSection(GraphApiUrlAppSettings).Get<string>()),
-                    HttpMessageHandler = new CmsRequestHandler(s.GetService<IHttpClientFactory>(), s.GetService<IConfiguration>(), s.GetService<IHttpContextAccessor>()),
+                    EndPoint = new Uri(Configuration[ConfigKeys.GraphApiUrl] ??
+                throw new ArgumentNullException($"{nameof(ConfigKeys.GraphApiUrl)} is missing or has an invalid value.")),
+                    HttpMessageHandler = new CmsRequestHandler(
+                        s.GetService<IHttpClientFactory>(),
+                        s.GetService<IConfiguration>(),
+                        s.GetService<IHttpContextAccessor>(),
+                        s.GetService<IMemoryCache>()),
                 };
                 var client = new GraphQLHttpClient(option, new NewtonsoftJsonSerializer());
                 return client;
             });
 
 
-            services.AddSingleton<ISharedContentRedisInterfaceStrategy<SharedHtml>, SharedHtmlQueryStrategy>();
+            services.AddSingleton<ISharedContentRedisInterfaceStrategyWithRedisExpiry<SharedHtml>, SharedHtmlQueryStrategy>();
             services.AddSingleton<ISharedContentRedisInterfaceStrategyFactory, SharedContentRedisStrategyFactory>();
             services.AddScoped<ISharedContentRedisInterface, SharedContentRedis>();
 
