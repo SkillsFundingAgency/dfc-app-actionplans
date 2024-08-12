@@ -24,6 +24,7 @@ namespace Dfc.App.ActionPlans.Controllers
     [ExcludeFromCodeCoverage]
     public class HomeController : CompositeSessionController<HomeCompositeViewModel>
     {
+        private const string ExpiryAppSettings = "Cms:Expiry";
         private readonly IDssReader _dssReader;
         private readonly IDssWriter _dssWriter;
         private readonly IOptions<AuthSettings> _authSettings;
@@ -31,6 +32,7 @@ namespace Dfc.App.ActionPlans.Controllers
         private readonly ISharedContentRedisInterface sharedContentRedis;
         private readonly IConfiguration configuration;
         private string status;
+        private double expiryInHours = 4;
 
         public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssReader, IDssWriter dssWriter, ICosmosService cosmosServiceService, IOptions<AuthSettings> authSettings,
             ISharedContentRedisInterface sharedContentRedis, IConfiguration config)
@@ -43,6 +45,14 @@ namespace Dfc.App.ActionPlans.Controllers
             this.sharedContentRedis = sharedContentRedis;
             configuration = config;
             status = configuration?.GetSection("contentMode:contentMode").Get<string>();
+            if (this.configuration != null)
+            {
+                string expiryAppString = this.configuration.GetSection(ExpiryAppSettings).Get<string>();
+                if (double.TryParse(expiryAppString, out var expiryAppStringParseResult))
+                {
+                    expiryInHours = expiryAppStringParseResult;
+                }
+            }
         }
         [Authorize]
         [Route("/body/home")]
@@ -82,7 +92,7 @@ namespace Dfc.App.ActionPlans.Controllers
 
             try
             {
-                var sharedhtml = await sharedContentRedis.GetDataAsync<SharedHtml>(ApplicationKeys.SpeakToAnAdviserSharedContent, status);
+                var sharedhtml = await sharedContentRedis.GetDataAsyncWithExpiry<SharedHtml>(ApplicationKeys.SpeakToAnAdviserSharedContent, status, expiryInHours);
 
                 ViewModel.SharedContent = sharedhtml.Html;
             }
