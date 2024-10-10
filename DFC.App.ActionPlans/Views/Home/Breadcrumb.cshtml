@@ -3,10 +3,10 @@
 @inject IConfiguration Configuration
 
 @{
-    var parsed = bool.TryParse(Configuration["ActionPlanRetirement:ServiceRetired"], out var serviceIsRetired);
+    var serviceIsRetired = bool.Parse(Configuration["ActionPlanRetirement:ServiceRetired"]);
 }
 
-@if (parsed && !serviceIsRetired)
+@if (!serviceIsRetired)
 {
     @if (!User.Identity.IsAuthenticated)
     {

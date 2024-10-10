@@ -2,21 +2,38 @@
 @using DFC.App.ActionPlans.Models
 @inject IOptions<AuthSettings> AuthSettings;
 @model HomeCompositeViewModel
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 
+@{
+    var serviceIsRetired = bool.Parse(Configuration["ActionPlanRetirement:ServiceRetired"]);
+}
 
 <div class="govuk-grid-column-two-thirds">
-    <p class="govuk-body">Taking the next step in your career can sometimes feel overwhelming. It’s helpful to break down a big decision into small steps that you can do one at a time.</p>
-    <div class="govuk-warning-text">
-        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-        <strong class="govuk-warning-text__text">
-            <span class="govuk-warning-text__assistive">Warning</span>
-            You will only have an action plan if you’ve had an appointment with a careers adviser and they have set one up for you. If you would like to speak to an adviser, <govukLink id="ContactUS" link-href="/contact-us" link-text="contact us" additional-class="govuk-link--light"></govukLink> for an appointment.
-        </strong>
-    </div>
+    <!-- INTRODUCTION -->
+    @if (!serviceIsRetired)
+    {
+        <p class="govuk-body">Taking the next step in your career can sometimes feel overwhelming. It’s helpful to break down a big decision into small steps that you can do one at a time.</p>
+        <div class="govuk-warning-text">
+            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+            <strong class="govuk-warning-text__text">
+                <span class="govuk-warning-text__assistive">Warning</span>
+                You will only have an action plan if you’ve had an appointment with a careers adviser and they have set one up for you. If you would like to speak to an adviser, <govukLink id="ContactUS" link-href="/contact-us" link-text="contact us" additional-class="govuk-link--light"></govukLink> for an appointment.
+            </strong>
+        </div>
 
-    <govukHeadingH2 text="Access your action plan"></govukHeadingH2>
-    <p>To review and update your action plan, first you need to log in to your account.</p>
-    <govukButtonLink additional-class="ncs-button__primary" id="@Model.GetElementId("govukButtonLink ", "GoToActionPlans")" LinkText="Go to your action plan" LinkHref="@AuthSettings.Value.AccountEndpoint"></govukButtonLink>
+        <!-- ACCESS YOUR ACTION PLAN -->
+        <govukHeadingH2 text="Access your action plan"></govukHeadingH2>
+        <p>To review and update your action plan, first you need to log in to your account.</p>
+        <govukButtonLink additional-class="ncs-button__primary" id="@Model.GetElementId("govukButtonLink ", "GoToActionPlans")" LinkText="Go to your action plan" LinkHref="@AuthSettings.Value.AccountEndpoint"></govukButtonLink>
+    } else
+    {
+        <govukHeadingH2 text="We've removed digital action plans"></govukHeadingH2>
+        <p>On REPLACE ME (DATE), we removed the digital action plan.</p>
+        <p>If you previously used a digital action plan, you're no longer able to access it.</p>
+    }
+    
+    <!-- IF YOU DON'T HAVE ONE -->
     <govukHeadingH2 text="If you do not have an action plan"></govukHeadingH2>
     <p class="govuk-body">If you don’t have an action plan, don’t worry. There are lots of things you can do to take control of your career, like:</p>
     <ul class="govuk-list govuk-list--bullet">
@@ -32,7 +49,6 @@
         </li>
     </ul>
     <p class="govuk-body">If you would still like to speak to an adviser and make an action plan, <a href="/contact-us" class="govuk-link">contact us</a> for an appointment.</p>
-
 </div>
 
 <div class="action-plan-secondary-content govuk-grid-column-one-third  ">
