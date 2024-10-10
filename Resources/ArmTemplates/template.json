@@ -468,6 +468,10 @@
               {
                 "name": "Cms__Expiry",
                 "value": "[parameters('Expiry')]"
+              },
+			  {
+                "name": "ActionPlanRetirement__ShowBreadcrumbBanner",
+                "value": true
               }
             ]
           }

@@ -1,28 +1,36 @@
 ﻿@model DFC.App.ActionPlans.ViewModels.HomeCompositeViewModel
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 
+@{
+    var parsed = bool.TryParse(Configuration["ActionPlanRetirement:ShowBreadcrumbBanner"], out var showBreadcrumbBanner);
+}
 
-@if (!User.Identity.IsAuthenticated)
+@if (parsed && showBreadcrumbBanner)
 {
-    <div class="govuk-width-container">
-        <div class="govuk-phase-banner">
-            <div class="govuk-header__navigation--end">
-                <div class="dfc-app-actionplans-mobile-auth-link">
-                    <a class="account-link" href="/your-account/home" id="signin-link">Sign in</a>
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <div class="govuk-width-container">
+            <div class="govuk-phase-banner">
+                <div class="govuk-header__navigation--end">
+                    <div class="dfc-app-actionplans-mobile-auth-link">
+                        <a class="account-link" href="/your-account/home" id="signin-link">Sign in</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-}
-else if (!Model.HideBreadcrumb)
-{
-    <div class="govuk-breadcrumbs">
-        <ol class="govuk-breadcrumbs__list">
-            <li class="govuk-breadcrumbs__list-item">
-                <a class="govuk-breadcrumbs__link" href="https://nationalcareers.service.gov.uk/">Home</a>
-            </li>
-            <li class="govuk-breadcrumbs__list-item">
-                <a class="govuk-breadcrumbs__link" href="/your-account">Your account</a>
-            </li>
-        </ol>
-    </div>
+    }
+    else if (!Model.HideBreadcrumb)
+    {
+        <div class="govuk-breadcrumbs">
+            <ol class="govuk-breadcrumbs__list">
+                <li class="govuk-breadcrumbs__list-item">
+                    <a class="govuk-breadcrumbs__link" href="https://nationalcareers.service.gov.uk/">Home</a>
+                </li>
+                <li class="govuk-breadcrumbs__list-item">
+                    <a class="govuk-breadcrumbs__link" href="/your-account">Your account</a>
+                </li>
+            </ol>
+        </div>
+    }
 }
