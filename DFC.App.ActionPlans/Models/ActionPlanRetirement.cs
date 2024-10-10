@@ -2,6 +2,6 @@
 {
     public class ActionPlanRetirement
     {
-        public bool ShowBreadcrumbBanner { get; set; }
+        public bool ServiceRetired { get; set; }
     }
 }

@@ -470,8 +470,8 @@
                 "value": "[parameters('Expiry')]"
               },
 			  {
-                "name": "ActionPlanRetirement__ShowBreadcrumbBanner",
-                "value": true
+                "name": "ActionPlanRetirement__ServiceRetired",
+                "value": false
               }
             ]
           }
