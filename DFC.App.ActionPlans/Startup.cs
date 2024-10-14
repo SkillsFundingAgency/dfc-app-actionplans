@@ -83,7 +83,6 @@ namespace Dfc.App.ActionPlans
             services.Configure<DssSettings>(Configuration.GetSection(nameof(DssSettings)));
             services.Configure<CompositeSettings>(Configuration.GetSection(nameof(CompositeSettings)));
             services.Configure<CosmosSettings>(Configuration.GetSection(nameof(CosmosSettings)));
-            services.Configure<ActionPlanRetirement>(Configuration.GetSection(nameof(ActionPlanRetirement)));
 
             services.AddStackExchangeRedisCache(options => { options.Configuration = Configuration.GetSection(RedisCacheConnectionStringAppSettings).Get<string>(); });
 
