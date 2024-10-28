@@ -3,8 +3,8 @@
 @inject IOptions<AuthSettings> AuthSettings;
 @model HomeCompositeViewModel
 
-
 <div class="govuk-grid-column-two-thirds">
+    @* INTRODUCTION *@
     <p class="govuk-body">Taking the next step in your career can sometimes feel overwhelming. It’s helpful to break down a big decision into small steps that you can do one at a time.</p>
     <div class="govuk-warning-text">
         <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
@@ -14,9 +14,17 @@
         </strong>
     </div>
 
+    @* ACCESS YOUR ACTION PLAN *@
     <govukHeadingH2 text="Access your action plan"></govukHeadingH2>
     <p>To review and update your action plan, first you need to log in to your account.</p>
     <govukButtonLink additional-class="ncs-button__primary" id="@Model.GetElementId("govukButtonLink ", "GoToActionPlans")" LinkText="Go to your action plan" LinkHref="@AuthSettings.Value.AccountEndpoint"></govukButtonLink>
+
+    @* WE'RE REMOVING ACTION PLANS *@
+    <govukHeadingH3 text="We're removing digital action plans from the site"></govukHeadingH3>
+    <p>We're removing action plans from the National Careers Service website at the end of this year.</p>
+    <p>After this time, you will not be able to access your action plan. If you'd like to keep your action plan, you should take notes of your plan as soon as possible.</p>
+    
+    @* IF YOU DON'T HAVE ONE *@
     <govukHeadingH2 text="If you do not have an action plan"></govukHeadingH2>
     <p class="govuk-body">If you don’t have an action plan, don’t worry. There are lots of things you can do to take control of your career, like:</p>
     <ul class="govuk-list govuk-list--bullet">
@@ -32,7 +40,6 @@
         </li>
     </ul>
     <p class="govuk-body">If you would still like to speak to an adviser and make an action plan, <a href="/contact-us" class="govuk-link">contact us</a> for an appointment.</p>
-
 </div>
 
 <div class="action-plan-secondary-content govuk-grid-column-one-third  ">
